@@ -1,0 +1,46 @@
+﻿project requirements:
+* frontend
+   * user information:
+      * sign in with in with username and password
+      * create new userId with optional password
+   * project management:
+      * create new project: name, description & projectID
+      * edit existing project: projectID
+   * resource management:
+      * for each HW set: capacity, available and request
+      * can check-in and check-out hardware
+* backend
+   * database
+      * store user credentials
+      * store HW set information
+   * api
+      * access information from database
+      * encryption of user credentials
+   * some method of approving hardware checkouts
+
+
+project plan (agile): 
+* Team members: Sydney Thompson, Diego Niño, Arsh Gamare, Jan Rubio, Kevin Wang
+* Sprint velocity: sprint for each project/milestone
+   * in-progress, stuck/blocked, ready for review, merged
+   * using GitHub projects for tasks + sprint planning
+* Collaboration tools: discord, github, zoom
+* Implementation methodology: prepare -> plan -> design -> validate -> deploy
+
+
+choice of tools and approach:
+* React.js for front end 
+* MongoDB for database
+* Flask framework for backend
+* Heroku Cloud deployment
+* PyTest for testing framework
+* GitHub Projects for issue tracking
+
+
+
+
+
+
+potential questions:
+* what does authorized users refer to?
+   * admin people or those who are able to edit specified project?
