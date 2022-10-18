@@ -1,0 +1,272 @@
+.App {
+  text-align: left;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* Project Styles */
+
+.projectTitle {
+  /* Font */
+  font-family: 'Courier New';
+  font-weight: bold;
+  font-size: 40px;
+  /* Margins and Alignment */
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-left: 25px;
+  text-align: center;
+}
+
+.projectWrap {
+  /* Structure and Settings*/
+  display: inline-block;
+  background: #0c1223;
+  /* Size */
+  height: auto;
+  width: 1800px;
+  /* Margins and Alignment */
+  margin: 50px 50px 50px 50px;
+  text-align: center;
+  /* Border */
+  border-style: solid;
+  border-color: #303436;
+  border-width: 3px;
+  border-radius: 10px;
+}
+
+.project {
+  /* Structure and Settings */
+  display: inline-block;
+  background-color:#1b1b33;
+  /* Size */
+  min-height: 100px;
+  height: auto;
+  width: 1700px;
+  /* Margins */
+  margin-top: 0px;
+  margin-left: 0px;
+  /* Border */
+  border-style:solid;
+  border-color: #29c0b0;
+  border-width: 3px;
+  border-radius: 10px;
+}
+
+.emptySpace {
+  /* Structure */
+  display: inline-block;
+  /* Size */
+  height: 10px;
+  width: 2030px;
+  /* Margins */
+  margin-left: 0px;
+  
+}
+
+.column {
+  /* Size */
+  width: 14.28%;
+  /* Margins and Alignments */
+  margin-top: 10px;
+  float: left;
+  text-align: center;
+}
+
+.newProjectColumn {
+  /* Size */
+  width: 33.33%;
+  /* Margins and Alignments */
+  margin-top: 10px;
+  float: left;
+  text-align: center;
+}
+
+.projectName {
+  /* Fonts */
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  /* Margins */
+  margin-top: 27px;
+}
+
+.user {
+  /* Fonts */
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: oblique;
+  font-size: 30px;
+  /* Margins */
+  margin-top: 27px;
+}
+
+.hwDescription {
+  /* Font */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  /* Margins */
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.hwSelect {
+  /* Font */
+  font-size: 20px;
+  /* Size */
+  height: 30px;
+  width: 120px;
+  /* Margins and Alignment */
+  margin-top: -10px;
+  vertical-align: top;
+}
+
+.hwInput {
+  /* Font */
+  font-size: 19px;
+  /* Size */
+  height: 15px;
+  width: 100px;
+  /* Margins and Alignments */
+  padding: 5px 20px;
+  margin-top: 3px;
+  margin-bottom: 10px;
+  vertical-align: top;
+  text-align: center;
+  /* Border */
+  border-color: aquamarine;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+}
+
+.newProjectInput {
+  /* Font */
+  font-size: 25px;
+  /* Size */
+  height: 30px;
+  width: 250px;
+  /* Margins and Alignments */
+  padding: 5px 20px;
+  margin-top: 16px;
+  margin-bottom: 10px;
+  vertical-align: middle;
+  text-align: center;
+  /* Border */
+  border-color: aquamarine;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+}
+
+.checkBtn {
+  /* Font */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  /* Size */
+  height: 30px;
+  width: 150px;
+  /* Margins and Alignments */
+  margin-top: 3px;
+  margin-bottom: 10px;
+  vertical-align: top;
+  /* Border */
+  border-color: #000000;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.checkBtn:hover {
+  /* Font */
+  color: #ffffff;
+  /* Settings */
+  background-color: #000000;
+  /* Border */
+  border: #404040;
+  border-style: solid;
+  border-width: 3px;
+}
+
+.checkBtn:active {
+  /* Border */
+  border: aquamarine;
+  border-style: solid;
+  border-width: 4px;
+}
+
+.joinBtn {
+  /* Font */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  /* Size */
+  height: 30px;
+  width: 150px;
+  /* Margins and Alignments */
+  margin-top: 25px;
+  margin-bottom: 25px;
+  vertical-align: middle;
+  /* Border */
+  border-color: #000000;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.joinBtn:hover {
+  /* Font */
+  color: #ffffff;
+  /* Settings */
+  background-color: #000000;
+  /* Border */
+  border: #404040;
+  border-style: solid;
+  border-width: 3px;
+}
+
+.joinBtn:active {
+  /* Settings */
+  border: aquamarine;
+  border-style: solid;
+  border-width: 4px;
+}
+
+.addProjectBtn {
+  /* Font */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  /* Size */
+  height: 45px;
+  width: 280px;
+  /* Margins and Alignments */
+  margin-top: 18px;
+  margin-bottom: 25px;
+  vertical-align: middle;
+  /* Border */
+  border-color: #000000;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.addProjectBtn:hover {
+  /* Font */
+  color: #ffffff;
+  /* Settings */
+  background-color: #000000;
+  border: #404040;
+  border-style: solid;
+  border-width: 3px;
+}
+
+.addProjectBtn:active {
+  /* Settings */
+  border: aquamarine;
+  border-style: solid;
+  border-width: 4px;
+}
