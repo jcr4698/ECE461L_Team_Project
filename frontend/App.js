@@ -40,7 +40,7 @@ class ProjectData extends React.Component {
     };
     this.state.project_list.push([0, "Project 0", "User 1", 0, [50, 0, 0], 100, [30, 0, 0], 100])
     this.state.project_list.push([1, "Project 1", "User 2", 0, [50, 0, 0], 100, [0, 0, 0], 100])
-    this.state.project_list.push([2, "Project 2", "User 3", 0, [50, 0, 0], 50, [30, 0, 0], 50])
+    this.state.project_list.push([2, "Project 2", "User 3", 0, [10, 0, 0], 50, [30, 0, 0], 50])
     this.state.project_list.push([3, "Project 3", "User 4", 0, [50, 0, 0], 70, [30, 0, 0], 50])
   }
 
@@ -56,10 +56,10 @@ class ProjectData extends React.Component {
         HWSet1_Capacity = {hw1_cap}
         HWSet2_Availability = {hw2_avail[0]}
         HWSet2_Capacity = {hw2_cap}
+        onCheckInValue={(e) => this.handleCheckInValue(e.target.value, i)}
         onCheckInClick={() => this.handleCheckIn(i)}
-        onCheckInValue={() => this.handleCheckInValue(i)}
+        onCheckOutValue={(e) => this.handleCheckOutValue(e.target.value, i)}
         onCheckOutClick={() => this.handleCheckOut(i)}
-        onCheckOutValue={() => this.handleCheckOutValue(i)}
         onHWSelection={() => this.handleHWSelection(i)}
       />
     )
@@ -82,7 +82,6 @@ class ProjectData extends React.Component {
     const project_list = this.state.project_list.slice();
     for(let i = 0; i < project_list.length; i++) {
       const project_data = project_list[i];
-      console.log(project_data); ////////////////////////////////////////////////// Only first project works ?!?!?!?!
       new_project_list.push(this.renderProject(project_data[0],
                                                project_data[1],
                                                project_data[2],
@@ -102,33 +101,38 @@ class ProjectData extends React.Component {
 
   //// Handlers
 
+  // Change between HWSet 1 and HWSet 2 settings
   handleHWSelection(i) {
     const project_list = this.state.project_list.slice();
-    var currHWSelection = parseInt(document.getElementById("hwset").value);
+    var currHWSelection = parseInt(document.getElementById("hwset:"+project_list[i][1]).value);
     project_list[i][3] = currHWSelection;
     this.setState({
       project_list: project_list
     })
-    this.handleCheckInValue(i);
-    this.handleCheckOutValue(i);
+    this.handleCheckInValue(document.getElementById("checkIn:"+project_list[i][1]).value, i);
+    this.handleCheckOutValue(document.getElementById("checkOut:"+project_list[i][1]).value, i);
   }
 
-  // Check-In HWSet
+  // Add and display new values to interface
   handleCheckIn(i) {
     const project_list = this.state.project_list.slice();
+    const checkInVal = document.getElementById("checkIn:"+project_list[i][1]).value;
     const hwIdx = project_list[i][3];
-    if(project_list[i][4 + 2*hwIdx][0] + project_list[i][4 + 2*hwIdx][1] <= project_list[i][4 + 2*hwIdx + 1]) {
-      project_list[i][4 + 2*hwIdx][0] += project_list[i][4 + 2*hwIdx][1];
-      project_list[i][4 + 2*hwIdx][1] = 0;
-      this.setState({
-        project_list: project_list
-      });
-      document.getElementById("checkIn").value = "";
+    if(checkInVal !== "") {
+      if(project_list[i][4 + 2*hwIdx][0] + project_list[i][4 + 2*hwIdx][1] <= project_list[i][4 + 2*hwIdx + 1]) {
+        project_list[i][4 + 2*hwIdx][0] += project_list[i][4 + 2*hwIdx][1];
+        project_list[i][4 + 2*hwIdx][1] = 0;
+        this.setState({
+          project_list: project_list
+        });
+        document.getElementById("checkIn:"+project_list[i][1]).value = "";
+      }
     }
   }
 
-  handleCheckInValue(i) {
-    var newCheckInValue = parseInt(document.getElementById("checkIn").value);
+  // Update value to add before Check-In
+  handleCheckInValue(val, i) {
+    var newCheckInValue = parseInt(val);
     if(!isNaN(newCheckInValue)) {
       const project_list = this.state.project_list.slice();
       const hwIdx = project_list[i][3];
@@ -139,26 +143,30 @@ class ProjectData extends React.Component {
     }
   }
 
-  // Check-In HWSet
+  // Subtract and display new values to interface
   handleCheckOut(i) {
     const project_list = this.state.project_list.slice();
+    const checkOutVal = document.getElementById("checkOut:"+project_list[i][1]).value;
     const hwIdx = project_list[i][3];
-    if(project_list[i][4 + 2*hwIdx][0] - project_list[i][4 + 2*hwIdx][2] >= 0) {
-      project_list[i][4 + 2*hwIdx][0] -= project_list[i][4 + 2*hwIdx][2];
-      project_list[i][4 + 2*hwIdx][2] = 0;
-      this.setState({
-        project_list: project_list
-      });
-      document.getElementById("checkOut").value = "";
+    if(checkOutVal !== "") {
+      if(project_list[i][4 + 2*hwIdx][0] - project_list[i][4 + 2*hwIdx][2] >= 0) {
+        project_list[i][4 + 2*hwIdx][0] -= project_list[i][4 + 2*hwIdx][2];
+        project_list[i][4 + 2*hwIdx][2] = 0;
+        this.setState({
+          project_list: project_list
+        });
+        document.getElementById("checkOut:"+project_list[i][1]).value = "";
+      }
     }
   }
 
-  handleCheckOutValue(i) {
-    var newCheckOutValue = parseInt(document.getElementById("checkOut").value);
-    if(!isNaN(newCheckOutValue)) {
+  // Update value to subtract before Check-In
+  handleCheckOutValue(val, i) {
+    var newCheckInValue = parseInt(val);
+    if(!isNaN(newCheckInValue)) {
       const project_list = this.state.project_list.slice();
       const hwIdx = project_list[i][3];
-      project_list[i][4 + 2*hwIdx][2] = newCheckOutValue;
+      project_list[i][4 + 2*hwIdx][2] = newCheckInValue;
       this.setState({
         project_list: project_list
       })
@@ -221,7 +229,7 @@ function Project(props) {
         <div className="column">
           <p className="hwDescription">Select HWSet:</p>
           <select className="hwSelect"
-                  id="hwset"
+                  id={"hwset:"+props.Name}
                   name="hwset"
                   onChange={props.onHWSelection}
           >
@@ -232,10 +240,10 @@ function Project(props) {
         {/* Check In */} 
         <div className="column">
           <input className="hwInput"
-                 id="checkIn"
+                 id={"checkIn:"+props.Name}
                  type="text"
                  placeholder="Enter Value"
-                 onChange={props.onCheckInValue}
+                 onChange={(e) => props.onCheckInValue(e)}
           />
           <button className="checkBtn"
                   type="button"
@@ -247,10 +255,10 @@ function Project(props) {
         {/* Check Out */}
         <div className="column">
           <input className="hwInput"
-                 id="checkOut"
+                 id={"checkOut:"+props.Name}
                  type="text"
                  placeholder="Enter Value"
-                 onChange={props.onCheckOutValue}
+                 onChange={(e) => props.onCheckOutValue(e)}
           />
           <button className="checkBtn"
                   type="button"
