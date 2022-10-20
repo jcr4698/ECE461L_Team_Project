@@ -2,26 +2,88 @@ import React from 'react';
 import './App.css';
 
 // App: Function that runs Project
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Projects/>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      is_logged_in: false
+    }
+  }
+
+  render() {
+    // conditional rendering
+    if(this.state.is_logged_in) {
+      return(
+        <div className="App">
+          <header className="app_header">
+            <Projects />
+          </header>
+        </div>
+      )
+    }
+    else {
+      return(
+        <div className="App">
+          <header className="app_header">
+            <Login
+              handleLoginStatus={this.handleLoginStatus}
+            />
+          </header>
+        </div>
+      )
+    }
+  }
+
+  handleLoginStatus = (logged_in) => {
+    this.setState({
+      is_logged_in: logged_in
+    })
+  }
+  
 }
 
 export default App;
+
+class Login extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      registered_user: false
+    }
+  }
+
+  render() {
+    return(
+      <div className="login_wrap">
+        <p className="project_title">Login</p>
+        <LoginUser
+          onLoginClick={() => this.handleLogin()}
+        />
+        <div className="empty_space"/>
+      </div>
+    )
+  }
+
+  handleLogin() {
+    const user = document.getElementById("user_login").value;
+    const pass = document.getElementById("password_login").value;
+    console.log(user);
+    console.log(pass);
+
+    this.props.handleLoginStatus(true);
+  }
+
+}
 
 // Project: Displays the list of projects to page
 class Projects extends React.Component {
   render() {
     return(
-      <div className="projectWrap">
-        <p className="projectTitle">Projects</p>
-          <ProjectData />
-          <div className="emptySpace"/>
+      <div className="project_wrap">
+        <p className="project_title">Projects</p>
+        <ProjectData />
+        <div className="empty_space"/>
       </div>
     )
   }
@@ -34,8 +96,8 @@ class ProjectData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currProjectName: "",
-      currProjectUser: "",
+      curr_project_name: "",
+      curr_project_user: "",
       project_list: []
     };
     this.state.project_list.push([0, "Project 0", "User 1", 0, [50, 0, 0], 100, [30, 0, 0], 100])
@@ -93,7 +155,7 @@ class ProjectData extends React.Component {
     return(
       <div>
         {new_project_list}
-        <div className="emptySpace"/>
+        <div className="empty_space"/>
         {this.renderNewProject()}
       </div>
     )
@@ -104,39 +166,39 @@ class ProjectData extends React.Component {
   // Change between HWSet 1 and HWSet 2 settings
   handleHWSelection(i) {
     const project_list = this.state.project_list.slice();
-    var currHWSelection = parseInt(document.getElementById("hwset:"+project_list[i][1]).value);
-    project_list[i][3] = currHWSelection;
+    var curr_hw_selection = parseInt(document.getElementById("hw_set:"+project_list[i][1]).value);
+    project_list[i][3] = curr_hw_selection;
     this.setState({
       project_list: project_list
     })
-    this.handleCheckInValue(document.getElementById("checkIn:"+project_list[i][1]).value, i);
-    this.handleCheckOutValue(document.getElementById("checkOut:"+project_list[i][1]).value, i);
+    this.handleCheckInValue(document.getElementById("check_in:"+project_list[i][1]).value, i);
+    this.handleCheckOutValue(document.getElementById("check_out:"+project_list[i][1]).value, i);
   }
 
   // Add and display new values to interface
   handleCheckIn(i) {
     const project_list = this.state.project_list.slice();
-    const checkInVal = document.getElementById("checkIn:"+project_list[i][1]).value;
-    const hwIdx = project_list[i][3];
-    if(checkInVal !== "") {
-      if(project_list[i][4 + 2*hwIdx][0] + project_list[i][4 + 2*hwIdx][1] <= project_list[i][4 + 2*hwIdx + 1]) {
-        project_list[i][4 + 2*hwIdx][0] += project_list[i][4 + 2*hwIdx][1];
-        project_list[i][4 + 2*hwIdx][1] = 0;
+    const hw_idx = project_list[i][3];
+    const check_in_val = document.getElementById("check_in:"+project_list[i][1]).value;
+    if(check_in_val !== "") {
+      if(project_list[i][4 + 2*hw_idx][0] + project_list[i][4 + 2*hw_idx][1] <= project_list[i][4 + 2*hw_idx + 1]) {
+        project_list[i][4 + 2*hw_idx][0] += project_list[i][4 + 2*hw_idx][1];
+        project_list[i][4 + 2*hw_idx][1] = 0;
         this.setState({
           project_list: project_list
         });
-        document.getElementById("checkIn:"+project_list[i][1]).value = "";
+        document.getElementById("check_in:"+project_list[i][1]).value = "";
       }
     }
   }
 
   // Update value to add before Check-In
   handleCheckInValue(val, i) {
-    var newCheckInValue = parseInt(val);
-    if(!isNaN(newCheckInValue)) {
+    var new_check_in_value = parseInt(val);
+    if(!isNaN(new_check_in_value)) {
       const project_list = this.state.project_list.slice();
-      const hwIdx = project_list[i][3];
-      project_list[i][4 + 2*hwIdx][1] = newCheckInValue;
+      const hw_idx = project_list[i][3];
+      project_list[i][4 + 2*hw_idx][1] = new_check_in_value;
       this.setState({
         project_list: project_list
       })
@@ -146,27 +208,27 @@ class ProjectData extends React.Component {
   // Subtract and display new values to interface
   handleCheckOut(i) {
     const project_list = this.state.project_list.slice();
-    const checkOutVal = document.getElementById("checkOut:"+project_list[i][1]).value;
-    const hwIdx = project_list[i][3];
-    if(checkOutVal !== "") {
-      if(project_list[i][4 + 2*hwIdx][0] - project_list[i][4 + 2*hwIdx][2] >= 0) {
-        project_list[i][4 + 2*hwIdx][0] -= project_list[i][4 + 2*hwIdx][2];
-        project_list[i][4 + 2*hwIdx][2] = 0;
+    const hw_idx = project_list[i][3];
+    const check_out_val = document.getElementById("check_out:"+project_list[i][1]).value;
+    if(check_out_val !== "") {
+      if(project_list[i][4 + 2*hw_idx][0] - project_list[i][4 + 2*hw_idx][2] >= 0) {
+        project_list[i][4 + 2*hw_idx][0] -= project_list[i][4 + 2*hw_idx][2];
+        project_list[i][4 + 2*hw_idx][2] = 0;
         this.setState({
           project_list: project_list
         });
-        document.getElementById("checkOut:"+project_list[i][1]).value = "";
+        document.getElementById("check_out:"+project_list[i][1]).value = "";
       }
     }
   }
 
   // Update value to subtract before Check-In
   handleCheckOutValue(val, i) {
-    var newCheckInValue = parseInt(val);
-    if(!isNaN(newCheckInValue)) {
+    var new_check_in_value = parseInt(val);
+    if(!isNaN(new_check_in_value)) {
       const project_list = this.state.project_list.slice();
-      const hwIdx = project_list[i][3];
-      project_list[i][4 + 2*hwIdx][2] = newCheckInValue;
+      const hw_idx = project_list[i][3];
+      project_list[i][4 + 2*hw_idx][2] = new_check_in_value;
       this.setState({
         project_list: project_list
       })
@@ -175,37 +237,105 @@ class ProjectData extends React.Component {
 
   // Add new HWSet to Data
   handleNewProject() {
-    const projectName = this.state.currProjectName;
-    const projectUser = this.state.currProjectUser;
-    if(typeof projectName === 'string' && typeof projectUser === 'string') {
-      if(projectName.trim() !== '' && projectUser.trim() !== '') {
+    const project_name = this.state.curr_project_name;
+    const project_user = this.state.curr_project_user;
+    if(typeof project_name === 'string' && typeof project_user === 'string') {
+      if(project_name.trim() !== '' && project_user.trim() !== '') {
         const project_list = this.state.project_list.slice();
-        project_list.push([project_list.length, projectName, projectUser, 0, [50, 0, 0], 100, [30, 0, 0], 50]);
+        project_list.push([project_list.length, project_name, project_user, 0, [50, 0, 0], 100, [30, 0, 0], 50]);
         this.setState({
           project_list: project_list,
         })
-        document.getElementById("newProjectName").value = "";
-        document.getElementById("newProjectUser").value = "";
+        document.getElementById("new_project_name").value = "";
+        document.getElementById("new_project_user").value = "";
       }
     }
   }
 
   // Update value of current new project name
   handleNewProjectName() {
-    var newProjectName = document.getElementById("newProjectName").value;
+    var new_project_name = document.getElementById("new_project_name").value;
     this.setState({
-      currProjectName: newProjectName
+      curr_project_name: new_project_name
     })
   }
 
   // Update value of current user
   handleNewProjectUser() {
-    var newProjectUser = document.getElementById("newProjectUser").value;
+    var new_project_user = document.getElementById("new_project_user").value;
     this.setState({
-      currProjectUser: newProjectUser
+      curr_project_user: new_project_user
     })
   }
 
+}
+
+// LoginUser: Prompts user to log-in, create account, or change password
+function LoginUser(props) {
+  return(
+    <div className="login">
+      {/* Username */}
+      <div className="login_row">
+        <div className="login_info_column">
+          <p className="user">Username:</p>
+        </div>
+        <div className="login_info_column">
+          <input className="new_project_input"
+                id="user_login"
+                type="text"
+                placeholder="Enter Username"
+                // onChange={props.}
+          />
+        </div>
+      </div>
+      {/* Password */}
+      <div className="login_row">
+        <div className="login_info_column">
+          <p className="user">Password:</p>
+        </div>
+        <div className="login_info_column">
+          <input className="new_project_input"
+                id="password_login"
+                type="text"
+                placeholder="Enter Password"
+                // onChange={props.}
+          />
+        </div>
+      </div>
+      {/* Empty Space */}
+      <div className="empty_space"/>
+      {/* Login */}
+      <div className="login_row">
+        <div className="login_btns_column">
+          <button className="login_btn"
+                  id="login_btn"
+                  type="button"
+                  onClick={props.onLoginClick}
+          >
+            Login
+          </button>
+        </div>
+        <div className="login_btns_column">
+          <button className="login_btn"
+                  id="forgot_btn"
+                  type="button"
+                  // onClick={props.onForgotClick}
+          >
+            Forgot
+          </button>
+        </div>
+        <div className="login_btns_column">
+          <button className="login_btn"
+                    id="register_btn"
+                    type="button"
+                    // onClick={props.onRegisterClick}
+          >
+            Register
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // Project: Format Project with props given
@@ -213,23 +343,23 @@ function Project(props) {
   return(
     <div className="project">
         {/* Title */}
-        <div className="column">
-          <p className="projectName">{props.Name}</p>
+        <div className="project_column">
+          <p className="project_name">{props.Name}</p>
         </div>
         {/* Users with Access */}
-        <div className="column">
+        <div className="project_column">
           <p className="user">{props.User}</p>
         </div>
         {/* Sets available */}
-        <div className="column">
-          <p className="hwDescription">HWSet1: {props.HWSet1_Availability}/{props.HWSet1_Capacity}</p>
-          <p className="hwDescription">HWSet2: {props.HWSet2_Availability}/{props.HWSet2_Capacity}</p>
+        <div className="project_column">
+          <p className="hw_description">HWSet1: {props.HWSet1_Availability}/{props.HWSet1_Capacity}</p>
+          <p className="hw_description">HWSet2: {props.HWSet2_Availability}/{props.HWSet2_Capacity}</p>
         </div>
         {/* Select HW */}
-        <div className="column">
-          <p className="hwDescription">Select HWSet:</p>
-          <select className="hwSelect"
-                  id={"hwset:"+props.Name}
+        <div className="project_column">
+          <p className="hw_description">Select HWSet:</p>
+          <select className="hw_select"
+                  id={"hw_set:"+props.Name}
                   name="hwset"
                   onChange={props.onHWSelection}
           >
@@ -238,14 +368,14 @@ function Project(props) {
           </select>
         </div>
         {/* Check In */} 
-        <div className="column">
-          <input className="hwInput"
-                 id={"checkIn:"+props.Name}
+        <div className="project_column">
+          <input className="hw_input"
+                 id={"check_in:"+props.Name}
                  type="text"
                  placeholder="Enter Value"
                  onChange={(e) => props.onCheckInValue(e)}
           />
-          <button className="checkBtn"
+          <button className="check_btn"
                   type="button"
                   onClick={props.onCheckInClick}
           >
@@ -253,14 +383,14 @@ function Project(props) {
           </button>
         </div>
         {/* Check Out */}
-        <div className="column">
-          <input className="hwInput"
-                 id={"checkOut:"+props.Name}
+        <div className="project_column">
+          <input className="hw_input"
+                 id={"check_out:"+props.Name}
                  type="text"
                  placeholder="Enter Value"
                  onChange={(e) => props.onCheckOutValue(e)}
           />
-          <button className="checkBtn"
+          <button className="check_btn"
                   type="button"
                   onClick={props.onCheckOutClick}
           >
@@ -268,8 +398,8 @@ function Project(props) {
           </button>
         </div>
         {/* Join or Leave */}
-        <div className="column">
-          <button className="joinBtn"
+        <div className="project_column">
+          <button className="join_btn"
                   type="button"
           >
             Join
@@ -284,26 +414,26 @@ function ProjectAdder(props) {
   return(
     <div className="project">
       {/* Title */}
-      <div className="newProjectColumn">
-        <input className="newProjectInput"
-               id="newProjectName"
+      <div className="new_project_column">
+        <input className="new_project_input"
+               id="new_project_name"
                type="text"
                placeholder="Enter Project Name"
                onChange={props.onNewProjectName}
         />
       </div>
       {/* Users with Access */}
-      <div className="newProjectColumn">
-        <input className="newProjectInput"
-               id="newProjectUser"
+      <div className="new_project_column">
+        <input className="new_project_input"
+               id="new_project_user"
                type="text"
-               placeholder="Enter User Name"
+               placeholder="Enter Username"
                onChange={props.onNewProjectUser}
         />
       </div>
       {/* Join or Leave */}
-      <div className="newProjectColumn">
-        <button className="addProjectBtn" type="button" onClick={props.onNewProjectClick}>Add Project</button>
+      <div className="new_project_column">
+        <button className="add_project_btn" type="button" onClick={props.onNewProjectClick}>Add Project</button>
       </div>
     </div>
   )
