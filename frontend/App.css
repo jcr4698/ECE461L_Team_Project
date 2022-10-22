@@ -20,15 +20,6 @@
 
 /* General Styles */
 
-.user {
-	/* Fonts */
-	font-family: 'Courier New', Courier, monospace;
-	font-weight: oblique;
-	font-size: 30px;
-	/* Margins */
-	margin-top: 27px;
-}
-
 .empty_space {
 	/* Structure */
 	display: inline-block;

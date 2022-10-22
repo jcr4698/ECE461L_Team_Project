@@ -1,6 +1,18 @@
 import React from 'react';
 import './Projects.css';
 
+/* Library Indices */
+
+const PROJ_NAME = 1;
+const USERS = 2;
+const HW_SELECT = 3;
+const HW_LIST = 4;
+
+/* HW Indices */
+
+const HW_VAL = 0;
+const HW_CAP = 1;
+
 /* Components */
 
 // Project: Displays the structure of the list of projects
@@ -33,13 +45,12 @@ class ProjectData extends React.Component {
 		};
 
 		/* Add example data to library
-		   Format:
-		   [Proj_idx, Proj_Name, Users, HW Selection, HW1[val, chk-in, chk-out], HW1 Cap, HW2[val, chk-in, chk-out], HW2 Cap]
+		   Format: [Proj_idx, Proj_Name, Users, HW Selection, [HW1[val, cap], HW2[val, cap], ...]]
 		*/
-		this.state.project_list.push([0, "Project 0", "User 1", 0, [50, 0, 0], 100, [30, 0, 0], 100])
-		this.state.project_list.push([1, "Project 1", "User 2", 0, [50, 0, 0], 100, [0, 0, 0], 100])
-		this.state.project_list.push([2, "Project 2", "User 3", 0, [10, 0, 0], 50, [30, 0, 0], 50])
-		this.state.project_list.push([3, "Project 3", "User 4", 0, [50, 0, 0], 70, [30, 0, 0], 50])
+		this.state.project_list.push([0, "Project 0", "User 1", 0, [[50, 100], [30, 100]]])
+		this.state.project_list.push([1, "Project 1", "User 2", 0, [[50, 100], [0, 100]]])
+		this.state.project_list.push([2, "Project 2", "User 3", 0, [[10, 50], [30, 50]]])
+		this.state.project_list.push([3, "Project 3", "User 4", 0, [[50, 70], [30, 50]]])
 	}
 
 	// render: Update page with the data stored
@@ -57,15 +68,7 @@ class ProjectData extends React.Component {
 
 			/* Project in HTML format for library */
 			new_project_list.push(
-				this.renderProject(
-					project_data[0],
-					project_data[1],
-					project_data[2],
-					project_data[4],
-					project_data[5],
-					project_data[6],
-					project_data[7]
-				)
+				this.renderProject(project_data[0], project_data[1], project_data[2], project_data[4])
 			);
 		}
 
@@ -82,20 +85,15 @@ class ProjectData extends React.Component {
 	/* functions */
 
 	// renderProject: Create a single formatted project with given data
-	renderProject(i, proj, usr, hw1_avail, hw1_cap, hw2_avail, hw2_cap) {
+	renderProject(i, proj, usr, hw) {
 		return (
 			<Project
 				key={i.toString()}  // "key" is recommended by console (don't use it much in project tho)
 				idx={i}
 				Name={proj}
 				User={usr}
-				HWSet1_Availability={hw1_avail[0]}
-				HWSet1_Capacity={hw1_cap}
-				HWSet2_Availability={hw2_avail[0]}
-				HWSet2_Capacity={hw2_cap}
-				onCheckInValue={(e) => this.handleCheckInValue(e.target.value, i)}
+				HW={hw}
 				onCheckInClick={() => this.handleCheckIn(i)}
-				onCheckOutValue={(e) => this.handleCheckOutValue(e.target.value, i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
 				onHWSelection={() => this.handleHWSelection(i)} />
 		)
@@ -124,30 +122,28 @@ class ProjectData extends React.Component {
 		this.setState({
 			project_list: project_list
 		})
-
-		/* Update Check-in/out values in case selection changes */
-		this.handleCheckInValue(document.getElementById("check_in:" + project_list[i][1]).value, i);
-		this.handleCheckOutValue(document.getElementById("check_out:" + project_list[i][1]).value, i);
 	}
 
 	// handleCheckIn: Add and display new values to interface
 	handleCheckIn(i) {
 		/* Get current list and hw selection index */
 		const project_list = this.state.project_list.slice();
-		const hw_idx = project_list[i][3];
 
 		/* Get input value (chk-in value) and make sure it's not empty */
-		const check_in_val = document.getElementById("check_in:" + project_list[i][1]).value;
-		if(check_in_val !== "") {
+		const check_in_val = document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value;
+		if(check_in_val !== "" && !isNaN(check_in_val)) {
+
+			/* Get current value and capacity of hw selection */
+			const hw_idx = project_list[i][HW_SELECT];
+			const curr_hw_list = project_list[i][HW_LIST]
+			const curr_val = curr_hw_list[hw_idx][HW_VAL];
+			const curr_cap = curr_hw_list[hw_idx][HW_CAP];
 
 			/* Make sure chk-in value doesn't go above capacity */
-			if(project_list[i][4 + 2 * hw_idx][0] + project_list[i][4 + 2 * hw_idx][1] <= project_list[i][4 + 2 * hw_idx + 1]) {
+			if(curr_val + parseInt(check_in_val) <= curr_cap) {
 
 				/* Add chk-in value to current value */
-				project_list[i][4 + 2 * hw_idx][0] += project_list[i][4 + 2 * hw_idx][1];
-
-				/* Set chk-in value to zero */
-				project_list[i][4 + 2 * hw_idx][1] = 0;
+				project_list[i][HW_LIST][hw_idx][HW_VAL] += parseInt(check_in_val);
 
 				/* Set chk-in values to state */
 				this.setState({
@@ -155,26 +151,8 @@ class ProjectData extends React.Component {
 				});
 
 				/* Clear input text fields */
-				document.getElementById("check_in:" + project_list[i][1]).value = "";
+				document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value = "";
 			}
-		}
-	}
-
-	// handleCheckInValue: Update chk-in value of the hw selection
-	handleCheckInValue(val, i) {
-		/* Get chk-in value (given) and make sure it's an integer */
-		var new_check_in_value = parseInt(val);
-		if(!isNaN(new_check_in_value)) {
-
-			/* Get the hw selection */
-			const project_list = this.state.project_list.slice();
-			const hw_idx = project_list[i][3];
-
-			/* Set the chk-in value to state (based on hw selection) */
-			project_list[i][4 + 2 * hw_idx][1] = new_check_in_value;
-			this.setState({
-				project_list: project_list
-			})
 		}
 	}
 
@@ -182,18 +160,21 @@ class ProjectData extends React.Component {
 	handleCheckOut(i) {
 		/* Access current list and hw selection index */
 		const project_list = this.state.project_list.slice();
-		const hw_idx = project_list[i][3];
 
 		/* Make sure field is not empty */
-		const check_out_val = document.getElementById("check_out:" + project_list[i][1]).value;
-		if(check_out_val !== "") {
+		const check_out_val = document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value;
+		if(check_out_val !== "" && !isNaN(check_out_val)) {
+
+			/* Get current value and capacity of hw selection */
+			const hw_idx = project_list[i][HW_SELECT];
+			const curr_hw_list = project_list[i][HW_LIST]
+			const curr_val = curr_hw_list[hw_idx][HW_VAL];
 
 			/* Make sure value doesn't go below zero */
-			if(project_list[i][4 + 2 * hw_idx][0] - project_list[i][4 + 2 * hw_idx][2] >= 0) {
+			if(curr_val - parseInt(check_out_val) >= 0) {
 
 				/* Subtract chk-out value from current value */
-				project_list[i][4 + 2 * hw_idx][0] -= project_list[i][4 + 2 * hw_idx][2];
-				project_list[i][4 + 2 * hw_idx][2] = 0;
+				curr_hw_list[hw_idx][HW_VAL] -= parseInt(check_out_val);
 
 				/* Set chk-in values to state */
 				this.setState({
@@ -203,24 +184,6 @@ class ProjectData extends React.Component {
 				/* Clear input text fields */
 				document.getElementById("check_out:" + project_list[i][1]).value = "";
 			}
-		}
-	}
-
-	// handleCheckOutValue: Update chk-out value of the hw selection
-	handleCheckOutValue(val, i) {
-		/* Get chk-out value (given) and make sure it's an integer */
-		var new_check_in_value = parseInt(val);
-		if(!isNaN(new_check_in_value)) {
-
-			/* Get the hw selection */
-			const project_list = this.state.project_list.slice();
-			const hw_idx = project_list[i][3];
-
-			/* Set the chk-in value to state (based on hw selection) */
-			project_list[i][4 + 2 * hw_idx][2] = new_check_in_value;
-			this.setState({
-				project_list: project_list
-			})
 		}
 	}
 
@@ -286,17 +249,22 @@ function Project(props) {
 			</div>
 			{/* Users with Access */}
 			<div className="project_column">
-				<p className="user">
+				<p className="registered_users">
+					{props.User} <br />	{/* look into marquee, div with scroll bar */}
+					{props.User} <br />
+					{props.User} <br />
+					{props.User} <br />
+					{props.User} <br />
 					{props.User}
 				</p>
 			</div>
 			{/* Sets available */}
 			<div className="project_column">
 				<p className="hw_description">
-					HWSet1: {props.HWSet1_Availability}/{props.HWSet1_Capacity}
+					HWSet1: {props.HW[0][0]}/{props.HW[0][1]}
 				</p>
 				<p className="hw_description">
-					HWSet2: {props.HWSet2_Availability}/{props.HWSet2_Capacity}
+					HWSet2: {props.HW[1][0]}/{props.HW[1][1]}
 				</p>
 			</div>
 			{/* Select HW */}
@@ -322,8 +290,7 @@ function Project(props) {
 				<input className="hw_input"
 					id={"check_in:" + props.Name}
 					type="text"
-					placeholder="Enter Value"
-					onChange={(e) => props.onCheckInValue(e)} />
+					placeholder="Enter Value" />
 				<button className="check_btn"
 					type="button"
 					onClick={props.onCheckInClick} >
@@ -335,8 +302,7 @@ function Project(props) {
 				<input className="hw_input"
 					id={"check_out:" + props.Name}
 					type="text"
-					placeholder="Enter Value"
-					onChange={(e) => props.onCheckOutValue(e)} />
+					placeholder="Enter Value" />
 				<button className="check_btn"
 					type="button"
 					onClick={props.onCheckOutClick} >

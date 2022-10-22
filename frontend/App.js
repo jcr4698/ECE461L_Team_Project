@@ -39,6 +39,9 @@ class App extends React.Component {
 		}
 	}
 
+	/* Handlers */
+
+	// handleLoginStatus: Updates log-in status based on Login Page
 	handleLoginStatus = (logged_in) => {
 		this.setState({
 			is_logged_in: logged_in

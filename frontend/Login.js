@@ -59,8 +59,7 @@ function LoginUser(props) {
                         className="new_project_input"
                         id="user_login"
                         type="text"
-                        placeholder="Enter Username"
-                        /* onChange={props.} */ />
+                        placeholder="Enter Username" />
                 </div>
             </div>
             {/* Login Row 1 - Password*/}
@@ -77,8 +76,7 @@ function LoginUser(props) {
                         className="new_project_input"
                         id="password_login"
                         type="text"
-                        placeholder="Enter Password"
-                        /* onChange={props.} */ />
+                        placeholder="Enter Password" />
                 </div>
             </div>
             {/* Empty Space */}

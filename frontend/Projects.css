@@ -35,7 +35,7 @@
 	background-color: #1b1b33;
 	/* Size */
 	min-height: 100px;
-	height: auto;
+	height: 100px;   /* auto //////////////////////////////////////////////////////*/
 	width: 1700px;
 	/* Margins */
 	margin-top: 0px;
@@ -236,16 +236,21 @@
 	border-width: 4px;
 }
 
-/* General Styles */
-
-.user {
+.registered_users {
 	/* Fonts */
 	font-family: 'Courier New', Courier, monospace;
 	font-weight: oblique;
 	font-size: 30px;
 	/* Margins */
-	margin-top: 27px;
+	margin-top: 5px;
+    vertical-align: top;
+    /* Settings: //////////////////////////////// Investigation for list of allowed users */
+    overflow-y: scroll;
+    resize: none;
+    height: 70px;
 }
+
+/* General Styles */
 
 .empty_space {
 	/* Structure */
