@@ -47,10 +47,10 @@ class ProjectData extends React.Component {
 		/* Add example data to library
 		   Format: [Proj_idx, Proj_Name, Users, HW Selection, [HW1[val, cap], HW2[val, cap], ...]]
 		*/
-		this.state.project_list.push([0, "Project 0", "User 1", 0, [[50, 100], [30, 100]]])
-		this.state.project_list.push([1, "Project 1", "User 2", 0, [[50, 100], [0, 100]]])
-		this.state.project_list.push([2, "Project 2", "User 3", 0, [[10, 50], [30, 50]]])
-		this.state.project_list.push([3, "Project 3", "User 4", 0, [[50, 70], [30, 50]]])
+		this.state.project_list.push([0, "Project 0", ["User 1", "User 2"], 0, [[50, 100], [30, 100]]])
+		this.state.project_list.push([1, "Project 1", ["User 2"], 0, [[50, 100], [0, 100]]])
+		this.state.project_list.push([2, "Project 2", ["User 3", "User 2"], 0, [[10, 50], [30, 50]]])
+		this.state.project_list.push([3, "Project 3", ["User 4"], 0, [[50, 70], [30, 50]]])
 	}
 
 	// render: Update page with the data stored
@@ -91,7 +91,7 @@ class ProjectData extends React.Component {
 				key={i.toString()}  // "key" is recommended by console (don't use it much in project tho)
 				idx={i}
 				Name={proj}
-				User={usr}
+				Users={usr}
 				HW={hw}
 				onCheckInClick={() => this.handleCheckIn(i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
@@ -250,12 +250,8 @@ function Project(props) {
 			{/* Users with Access */}
 			<div className="project_column">
 				<p className="registered_users">
-					{props.User} <br />	{/* look into marquee, div with scroll bar */}
-					{props.User} <br />
-					{props.User} <br />
-					{props.User} <br />
-					{props.User} <br />
-					{props.User}
+					{/* figure out a way to display this automatically */}
+					{Registered_Users(props.Users)}
 				</p>
 			</div>
 			{/* Sets available */}
@@ -319,6 +315,10 @@ function Project(props) {
 			</div>
 		</div>
 	)
+}
+
+function Registered_Users(users) {
+	
 }
 
 // ProjectAdder: HTML that gives the user the option to add a project to the library
