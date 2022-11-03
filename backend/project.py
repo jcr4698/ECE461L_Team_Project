@@ -1,4 +1,7 @@
 import hardware_set
+import json
+from json import JSONEncoder
+from types import SimpleNamespace
 
 class Project:
 
@@ -29,7 +32,10 @@ class Project:
     def set_auth_users(self, users: list):
         self.auth_users=users
 
-    def is_authorized(self, user: str) -> bool:
-        if user in self.auth_users:
-            return True
-        return False
+
+class ProjectEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+def project_to_json(project: Project):
+    return json.dumps(project, indent=4, cls=ProjectEncoder)
