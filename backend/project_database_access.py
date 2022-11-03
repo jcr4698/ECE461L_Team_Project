@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-import project, hardware_set
+import container.project, container.hardware_set
 import json
 import math
 
@@ -130,11 +130,11 @@ def add_project(id:str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)->
         return False
 
     
-    hw_1= hardware_set.HWSet(hw_set_1_qty, user_list)
-    hw_2= hardware_set.HWSet(hw_set_2_qty, user_list)
+    hw_1= container.hardware_set.HWSet(hw_set_1_qty, user_list)
+    hw_2= container.hardware_set.HWSet(hw_set_2_qty, user_list)
 
-    proj_def= project.Project(id, hw_1, hw_2, user_list)
-    proj_json=project.project_to_json(proj_def)    
+    proj_def= container.project.Project(id, hw_1, hw_2, user_list)
+    proj_json= container.project.project_to_json(proj_def)    
 
     table.insert_one(proj_json)
 
