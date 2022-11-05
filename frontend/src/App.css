@@ -1,0 +1,31 @@
+/* App Styles */
+
+.App {
+	text-align: left;
+}
+
+.app_header {
+	/* Structure and Settings */
+	display: flex;
+	flex-direction: column;
+	background-color: #282c34;
+	/* Size */
+	min-height: 100vh;
+	/* Alignment */
+	align-items: center;
+	justify-content: left;
+	color: white;
+	overflow: hidden;
+}
+
+/* General Styles */
+
+.empty_space {
+	/* Structure */
+	display: inline-block;
+	/* Size */
+	height: 10px;
+	width: 2030px;
+	/* Margins */
+	margin-left: 0px;
+}
