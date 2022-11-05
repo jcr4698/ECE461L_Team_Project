@@ -12,8 +12,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			curr_user: "",
-			curr_id: "",
 			is_logged_in: false
 		}
 	}
@@ -24,7 +22,10 @@ class App extends React.Component {
 			return (
 				<div className="App">
 					<header className="app_header">
-						<Projects />
+						<Projects 
+                            curr_user={this.state.curr_user}
+							curr_id={this.state.curr_id}
+                        />
 					</header>
 				</div>
 			)
@@ -51,7 +52,7 @@ class App extends React.Component {
 			is_logged_in: logged_in
 		})
 	}
-
+  
 }
 
 export default App;

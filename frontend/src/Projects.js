@@ -24,7 +24,10 @@ class Projects extends React.Component {
 				<p className="project_title">
 					Projects
 				</p>
-				<ProjectData />
+				<ProjectData
+					curr_user={this.props.curr_user}
+					curr_id={this.props.curr_id}
+				/>
 				<div className="empty_space" />
 			</div>
 		)
@@ -41,8 +44,8 @@ class ProjectData extends React.Component {
 		super(props);
 		this.state = {
 			/* User Information */
-			curr_user: "",
-			curr_id: "",
+			curr_user: this.props.curr_user,,
+			curr_id: this.props.curr_id,
 			project_list: []
 		};
 
@@ -94,7 +97,7 @@ class ProjectData extends React.Component {
 				key={i.toString()}  // "key" is recommended by console (don't use it much in project tho)
 				idx={i}
 				Name={proj}
-				Users={usr}
+				User={usr}
 				HW={hw}
 				onCheckInClick={() => this.handleCheckIn(i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
@@ -244,10 +247,21 @@ function Project(props) {
 			</div>
 			{/* Users with Access */}
 			<div className="project_column">
+<<<<<<< HEAD:frontend/src/Projects.js
 				<div className="registered_user_list">
 					{/* figure out a way to display this automatically */}
 					{Registered_Users(props.Users)}
 				</div>
+=======
+				<p className="registered_users">
+					{props.User} <br />	{/* look into marquee, div with scroll bar */}
+					{props.User} <br />
+					{props.User} <br />
+					{props.User} <br />
+					{props.User} <br />
+					{props.User}
+				</p>
+>>>>>>> main:frontend/Projects.js
 			</div>
 			{/* Sets available */}
 			<div className="project_column">
@@ -312,6 +326,7 @@ function Project(props) {
 	)
 }
 
+<<<<<<< HEAD:frontend/src/Projects.js
 // Registered_Users: Creates user list to HTML (Project helper function)
 function Registered_Users(users) {
 	/* Make HTML format for users */
@@ -331,6 +346,8 @@ function Registered_Users(users) {
 	return curr_user_list;
 }
 
+=======
+>>>>>>> main:frontend/Projects.js
 // ProjectAdder: HTML that gives the user the option to add a project to the library
 function ProjectAdder(props) {
 	return (
