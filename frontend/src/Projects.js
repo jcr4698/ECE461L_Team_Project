@@ -44,18 +44,31 @@ class ProjectData extends React.Component {
 		super(props);
 		this.state = {
 			/* User Information */
-			curr_user: this.props.curr_user,,
+			curr_user: this.props.curr_user,
 			curr_id: this.props.curr_id,
 			project_list: []
 		};
 
-		/* Add example data to library
-		   Format: [Proj_idx, Proj_Name, Users, HW Selection, [HW1[val, cap], HW2[val, cap], ...]]
-		*/
-		this.state.project_list.push([0, "Project 0", "jwy7", ["User 1", "User 2", "User 3", "User 5"], 0, [[50, 100], [30, 100]]])
-		this.state.project_list.push([1, "Project 1", "asev", ["User 2"], 0, [[50, 100], [0, 100]]])
-		this.state.project_list.push([2, "Project 2", "egse", ["User 3", "User 2"], 0, [[10, 50], [30, 50]]])
-		this.state.project_list.push([3, "Project 3", "ohyo", ["User 4"], 0, [[50, 70], [30, 50]]])
+	}
+
+	// componentDidMount: Initialize data from server into library
+	componentDidMount() {
+		/* list format to be stored */
+		const proj_list = [];
+
+		/* Obtain data fetched from route into library */
+		fetch("/test")
+		.then(response => response.json())
+		.then(respJson => {
+			const data = JSON.parse(JSON.stringify(respJson));
+			for(let proj = 0; proj < Object.keys(data).length; proj++) {
+				console.log(data["proj" + proj]);
+				proj_list.push(data["proj" + proj]);
+			}
+			this.setState({
+				project_list: proj_list
+			});
+		});
 	}
 
 	// render: Update page with the data stored
@@ -83,6 +96,7 @@ class ProjectData extends React.Component {
 				{new_project_list}
 				<div className="empty_space" />
 				{this.renderNewProject()}
+				<div className="empty_space" />
 				{this.renderJoinProject()}
 			</div>
 		)
@@ -247,21 +261,10 @@ function Project(props) {
 			</div>
 			{/* Users with Access */}
 			<div className="project_column">
-<<<<<<< HEAD:frontend/src/Projects.js
 				<div className="registered_user_list">
 					{/* figure out a way to display this automatically */}
 					{Registered_Users(props.Users)}
 				</div>
-=======
-				<p className="registered_users">
-					{props.User} <br />	{/* look into marquee, div with scroll bar */}
-					{props.User} <br />
-					{props.User} <br />
-					{props.User} <br />
-					{props.User} <br />
-					{props.User}
-				</p>
->>>>>>> main:frontend/Projects.js
 			</div>
 			{/* Sets available */}
 			<div className="project_column">
@@ -326,7 +329,6 @@ function Project(props) {
 	)
 }
 
-<<<<<<< HEAD:frontend/src/Projects.js
 // Registered_Users: Creates user list to HTML (Project helper function)
 function Registered_Users(users) {
 	/* Make HTML format for users */
@@ -346,8 +348,6 @@ function Registered_Users(users) {
 	return curr_user_list;
 }
 
-=======
->>>>>>> main:frontend/Projects.js
 // ProjectAdder: HTML that gives the user the option to add a project to the library
 function ProjectAdder(props) {
 	return (
