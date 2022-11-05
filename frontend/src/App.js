@@ -12,6 +12,8 @@ class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			curr_user: "",
+			curr_id: "",
 			is_logged_in: false
 		}
 	}
@@ -42,8 +44,10 @@ class App extends React.Component {
 	/* Handlers */
 
 	// handleLoginStatus: Updates log-in status based on Login Page
-	handleLoginStatus = (logged_in) => {
+	handleLoginStatus = (logged_in, id, user) => {
 		this.setState({
+			curr_user: user,
+			curr_id: id,
 			is_logged_in: logged_in
 		})
 	}

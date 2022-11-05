@@ -25,16 +25,18 @@ class Login extends React.Component {
     // handleLogin: Determine whether a valid account is entered
     handleLogin() {
         /* Obtain username and password */
+        const id = document.getElementById("id_login").value;
         const user = document.getElementById("user_login").value;
         const pass = document.getElementById("password_login").value;
-        console.log(user);
-        console.log(pass);
+        console.log("user id:", id)
+        console.log("username:", user);
+        console.log("password:", pass);
 
         /* Authenticate credentials */
         const valid_account = true; // for testing purposes
 
         /* login (success or fail) */
-        this.props.handleLoginStatus(valid_account);
+        this.props.handleLoginStatus(valid_account, id, user);
     }
 
 }
@@ -45,7 +47,7 @@ class Login extends React.Component {
 function LoginUser(props) {
     return (
         <div className="login">
-            {/* Login Row 0 - Username*/}
+            {/* Login Row 0 - Username */}
             <div className="login_row">
                 {/* Username Column 0 - Text */}
                 <div className="login_info_column">
@@ -62,7 +64,24 @@ function LoginUser(props) {
                         placeholder="Enter Username" />
                 </div>
             </div>
-            {/* Login Row 1 - Password*/}
+            {/* Login Row 1 - User ID */}
+            <div className="login_row">
+                {/* User ID Column 0 - Text */}
+                <div className="login_info_column">
+                    <p className="user">
+                        User ID:
+                    </p>
+                </div>
+                {/* User ID Column 1 - Input */}
+                <div className="login_info_column">
+                    <input
+                        className="new_project_input"
+                        id="id_login"
+                        type="text"
+                        placeholder="Enter User ID" />
+                </div>
+            </div>
+            {/* Login Row 2 - Password */}
             <div className="login_row">
                 {/* Password Column 0 - Text */}
                 <div className="login_info_column">
