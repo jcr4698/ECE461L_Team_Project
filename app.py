@@ -55,7 +55,35 @@ def login_user():
 
 @app.route('/register', methods=['POST'])
 def register_user():
-    pass
+    request = request.json()
+    username = request['username']
+    password = request['password']
+
+    usernames = get_usernames()
+    # Check if username is already in the database (prevents creating duplicate user)
+    # Return 409 CONFLICT ERROR code
+    if username in usernames:
+        return {
+            'username' : 'Username already exists.',
+            'password' : password
+        }, 409
+    
+    # Encrypt password and register user
+    encrypted_password = encrypt(password, 1, 6)
+
+    new_user_to_register = User()
+    new_user_to_register.set_username = username
+    new_user_to_register.set_password = encrypted_password
+
+    # Send user to database to add user
+    add_user(new_user_to_register)
+
+    # Return 201 SUCCESSFUL AND CREATED RESOURCE code
+    return {
+        'username': username,
+        'password' : password
+    }, 201
+
 
 # ------------------------------------------------------------------------------
 # END USER LOGIN AND REGISTER HANDLING FUNCTIONS
