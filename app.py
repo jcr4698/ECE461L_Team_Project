@@ -7,21 +7,17 @@ from encrypt import encrypt
 app = Flask(__name__, static_url_path='', static_folder='frontend/build/')
 
 # ----------------------------
-# BEGIN HOME PAGE
+# HOME PAGE
 # ----------------------------
 @app.route('/')
 def index():
     return send_from_directory('frontend/build/', 'index.html')
 
-# ----------------------------
-# END HOME PAGE
-# ----------------------------
-
 # ------------------------------------------------------------------------------
 # BEGIN USER LOGIN AND REGISTER HANDLING FUNCTIONS
 # ------------------------------------------------------------------------------
 @app.route('/login', methods=['POST'])
-def login_user():
+def login():
     # Get request
     request = request.get_json()
     username = request['username']
@@ -33,15 +29,14 @@ def login_user():
     if username not in usernames:
         return {
             'username' : 'User does not exist',
-            'password' : password
+            'password' : ''
         }, 404
 
     # Encrypt password and check if it is same as password in database
     # Return 401 UNAUTHORIZED ERROR if password is not correct for username in database
     encrypted_request_password = encrypt(password, 1, 6)
     password_from_database = get_password_by_username(username)
-
-    if encrypted_request_password != password_from_database:
+    if not (encrypted_request_password == password_from_database):
         return {
             'username' : username,
             'password' : 'Password is not correct'
@@ -56,35 +51,8 @@ def login_user():
     
 
 @app.route('/register', methods=['POST'])
-def register_user():
-    request = request.json()
-    username = request['username']
-    password = request['password']
-
-    usernames = get_usernames()
-    # Check if username is already in the database (prevents creating duplicate user)
-    # Return 409 CONFLICT ERROR code
-    if username in usernames:
-        return {
-            'username' : 'Username already exists.',
-            'password' : password
-        }, 409
-    
-    # Encrypt password and register user
-    encrypted_password = encrypt(password, 1, 6)
-
-    new_user_to_register = User()
-    new_user_to_register.set_username = username
-    new_user_to_register.set_password = encrypted_password
-
-    # Send user to database to add user
-    add_user(new_user_to_register)
-
-    # Return 201 SUCCESSFUL AND CREATED RESOURCE code
-    return {
-        'username': username,
-        'password' : password
-    }, 201
+def register():
+    pass
 
 # ------------------------------------------------------------------------------
 # END USER LOGIN AND REGISTER HANDLING FUNCTIONS
