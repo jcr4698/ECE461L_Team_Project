@@ -95,12 +95,22 @@ def register_user():
 # ------------------------------------------------------------------------------
 @app.route('/', methods=['POST'])
 def create_project():
-    # Create new project and add project in database
+    # Create new project and adds project in database
     new_project = Project()
-    add_project(new_project)
-
-    # Return project in json form and 201 SUCCESSFUL AND CREATED RESOURCE code 
-    return new_project.to_json(), 201
+    if (add_project(new_project.get_id,
+                        new_project.get_hw_sets[0], 
+                            new_project.get_hw_sets[1], 
+                                new_project.get_auth_users)) == True:
+        # Return project in json form and 201 SUCCESSFUL AND CREATED RESOURCE code 
+        return {
+            'project' : new_project.to_json()
+        }, 201
+    else:
+        # Return 403 ALREADY EXISTS error code
+        return {
+            'project' : 'Project already exists'
+        }, 403
+    
 
 @app.route('/', methods=['GET'])
 def get_projects_by_user(user):
@@ -124,8 +134,9 @@ def get_project_by_id(id):
             return {
                 'project': id
             }, 200
+    # Return 404 NOT FOUND error
     return {
-        'project': ''
+        'project': 'Project does not exist.'
     }, 404
 
 @app.route('/', methods=['PUT'])
@@ -138,7 +149,7 @@ def join_project_by_id(id, user):
     else:
         # Return 404 NOT FOUND error
         return {
-            'project' : 'Project does not exist'
+            'project' : 'Project does not exist.'
         }, 404
 
 def leave_project_by_id(id,user):
@@ -150,7 +161,7 @@ def leave_project_by_id(id,user):
     else:
         # Return 404 NOT FOUND error
         return {
-            'project' : 'Project does not exist'
+            'project' : 'Project does not exist.'
         }, 404
 # ------------------------------------------------------------------------------
 # END PROJECT HANDLING FUNCTION
