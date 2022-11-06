@@ -128,15 +128,30 @@ def get_project_by_id(id):
         'project': ''
     }, 404
 
-@app.route('/', methods=['GET'])
-def get_auth_users_by_project(id):
-    database_projects = get_all_projects()
-    for project in database_projects:
-        if project.get_id == id:
-            return project.get_auth_users()
+@app.route('/', methods=['PUT'])
+def join_project_by_id(id, user):
+    if join_project(id, user) == True:
+        # Return 204 SUCCESSFUL UPDATE code
+        return {
+            'project' : id
+        }, 204
+    else:
+        # Return 404 NOT FOUND error
+        return {
+            'project' : 'Project does not exist'
+        }, 404
 
-
-
+def leave_project_by_id(id,user):
+    if leave_project(id, user) == True:
+        # Return 204 SUCCESSFUL UPDATE code
+        return {
+            'project' : id
+        }, 204
+    else:
+        # Return 404 NOT FOUND error
+        return {
+            'project' : 'Project does not exist'
+        }, 404
 # ------------------------------------------------------------------------------
 # END PROJECT HANDLING FUNCTION
 # ------------------------------------------------------------------------------
