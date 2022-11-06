@@ -105,14 +105,14 @@ def create_project():
 @app.route('/', methods=['GET'])
 def get_projects_by_user(user):
     database_projects = get_all_projects()
-    database_projects_by_user = []
+    database_projects_under_user = []
     for project in database_projects:
         for auth_user in project.get_auth_users():
             if user == auth_user:
-                database_projects_by_user.append(project)
+                database_projects_under_user.append(project)
     # Return all projects that are authorized for that user with 200 SUCCESSFUL code
     return {
-        'projects': database_projects_by_user
+        'projects': database_projects_under_user
     }, 200
 
 @app.route('/', methods=['GET'])
@@ -122,15 +122,21 @@ def get_project_by_id(id):
     for project in database_projects:
         if project.get_id == id:
             return {
-                'project': project
+                'project': id
             }, 200
     return {
         'project': ''
     }, 404
-    
-@app.route('/', methods=['POST'])
-def update_project_by_id(id):
-    pass
+
+@app.route('/', methods=['GET'])
+def get_auth_users_by_project(id):
+    database_projects = get_all_projects()
+    for project in database_projects:
+        if project.get_id == id:
+            return project.get_auth_users()
+
+
+
 # ------------------------------------------------------------------------------
 # END PROJECT HANDLING FUNCTION
 # ------------------------------------------------------------------------------
@@ -139,21 +145,35 @@ def update_project_by_id(id):
 # ------------------------------------------------------------------------------
 # BEGIN HWSET HANDLING FUNCTIONS
 # ------------------------------------------------------------------------------
+@app.route('/', methods=['GET'])
+def get_hwSet_by_id(id, hwSetNum):
+    pass
+
 @app.route('/', methods=['POST'])
-def create_hardware():
-    pass
+def checkOut_hwSet(id: str, hw_set: int, num: int, user: str):
+    if checkout_hw(id, hw_set, num, user) == True:
+        #Return id of project updated successfully with 204 SUCCESSFULL UPDATE code
+        return {
+            'project': id
+        }, 204
+    else:
+        # Return 401 UNAUTHORIZED CODE
+        return {
+            'project': 'Unauthorized'
+        }, 401
 
-@app.route('/', methods=['GET'])
-def get_hardware():
-    pass
-
-@app.route('/', methods=['GET'])
-def get_hardware_by_id(id):
-    pass
-
-@app.route('/', methods=['GET'])
-def update_hardware_by_id(id):
-    pass
+@app.route('/', methods=['POST'])
+def checkIn_hwSet(id: str, hw_set: int, num: int, user: str):
+    if checkin_hw(id, hw_set, num, user) == True:
+        #Return id of project updated successfully with 204 SUCCESSFULL UPDATE code
+        return {
+            'project': id
+        }, 204
+    else:
+        # Return 401 UNAUTHORIZED CODE
+        return {
+            'project': 'Unauthorized'
+        }, 401
 
 # ------------------------------------------------------------------------------
 # END HWSET HANDLING FUNCTIONS
