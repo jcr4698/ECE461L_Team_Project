@@ -101,10 +101,19 @@ def create_project():
 
     # Return project in json form and 201 SUCCESSFUL AND CREATED RESOURCE code 
     return new_project.to_json(), 201
-    
+
 @app.route('/', methods=['GET'])
 def get_projects_by_user(user):
-    pass
+    database_projects = get_all_projects()
+    database_projects_by_user = []
+    for project in database_projects:
+        for auth_user in project.get_auth_users():
+            if user == auth_user:
+                database_projects_by_user.append(project)
+    # Return all projects that are authorized for that user with 200 SUCCESSFUL code
+    return {
+        'projects': database_projects_by_user
+    }, 200
 
 @app.route('/', methods=['GET'])
 def get_project_by_id(id):
