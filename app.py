@@ -117,8 +117,17 @@ def get_projects_by_user(user):
 
 @app.route('/', methods=['GET'])
 def get_project_by_id(id):
-    pass
-
+    # If project is in the database then return 200 SUCCESSFUL, otherwise return 404 NOT FOUND
+    database_projects = get_all_projects()
+    for project in database_projects:
+        if project.get_id == id:
+            return {
+                'project': project
+            }, 200
+    return {
+        'project': ''
+    }, 404
+    
 @app.route('/', methods=['POST'])
 def update_project_by_id(id):
     pass
