@@ -22,7 +22,36 @@ def index():
 # ------------------------------------------------------------------------------
 @app.route('/login', methods=['POST'])
 def login_user():
-    pass
+    # Get request
+    request = request.get_json()
+    username = request['username']
+    password = request['password']
+    
+    # Check if username from request is a username in the database 
+    # Return 404 NOT FOUND ERROR if username not in usernames
+    usernames = get_usernames()
+    if username not in usernames:
+        return {
+            'username' : 'User does not exist',
+            'password' : password
+        }, 404
+
+    # Encrypt password and check if it is same as password in database
+    # Return 401 UNAUTHORIZED ERROR if password is not correct for username in database
+    encrypted_request_password = encrypt(password, 1, 6)
+    password_from_database = get_password_by_username(username)
+
+    if encrypted_request_password != password_from_database:
+        return {
+            'username' : username,
+            'password' : 'Password is not correct'
+        }, 401
+
+    # Valid login by this point so log them in by returning encrypted password as "access token" 
+    # Return 200 SUCCESSFUL code for successful login
+    return {
+        'password' : password_from_database
+    }, 200
 
 @app.route('/register', methods=['POST'])
 def register_user():
