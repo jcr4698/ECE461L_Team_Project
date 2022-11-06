@@ -95,7 +95,13 @@ def register_user():
 # ------------------------------------------------------------------------------
 @app.route('/', methods=['POST'])
 def create_project():
-    pass
+    # Create new project and add project in database
+    new_project = Project()
+    add_project(new_project)
+
+    # Return project in json form and 201 SUCCESSFUL AND CREATED RESOURCE code 
+    return new_project.to_json(), 201
+    
 @app.route('/', methods=['GET'])
 def get_projects_by_user(user):
     pass
