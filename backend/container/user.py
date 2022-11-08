@@ -1,8 +1,10 @@
+from json import JSONEncoder
+import json
 
 
 class User():
 
-    def __init__(self, userId, username, password, project_list):
+    def __init__(self, userId, username, password, project_list: list):
         self.userId=userId
         self.username=username
         self.password=password
@@ -28,3 +30,10 @@ class User():
         self.project_list=project_list
     def get_project_list(self):
         return self.project_list
+
+class UserEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+def user_to_json(user: User):
+    return json.dumps(user, indent=4, cls=UserEncoder)

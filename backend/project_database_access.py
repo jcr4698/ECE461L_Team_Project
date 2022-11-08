@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import container.project, container.hardware_set
 import json
 import math
+import user_database_access
 
 def open_connection():
     client=MongoClient("mongodb+srv://user:1234@cluster0.gdxcywm.mongodb.net/?retryWrites=true&w=majority")
@@ -9,11 +10,6 @@ def open_connection():
     table=db['Projects']
     return client, table
 
-def open_connection_user():
-    client=MongoClient("mongodb+srv://user:1234@cluster0.gdxcywm.mongodb.net/?retryWrites=true&w=majority")
-    db=client['project_app']
-    table=db['Users']
-    return client, table
 
 def close_connection(client: MongoClient):
     client.close()
@@ -85,7 +81,7 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
 
 
-def join_project(id: str, user: str):
+def join_project(id: str, userId: str):
     client, table=open_connection()
 
     proj= table.find({"id":id})
@@ -97,15 +93,16 @@ def join_project(id: str, user: str):
     x=proj[0]
 
     auth_users= json.loads(x.auth_users)
-    if user not in auth_users:
-        auth_users.append(user)
+    if userId not in auth_users:
+        auth_users.append(userId)
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
+        user_database_access.add_project(userId, id)
 
     close_connection(client)
     return True
 
 
-def leave_project(id: str, user: str):
+def leave_project(id: str, userId: str):
     client, table=open_connection()
 
     proj= table.find({"id":id})
@@ -117,9 +114,10 @@ def leave_project(id: str, user: str):
     x=proj[0]
 
     auth_users= json.loads(x.auth_users)
-    if user in auth_users:
-        auth_users.remove(user)
+    if userId in auth_users:
+        auth_users.remove(userId)
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
+        user_database_access.leave_project(userId, id)
 
     close_connection(client)
     return True
@@ -147,4 +145,3 @@ def add_project(id:str, name:str, description: str, hw_set_1_qty: int, hw_set_2_
     close_connection(client)
 
     return True
-
