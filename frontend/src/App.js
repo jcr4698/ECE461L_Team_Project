@@ -22,7 +22,10 @@ class App extends React.Component {
 			return (
 				<div className="App">
 					<header className="app_header">
-						<Projects />
+						<Projects 
+							curr_user={this.state.curr_user}
+							curr_id={this.state.curr_id}
+						/>
 					</header>
 				</div>
 			)
@@ -42,8 +45,10 @@ class App extends React.Component {
 	/* Handlers */
 
 	// handleLoginStatus: Updates log-in status based on Login Page
-	handleLoginStatus = (logged_in) => {
+	handleLoginStatus = (logged_in, id, user) => {
 		this.setState({
+			curr_user: user,
+			curr_id: id,
 			is_logged_in: logged_in
 		})
 	}
