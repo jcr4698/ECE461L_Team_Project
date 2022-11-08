@@ -102,7 +102,7 @@ def join_project(id: str, user: str):
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
 
     close_connection(client)
-
+    return True
 
 
 def leave_project(id: str, user: str):
@@ -122,7 +122,7 @@ def leave_project(id: str, user: str):
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
 
     close_connection(client)
-
+    return True
 
 
 def add_project(id:str, name:str, description: str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)-> bool:
