@@ -9,6 +9,12 @@ def open_connection():
     table=db['Projects']
     return client, table
 
+def open_connection_user():
+    client=MongoClient("mongodb+srv://user:1234@cluster0.gdxcywm.mongodb.net/?retryWrites=true&w=majority")
+    db=client['project_app']
+    table=db['Users']
+    return client, table
+
 def close_connection(client: MongoClient):
     client.close()
 
@@ -119,7 +125,7 @@ def leave_project(id: str, user: str):
 
 
 
-def add_project(id:str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)-> bool:
+def add_project(id:str, name:str, description: str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)-> bool:
     client, table=open_connection()
 
     query = {"id":id}
@@ -133,7 +139,7 @@ def add_project(id:str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)->
     hw_1= container.hardware_set.HWSet(hw_set_1_qty, user_list)
     hw_2= container.hardware_set.HWSet(hw_set_2_qty, user_list)
 
-    proj_def= container.project.Project(id, hw_1, hw_2, user_list)
+    proj_def= container.project.Project(id, name, description, hw_1, hw_2, user_list)
     proj_json= container.project.project_to_json(proj_def)    
 
     table.insert_one(proj_json)
@@ -141,3 +147,4 @@ def add_project(id:str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)->
     close_connection(client)
 
     return True
+
