@@ -148,8 +148,9 @@ class ProjectData extends React.Component {
 	handleHWSelection(i) {
 		/* Get and modify the hw selection index */
 		const project_list = this.state.project_list.slice();
+		console.log(project_list);
 		var curr_hw_selection = parseInt(document.getElementById("hw_set:" + project_list[i][1]).value);
-		project_list[i][3] = curr_hw_selection;
+		project_list[i][4] = curr_hw_selection;
 
 		/* Set the hw selection index to state */
 		this.setState({

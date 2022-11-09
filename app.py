@@ -60,11 +60,9 @@ def project_add():
         return jsonify({"Status": False})
 
 
-user_creds = {}
-
 
 """ Begin user login. """
-@app.route('/login', methods=['POST'], strict_slashes=False) ### test this out now with strict slashes off
+@app.route('/login', methods=['POST'], strict_slashes=False)
 def login_user():
     # Get request
     user_info = request.get_json()
@@ -73,20 +71,22 @@ def login_user():
     username = user_info["username"]
     user_id = user_info["user_id"]
     password = user_info["password"]
+    user_from_request = user.User(user_id, username, password, True)
 
     # Obtain the username and password from user id
-    creds_from_database = user_creds.get(user_id)
-    if creds_from_database is None:
+    user_from_database = try_login_user(user_id)
+    # print("User object: " + str(user_from_database))
+    if user_from_database is None:
         return {
             "status": False
         }
 
     # Check if username from request is a username in the database
     # Return 404 NOT FOUND ERROR if username not in usernames
-    # usernames = get_usernames() ############################################################# to be implemented
-    username_from_database = creds_from_database[0]
-    # print(creds_from_database)
-    if username != username_from_database:
+    username_from_database = user_from_database.get_user_name()
+    # print("User Name: " + username_from_database)
+    # print("User Name: " + user_from_request.get_user_name())
+    if user_from_request.get_user_name() != username_from_database:
         return {
             "status": False,
             'username' : 'User does not exist',
@@ -95,15 +95,14 @@ def login_user():
 
     # Encrypt password and check if it is same as password in database
     # Return 401 UNAUTHORIZED ERROR if password is not correct for username in database
-    encrypted_request_password = encrypt(password, 1, 6)
-    # password_from_database = get_password_by_username(username) ############################# to be implemented
-    password_from_database = user_creds[user_id][1]
+    password_from_database = user_from_database.get_password()
     # print(password_from_database)
-    if encrypted_request_password != password_from_database:
+    # print(user_from_request.get_password())
+    if user_from_request.get_password() != password_from_database:
         return {
             "status": False,
-            'username' : username,
-            'password' : 'Password is not correct'
+            'username': username,
+            'password': 'Password is not correct'
         }#, 401
 
     # Valid login by this point so log them in by returning encrypted password as "access token"
@@ -126,8 +125,8 @@ def register_user():
     password = user_info["password"]
 
      # Obtain the username and password from user id
-    creds_from_database = user_creds.get(user_id)
-    if creds_from_database is not None:
+    create_from_database = try_register_user(user_id, username, password)
+    if not create_from_database:
         return {
             "status": False,
             "message": "INVALID ID: User ID already exists."
@@ -150,13 +149,13 @@ def register_user():
         }
 
     # Encrypt password
-    encrypted_password = encrypt(password, 1, 6)
+    # encrypted_password = encrypt(password, 1, 6)
 
     # new_user_to_register = User()
     # new_user_to_register.set_username = username
     # new_user_to_register.set_password = encrypted_password ########################################## doesn't work yet
 
-    user_creds[user_id] = [username, encrypted_password]
+    # user_creds[user_id] = [username, encrypted_password]
 
     # Send user to database to add user
     # add_user(new_user_to_register)    ############################################################ to be implemented
