@@ -53,7 +53,7 @@
 
 .login_btns_column {
 	/* Size */
-	width: 33.33%;
+	width: 50%; /*33.33%;*/
 	/* Margins and Alignments */
 	margin-top: 10px;
 	float: left;

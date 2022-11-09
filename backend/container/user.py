@@ -32,8 +32,8 @@ class User():
         return self.project_list
 
 class UserEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
+	def default(self, o):
+		return o.__dict__
 
 def user_to_json(user: User):
-    return json.dumps(user, indent=4, cls=UserEncoder)
+	return json.dumps(user, indent=4, cls=UserEncoder)

@@ -14,7 +14,8 @@ class Login extends React.Component {
                     Login
                 </p>
                 <LoginUser
-                    onLoginClick={() => this.handleLogin()} />
+                    onLoginClick={() => this.handleLogin()}
+                    onRegisterClick={() => this.handleRegister()} />
                 <div className="empty_space" />
             </div>
         )
@@ -28,15 +29,87 @@ class Login extends React.Component {
         const id = document.getElementById("id_login").value;
         const user = document.getElementById("user_login").value;
         const pass = document.getElementById("password_login").value;
-        console.log("user id:", id)
-        console.log("username:", user);
-        console.log("password:", pass);
 
-        /* Authenticate credentials */
-        const valid_account = true; // for testing purposes
+        /* Make sure inputs are not empty */
+        if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
+			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
 
-        /* login (success or fail) */
-        this.props.handleLoginStatus(valid_account, id, user);
+                console.log("user id:", id)
+                console.log("username:", user);
+                console.log("password:", pass);
+
+                /* Authenticate credentials */
+                fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: user,
+                        user_id: id,
+                        password: pass
+                    })
+                })
+                .then(response => response.json())
+                .then(respJson => {
+                    console.log(respJson["status"]);
+
+                    /* login (success or fail) */
+                    if(respJson["status"]) {
+                        this.props.handleLoginStatus(respJson["status"], id, user)
+                    }
+                    else {
+                        alert("Username, ID, or Password didn't match an account.")
+                    }
+                });
+
+            }
+        }
+    }
+
+    // handleRegister: Register a new user, unless user id is same as someone else
+    handleRegister() {
+        /* Obtain username and password */
+        const id = document.getElementById("id_login").value;
+        const user = document.getElementById("user_login").value;
+        const pass = document.getElementById("password_login").value;
+
+        /* Make sure inputs are not empty */
+        if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
+			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
+
+                console.log("user id:", id)
+                console.log("username:", user);
+                console.log("password:", pass);
+
+                /* Authenticate credentials */
+                fetch("/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: user,
+                        user_id: id,
+                        password: pass
+                    })
+                })
+                .then(response => response.json())
+                .then(respJson => {
+                    console.log(respJson["status"]);
+
+                    /* login (success or fail) */
+                    if(respJson["status"]) {
+                        this.props.handleLoginStatus(respJson["status"], id, user)
+                        alert("Your account has been created! Remember your credentials!")
+                    }
+                    else {
+                        alert("User ID already exists. Try a different one.")
+                    }
+                });
+
+            }
+        }
     }
 
 }
@@ -113,22 +186,22 @@ function LoginUser(props) {
                     </button>
                 </div>
                 {/* Button Column 1 - Forgot */}
-                <div className="login_btns_column">
+                {/* <div className="login_btns_column">
                     <button
                         className="login_btn"
                         id="forgot_btn"
                         type="button"
-                        /* onClick={props.onForgotClick} */ >
+                        onClick={props.onForgotClick} >
                         Forgot
                     </button>
-                </div>
+                </div> */}
                 {/* Button Column 2 - Register */}
                 <div className="login_btns_column">
                     <button
                         className="login_btn"
                         id="register_btn"
                         type="button"
-                        /* onClick={props.onRegisterClick}*/ >
+                        onClick={props.onRegisterClick} >
                         Register
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-import hardware_set
+from backend.container import hardware_set
 import json
 from json import JSONEncoder
 from types import SimpleNamespace
@@ -6,12 +6,12 @@ from types import SimpleNamespace
 class Project:
 
     def __init__(self, id: str, name, description, hw_set1: hardware_set.HWSet, hw_set2: hardware_set.HWSet, auth_users: list):
-        self.id=id
+        self.id = id
         self.name = name
         self.description = description
-        self.hw_set1=hw_set1
-        self.hw_set2=hw_set2
-        self.auth_users=auth_users
+        self.hw_set1 = hw_set1
+        self.hw_set2 = hw_set2
+        self.auth_users = auth_users
 
     def get_id(self):
         return self.id
@@ -33,19 +33,6 @@ class Project:
     
     def set_auth_users(self, users: list):
         self.auth_users=users
-
-    def set_name(self, name):
-        self.name=name
-    
-    def get_name(self):
-        return self.name
-    
-    def set_description(self, description):
-        self.description=description
-    
-    def get_description(self):
-        return self.description
-    
 
 
 class ProjectEncoder(JSONEncoder):
