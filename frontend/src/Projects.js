@@ -108,6 +108,8 @@ class ProjectData extends React.Component {
 				{this.renderNewProject()}
 				<div className="empty_space" />
 				{this.renderJoinProject()}
+				<div className="empty_space" />
+				{this.renderJoinProject()}
 			</div>
 		)
 	}
@@ -354,13 +356,13 @@ function Project(props) {
 				</button>
 			</div>
 			{/* Join or Leave */}
-			<div className="project_column">
+			{/* <div className="project_column">
 				<button
 					className="join_btn"
 					type="button" >
 					Leave
 				</button>
-			</div>
+			</div> */}
 		</div>
 	)
 }
@@ -442,6 +444,14 @@ function ProjectJoiner(props) {
 			</div>
 			{/*
 			<div className="new_project_column">
+				<button
+					className="join_project_btn"
+					type="button"
+					onClick={props.onProjectJoinClick} >
+					Join
+				</button>
+			</div>
+			{/* <div className="new_project_column">
 				<button
 					className="add_project_btn"
 					type="button"
