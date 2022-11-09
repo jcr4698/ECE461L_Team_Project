@@ -57,15 +57,23 @@ class ProjectData extends React.Component {
 		const proj_list = [];
 
 		/* Obtain data fetched from route into library */
-		fetch("/project_list", {
-			method: "GET"
+		fetch("/project_init", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				user_id: [this.props.curr_id]
+			})
 		})
 		.then(response => response.json())
 		.then(respJson => {
 			const data = JSON.parse(JSON.stringify(respJson));
-			for(let proj = 0; proj < Object.keys(data).length; proj++) {
-				console.log(data["proj" + proj]);
-				proj_list.push(data["proj" + proj]);
+			const projects = data["Projects"]
+			console.log(projects)
+			for(let proj in projects) {	// API Should return all projects associated with user_id
+				console.log(projects[proj]);	// Test out projects are actually send
+				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
 			}
 			this.setState({
 				project_list: proj_list
@@ -227,25 +235,24 @@ class ProjectData extends React.Component {
 
 				/* Attempt adding project to json */
 
-				const project_handle = "proj" + project_list.length;
-
 				fetch("/project_list", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						proj_handle: [project_handle],
+						user: [this.props.curr_id],
+						proj_id: [project_id],
 						proj_data: [project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]
 					})
 				})
 				.then(response => response.json())
 				.then(respJson => {
-					console.log(project_handle)
-					console.log(respJson[project_handle]);
+					console.log(project_id)
+					console.log(respJson[project_id]);
 			
 					/* Update Project List */
-					if(!respJson[project_handle]) {
+					if(!respJson[project_id]) {
 						project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
 			
 						/* Set list with additional project data to state */

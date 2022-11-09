@@ -18,7 +18,7 @@
 	background: #0c1223;
 	/* Size */
 	height: auto;
-	width: 1800px;
+	width: auto/*1800px*/;
 	/* Margins and Alignment */
 	margin: 50px 50px 50px 50px;
 	text-align: center;
