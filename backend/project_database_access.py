@@ -31,10 +31,14 @@ def get_all_projects():
     close_connection(client)
     return table.find()
 
+def login_user(user_id: str):
+    client, table = access_accounts()
+    user_info = table.find({})
+
 def get_projects_by_user_id(user_id):
     # Access projects that user is authorized to use
     client, table = access_projects()
-    db_projs = list(table.find({"auth_users":{"$in":["jcr4698"]}}))
+    db_projs = list(table.find({"auth_users":{"$in":[user_id]}}))
     close_connection(client)
 
     # Put projects in array of project array
@@ -175,4 +179,6 @@ def add_project(id: str, name: str, description: str, hw_set_1_qty: int, hw_set_
     close_connection(client)
 
     return True
+
+# add_project("wexler", "Project 5", "This is a basic description of Project 5", 100, 100, ["jcr4698"])
 
