@@ -134,8 +134,8 @@ def add_project(id:str, name:str, description: str, hw_set_1_qty: int, hw_set_2_
         return False
 
     
-    hw_1= container.hardware_set.HWSet(hw_set_1_qty, user_list)
-    hw_2= container.hardware_set.HWSet(hw_set_2_qty, user_list)
+    hw_1= container.hardware_set.HWSet(hw_set_1_qty)
+    hw_2= container.hardware_set.HWSet(hw_set_2_qty)
 
     proj_def= container.project.Project(id, name, description, hw_1, hw_2, user_list)
     proj_json= container.project.project_to_json(proj_def)    
