@@ -355,13 +355,13 @@ function Project(props) {
 				</button>
 			</div>
 			{/* Join or Leave */}
-			{/* <div className="project_column">
+			<div className="project_column">
 				<button
 					className="join_btn"
 					type="button" >
 					Leave
 				</button>
-			</div> */}
+			</div>
 		</div>
 	)
 }
