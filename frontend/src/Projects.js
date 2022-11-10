@@ -242,8 +242,8 @@ class ProjectData extends React.Component {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						user_id: [this.props.curr_id],
-						proj_id: [project_id],
+						user_id: this.props.curr_id,
+						proj_id: project_id,
 						proj_data: [
 										project_list.length,
 										project_name,
@@ -302,8 +302,8 @@ class ProjectData extends React.Component {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						user_id: [this.props.curr_id],
-						proj_id: [project_id]
+						user_id: this.props.curr_id,
+						proj_id: project_id
 					})
 				})
 				.then(response => response.json())
