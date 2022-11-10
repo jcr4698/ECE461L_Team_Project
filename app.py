@@ -1,8 +1,4 @@
 import os
-from flask import Flask, send_from_directory, jsonify, request
-from backend.container import Project, HWSet, User
-from backend.project_database_access import *
-from encrypt import encrypt
 from flask import Flask, send_from_directory, request, jsonify
 import json
 from backend.container import *
@@ -39,33 +35,20 @@ def project_get():
 def project_add():
     if request.method == "POST":
         data_json = request.get_json()
-        if data_json is not None:
-            proj_data = data_json["proj_data"]
-            proj_handle = data_json["proj_handle"][0]
-            proj_id = proj_data[2]
-            with open("backend/project_list.json", "r+") as file_proj:
-                file_json = json.load(file_proj)
-                proj_exists = False
-                for proj_arr in file_json.items():
-                    if proj_id == proj_arr[1][2]:
-                        proj_exists = True
-                if proj_exists == False:
-                    file_proj.seek(0)
-                    file_json[proj_handle] = proj_data
-                    json.dump(file_json, file_proj, indent=4)
-                    # Store file_json data in database
-                return jsonify({proj_handle: proj_exists})
-        return jsonify({"Status": False})
-    elif request.method == "GET":
-        # Get user
-        data_json = request.get_json()
-        if data_json is not None:
-            req_user = data_json["user_id"]
-            # Access all projects associated with user_id from database
-            db_proj = get_all_projects(req_user)
-            return jsonify({"Status": True,
-                            "Projects": db_proj})
-        return jsonify({"Status": False})
+        return jsonify({
+            "Status": False
+        })
+
+    # elif request.method == "GET":
+    #     # Get user
+    #     data_json = request.get_json()
+    #     if data_json is not None:
+    #         req_user = data_json["user_id"]
+    #         # Access all projects associated with user_id from database
+    #         db_proj = get_all_projects(req_user)
+    #         return jsonify({"Status": True,
+    #                         "Projects": db_proj})
+    #     return jsonify({"Status": False})
 
 
 
