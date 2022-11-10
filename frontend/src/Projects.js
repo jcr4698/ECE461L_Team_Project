@@ -236,8 +236,7 @@ class ProjectData extends React.Component {
 				user_list.push(this.state.curr_id);
 
 				/* Attempt adding project to json */
-
-				fetch("/project_list", {
+				fetch("/project_add", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -245,23 +244,35 @@ class ProjectData extends React.Component {
 					body: JSON.stringify({
 						user: [this.props.curr_id],
 						proj_id: [project_id],
-						proj_data: [project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]
+						proj_data: [
+										project_list.length,
+										project_name,
+										project_id,
+										user_list,
+										0,
+										[
+											[100, 100],		// For now, it only adds 100 HW Sets
+											[100, 100]
+										]
+									]
 					})
 				})
 				.then(response => response.json())
 				.then(respJson => {
-					console.log(project_id)
-					console.log(respJson[project_id]);
+					// console.log(project_id);
+					const data = JSON.parse(JSON.stringify(respJson));
+					console.log(data["Status"]);
 			
 					/* Update Project List */
-					if(!respJson[project_id]) {
+					if(data["Status"]) {
+						console.log("added");
 						project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
-			
+
 						/* Set list with additional project data to state */
 						this.setState({
 							project_list: project_list
 						})
-			
+
 						/* Clear input text fields */
 						document.getElementById("new_project_name").value = "";
 						document.getElementById("new_project_id").value = "";

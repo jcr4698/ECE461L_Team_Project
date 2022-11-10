@@ -31,13 +31,33 @@ def project_get():
                     "Status": False
                     })
 
-@app.route('/project_list', methods = ["POST", "GET"], strict_slashes=False)
+@app.route('/project_add', methods = ["POST", "GET"], strict_slashes=False)
 def project_add():
-    if request.method == "POST":
-        data_json = request.get_json()
+    data_json = request.get_json()
+    if data_json is not None:
+
+        # get project information
+        proj_user = data_json["user"]
+        proj_id = data_json["proj_id"]
+        proj_data = data_json["proj_data"]
+        proj_name = proj_data[1]
+        proj_user_list = proj_data[3]
+        proj_hws = proj_data[5]
+        proj_hw1_qty = proj_hws[0][0]
+        proj_hw2_qty = proj_hws[1][0]
+
+        # attempt adding project
+        added = add_project(proj_id, proj_name, "Adding Test Example", proj_hw1_qty, proj_hw2_qty, [proj_user])
+        if added:
+            return jsonify({
+                "Status": True
+            })
         return jsonify({
             "Status": False
         })
+    return jsonify({
+        "Status": False
+    })
 
     # elif request.method == "GET":
     #     # Get user
