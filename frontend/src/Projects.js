@@ -242,7 +242,7 @@ class ProjectData extends React.Component {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						user: [this.props.curr_id],
+						user_id: [this.props.curr_id],
 						proj_id: [project_id],
 						proj_data: [
 										project_list.length,
@@ -265,7 +265,7 @@ class ProjectData extends React.Component {
 			
 					/* Update Project List */
 					if(data["Status"]) {
-						console.log("added");
+						console.log("Project Added!");
 						project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
 
 						/* Set list with additional project data to state */
@@ -288,9 +288,64 @@ class ProjectData extends React.Component {
 	// handleProjectJoin: Search for project in database and join if possible
 	handleProjectJoin() {
 		/* Get the new project info and make sure they are non-empty strings */
-		const project_name = document.getElementById("existing_project_name").value;
 		const project_id = document.getElementById("existing_project_id").value;
-		console.log("Looking for", project_name, "with id:", project_id); ////////////////////////////////////
+		console.log("Looking for id:", project_id);
+
+		if(typeof project_id === 'string' && project_id.trim() !== '') {
+
+			const project_list = this.state.project_list.slice();
+
+			/* Attempt adding project to json */
+				fetch("/project_join", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						user_id: [this.props.curr_id],
+						proj_id: [project_id]
+					})
+				})
+				.then(response => response.json())
+				.then(respJson => {
+					// console.log(project_id);
+					const data = JSON.parse(JSON.stringify(respJson));
+					console.log(data["Status"]);
+
+					/* get project data */
+					const proj_data = data["Project"]
+
+					/* Update Project List */
+					if(data["Status"]) {
+						console.log("Joined Project");
+						project_list.push([
+												proj_data[0],
+												proj_data[1],
+												proj_data[2],
+												proj_data[3],
+												0,
+												[
+													[proj_data[5][0][0], proj_data[5][0][1]],
+													[proj_data[5][1][0], proj_data[5][1][1]]
+												]
+											]);
+						console.log(project_list)
+
+						// /* Set list with additional project data to state */
+						// this.setState({
+						// 	project_list: project_list
+						// })
+
+						/* Clear input text fields */
+						document.getElementById("new_project_name").value = "";
+						document.getElementById("new_project_id").value = "";
+					}
+					else {
+						alert("Project ID doesn't exists in database.")
+					}
+				});
+		}
+
 	}
 
 }

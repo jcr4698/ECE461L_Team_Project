@@ -37,7 +37,7 @@ def project_add():
     if data_json is not None:
 
         # get project information
-        proj_user = data_json["user"]
+        proj_user = data_json["user_id"]
         proj_id = data_json["proj_id"]
         proj_data = data_json["proj_data"]
         proj_name = proj_data[1]
@@ -59,18 +59,20 @@ def project_add():
         "Status": False
     })
 
-    # elif request.method == "GET":
-    #     # Get user
-    #     data_json = request.get_json()
-    #     if data_json is not None:
-    #         req_user = data_json["user_id"]
-    #         # Access all projects associated with user_id from database
-    #         db_proj = get_all_projects(req_user)
-    #         return jsonify({"Status": True,
-    #                         "Projects": db_proj})
-    #     return jsonify({"Status": False})
-
-
+""" Add user_id to the project given. """
+@app.route('/project_join', methods = ["POST", "GET"], strict_slashes=False)
+def project_join():
+    data_json = request.get_json()
+    if data_json is not None:
+        # get the project_id from data_json and check if it exists
+        # if so, add user to that project and pass user_data
+        return jsonify({
+            "Status": True,
+            "Project": []   # put project data here
+        })
+    return jsonify({
+        "Status": False
+    })
 
 """ Begin user login. """
 @app.route('/login', methods=['POST'], strict_slashes=False)
