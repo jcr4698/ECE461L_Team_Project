@@ -1,35 +1,33 @@
+from backend import encrypt
 from json import JSONEncoder
 import json
 
-
 class User():
 
-    def __init__(self, userId, username, password, project_list: list):
-        self.userId=userId
-        self.username=username
-        self.password=password
-        self.project_list=project_list
+    def __init__(self, userId, username, password, encrpytify: bool):
+        self.userId = userId
+        self.username = username
+        if encrpytify:
+            self._password = encrypt.encrypt(password, 1, 6)
+        else:
+            self._password = password
 
 
-    def set_userId(self, userId):
-        self.userId=userId
-    def get_userId(self):
+    def set_user_id(self, userId):
+        self.userId = userId
+    def get_user_id(self):
         return self.userId
 
-    def set_username(self, username):
-        self.username=username
-    def get_username(self):
+    def set_user_name(self, username):
+        self.username = username
+    def get_user_name(self):
         return self.username
 
     def set_password(self, password):
-        self.password=password
+        self._password = password
     def get_password(self):
-        return self.password
+        return self._password
 
-    def set_project_list(self, project_list):
-        self.project_list=project_list
-    def get_project_list(self):
-        return self.project_list
 
 class UserEncoder(JSONEncoder):
 	def default(self, o):

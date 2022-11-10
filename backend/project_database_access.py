@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-<<<<<<< HEAD
 import certifi
 import json
 from backend.container import hardware_set
@@ -24,25 +23,11 @@ def access_accounts():
     client, db = open_connection()
     table = db['Accounts']
     return client, table
-=======
-import container.project, container.hardware_set
-import json
-import math
-import user_database_access
-
-def open_connection():
-    client=MongoClient("mongodb+srv://user:1234@cluster0.gdxcywm.mongodb.net/?retryWrites=true&w=majority")
-    db=client['project_app']
-    table=db['Projects']
-    return client, table
-
->>>>>>> main
 
 def close_connection(client: MongoClient):
     client.close()
 
 def get_all_projects():
-<<<<<<< HEAD
     client, table = access_projects()
     close_connection(client)
     return table.find()
@@ -118,25 +103,12 @@ def get_projects_by_user_id(user_id):
 def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, table = access_projects()
     proj = table.find({"id":id})
-=======
-    client, table=open_connection()
-    close_connection(client)
-    return table.find()
-
-def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
-    client, table=open_connection()
-    proj= table.find({"id":id})
->>>>>>> main
 
     if len(proj) == 0:
         close_connection(client)
         return False
 
-<<<<<<< HEAD
     x = proj[0]
-=======
-    x=proj[0]
->>>>>>> main
 
     auth_users= json.loads(x.auth_users)
     if user not in auth_users:
@@ -145,55 +117,32 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     if hw_set == '1':
         availability=x.hw_set1.availability
-<<<<<<< HEAD
         newVal= {"$set":{"hw_set1.availability": math.max(0, availability-num)}}
     else:
         availability=x.hw_set2.availability
         newVal= {"$set":{"hw_set2.availability": math.max(0, availability-num)}}
-=======
-        newVal= {"$set":{"hw_set1.availability":math.max(0, availability-num)}}
-    else:
-        availability=x.hw_set2.availability
-        newVal= {"$set":{"hw_set2.availability":math.max(0, availability-num)}}
->>>>>>> main
-
 
     table.update_one({"id":id}, newVal)
 
     close_connection(client)
     return True
 
-<<<<<<< HEAD
 def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, table = access_projects()
     proj = table.find({"id":id})
-=======
-
-
-def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
-    client, table=open_connection()
-    proj= table.find({"id":id})
->>>>>>> main
 
     if len(proj) == 0:
         close_connection(client)
         return False
 
-<<<<<<< HEAD
     x = proj[0]
 
     auth_users = json.loads(x.auth_users)
-=======
-    x=proj[0]
-
-    auth_users= json.loads(x.auth_users)
->>>>>>> main
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-<<<<<<< HEAD
         capacity = x.hw_set1.capacity
         availability = x.hw_set1.availabilty
         newVal = {"$set":{"hw_set1.availability":math.min(capacity, availability+num)}}
@@ -204,41 +153,19 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
         newVal = {"$set":{"hw_set2.availability":math.min(capacity, availability+num)}}
 
     table.update_one({"id": id}, newVal)
-=======
-        capacity=x.hw_set1.capacity
-        availability=x.hw_set1.availabilty
-        newVal= {"$set":{"hw_set1.availability":math.min(capacity, availability+num)}}
-
-    else:
-        capacity=x.hw_set2.capacity
-        availability=x.hw_set2.availabilty
-        newVal= {"$set":{"hw_set2.availability":math.min(capacity, availability+num)}}
-
-    table.update_one({"id":id}, newVal)
->>>>>>> main
 
     close_connection(client)
     return True
 
-<<<<<<< HEAD
 def join_project(id: str, user: str):
     client, table = access_projects()
 
     proj = table.find({"id": id})
-=======
-
-
-def join_project(id: str, userId: str):
-    client, table=open_connection()
-
-    proj= table.find({"id":id})
->>>>>>> main
 
     if len(proj) == 0:
         close_connection(client)
         return False
 
-<<<<<<< HEAD
     x = proj[0]
 
     auth_users= json.loads(x.auth_users)
@@ -252,30 +179,11 @@ def leave_project(id: str, user: str):
     client, table = access_projects()
 
     proj = table.find({"id":id})
-=======
-    x=proj[0]
-
-    auth_users= json.loads(x.auth_users)
-    if userId not in auth_users:
-        auth_users.append(userId)
-        table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
-        user_database_access.add_project(userId, id)
-
-    close_connection(client)
-    return True
-
-
-def leave_project(id: str, userId: str):
-    client, table=open_connection()
-
-    proj= table.find({"id":id})
->>>>>>> main
 
     if len(proj) == 0:
         close_connection(client)
         return False
 
-<<<<<<< HEAD
     x = proj[0]
 
     auth_users= json.loads(x.auth_users)
@@ -301,46 +209,9 @@ def add_project(id: str, name: str, description: str, hw_set_1_qty: int, hw_set_
 
     proj_def = project.Project(id, name, description, hw_1, hw_2, user_list)
     proj_json = json.loads(project.project_to_json(proj_def))
-=======
-    x=proj[0]
-
-    auth_users= json.loads(x.auth_users)
-    if userId in auth_users:
-        auth_users.remove(userId)
-        table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
-        user_database_access.leave_project(userId, id)
-
-    close_connection(client)
-    return True
-
-
-def add_project(id:str, name:str, description: str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list)-> bool:
-    client, table=open_connection()
-
-    query = {"id":id}
-    results=table.find(query)
-
-    if len(results) != 0:
-        close_connection(client)
-        return False
-
-    
-    hw_1= container.hardware_set.HWSet(hw_set_1_qty)
-    hw_2= container.hardware_set.HWSet(hw_set_2_qty)
-
-    proj_def= container.project.Project(id, name, description, hw_1, hw_2, user_list)
-    proj_json= container.project.project_to_json(proj_def)    
->>>>>>> main
 
     table.insert_one(proj_json)
 
     close_connection(client)
 
     return True
-<<<<<<< HEAD
-
-# add_project("wexler", "Project 5", "This is a basic description of Project 5", 100, 100, ["jcr4698"])
-# print(login_user("jcr4698"))
-
-=======
->>>>>>> main
