@@ -109,7 +109,6 @@ class ProjectData extends React.Component {
 				<div className="empty_space" />
 				{this.renderJoinProject()}
 				<div className="empty_space" />
-				{this.renderJoinProject()}
 			</div>
 		)
 	}
