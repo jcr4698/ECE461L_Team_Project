@@ -179,6 +179,34 @@ def register_user():
         'password' : password
     }#, 201
 
+
+@app.route('/check_out', methods=['POST'])
+def check_in(id: str, hw_set: int, num: int, user: str):
+    if checkin_hw(id, hw_set, num, user) == True:
+        return {
+            "status": True,
+            "message": "Successfully checked in " + num + " hardware units into hardware set " + hw_set
+        }
+    else:
+        return {
+            "status": False,
+            "message": "Failed to check in " + num + " hardware units into hardware set " + hw_set
+        }
+    
+
+@app.route('/check_in', methods=['POST'])
+def checkOut_(id: str, hw_set: int, num: int, user: str):
+    if checkout_hw(id, hw_set, num, user) == True:
+        return {
+            "status": True,
+            "message": "Successfully checked out " + num + " hardware units from hardware set " + hw_set
+        }
+    else:
+        return {
+            "status": False,
+            "message": "Failed to check out " + num + " hardware units from hardware set " + hw_set
+        }
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
 

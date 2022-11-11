@@ -13,9 +13,6 @@ class Project:
 
     def get_id(self):
         return self.id
-
-    def get_hw_sets(self):
-        return self.hw_set1, self.hw_set2
     
     def get_auth_users(self):
         return self.auth_users
@@ -23,12 +20,6 @@ class Project:
     def set_id(self, id):
         self.id=id
 
-    def set_hw_set1(self, hw1: hardware_set.HWSet):
-        self.hw_set1=hw1
-
-    def set_hw_set2(self, hw2: hardware_set.HWSet):
-        self.hw_set2=hw2
-    
     def set_auth_users(self, users: list):
         self.auth_users=users
 
