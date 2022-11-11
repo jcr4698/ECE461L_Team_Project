@@ -181,7 +181,7 @@ def register_user():
     }#, 201
 
 
-@app.route('/check_out', methods=['POST'])
+@app.route('/check_in', methods=['POST'])
 def check_in(id: str, hw_set: int, num: int, user: str):
     if checkin_hw(id, hw_set, num, user) == True:
         return {
@@ -195,8 +195,8 @@ def check_in(id: str, hw_set: int, num: int, user: str):
         }
     
 
-@app.route('/check_in', methods=['POST'])
-def checkOut_(id: str, hw_set: int, num: int, user: str):
+@app.route('/check_out', methods=['POST'])
+def check_out(id: str, hw_set: int, num: int, user: str):
     if checkout_hw(id, hw_set, num, user) == True:
         return {
             "status": True,
