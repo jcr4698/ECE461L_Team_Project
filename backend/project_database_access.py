@@ -42,7 +42,7 @@ def get_all_projects():
 def try_login_user(user_id: str):
     # access account in database
     client, table = access_accounts()
-    user_data = table.find({"_user_id": user_id})
+    user_data = table.find({"userId": user_id})
 
     # extract information from user data
     extracted_user_info = list(user_data)
@@ -54,7 +54,7 @@ def try_login_user(user_id: str):
 
     # get user information # NOW PASS IT TO app.py
     user_info = extracted_user_info[0]
-    registered_user = user.User(user_info["_user_id"], user_info["_user_name"], user_info["_password"], False)
+    registered_user = user.User(user_info["userId"], user_info["username"], user_info["_password"], False)
 
     # return user information
     close_connection(client)
@@ -63,7 +63,7 @@ def try_login_user(user_id: str):
 def try_register_user(user_id: str, user_name: str, password: str):
     # access account in database
     client, table = access_accounts()
-    user_data = table.find({"id": user_id})
+    user_data = table.find({"userId": user_id})
 
     # check if user id exists in database
     if len(list(user_data)) != 0:
@@ -216,3 +216,4 @@ def add_project(id: str, name: str, description: str, user_list: list) -> bool:
     close_connection(client)
 
     return True
+
