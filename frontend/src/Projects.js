@@ -5,9 +5,10 @@ import './Projects.css';
 
 const IDX = 0;
 const PROJ_NAME = 1;
-const USERS = 3;
-const HW_SELECT = 4;
-const HW_LIST = 5;
+const DESC = 3;
+const USERS = 4;
+const HW_SELECT = 5;
+const HW_LIST = 6;
 
 /* HW Indices */
 
@@ -93,6 +94,8 @@ class ProjectData extends React.Component {
 		for(let i = 0; i < project_list.length; i++) {
 			/* Get next project (data) */
 			const project_data = project_list[i];
+
+			console.log("users received: " + project_data);
 
 			/* Project in HTML format for library */
 			new_project_list.push(
