@@ -20,7 +20,7 @@
 	height: auto;
 	width: auto/*1800px*/;
 	/* Margins and Alignment */
-	margin: 50px 50px 50px 50px;
+	margin: 20% 20% 20% 20%;
 	text-align: center;
 	/* Border */
 	border-style: solid;
@@ -297,7 +297,7 @@
 	display: inline-block;
 	/* Size */
 	height: 10px;
-	width: 2030px;
+	width: 90%;
 	/* Margins */
 	margin-left: 0px;
 }
