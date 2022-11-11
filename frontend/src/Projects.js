@@ -488,6 +488,10 @@ function ProjectAdder(props) {
 					Add Project
 				</button>
 			</div>
+			{/* Authorize Users */}
+			<dis className="new_project_column">
+				<input className=
+			</dis>
 		</div>
 	)
 }
