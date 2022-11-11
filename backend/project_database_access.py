@@ -24,13 +24,28 @@ def access_accounts():
     table = db['Accounts']
     return client, table
 
+def add_hwsets():
+    hw1={"id":1, "availability":150, "capacity":150}
+    hw2={"id":2, "availability":200, "capacity":200}
+
+    client, table=access_hwsets()
+    table.insert_one(json.loads(hw1))
+    table.insert_one(json.loads(hw2))
+    close_connection(client)
+
+def access_hwsets():
+    client, db=open_connection()
+    table=db['HW']
+    return client, table
+
 def close_connection(client: MongoClient):
     client.close()
 
 def get_all_projects():
     client, table = access_projects()
+    projects=table.find()
     close_connection(client)
-    return table.find()
+    return projects
 
 def try_login_user(user_id: str):
     # access account in database
@@ -50,6 +65,7 @@ def try_login_user(user_id: str):
     registered_user = user.User(user_info["_user_id"], user_info["_user_name"], user_info["_password"], False)
 
     # return user information
+    close_connection(client)
     return registered_user
 
 def try_register_user(user_id: str, user_name: str, password: str):
@@ -60,7 +76,7 @@ def try_register_user(user_id: str, user_name: str, password: str):
     # check if user id exists in database
     if len(list(user_data)) != 0:
         close_connection(client)
-        return False
+        return None
 
     # create user json
     new_user = user.User(user_id, user_name, password, True)
@@ -70,7 +86,7 @@ def try_register_user(user_id: str, user_name: str, password: str):
     table.insert_one(new_account)
 
     close_connection(client)
-    return True
+    return new_account
 
 def get_projects_by_user_id(user_id):
     # Access projects that user is authorized to use
@@ -82,18 +98,13 @@ def get_projects_by_user_id(user_id):
     data_projs = []
     data_idx = 0
     for proj in db_projs:
-        hw1 = proj["hw_set1"]
-        hw2 = proj["hw_set2"]
         data_proj = [
                         data_idx,
                         proj["name"],
                         proj["id"],
+                        proj['description'],
                         proj["auth_users"],
                         0,
-                        [
-                            [hw1["availability"], hw1["capacity"]],
-                            [hw2["availability"], hw2["capacity"]]
-                        ]
                     ]
         data_projs.append(data_proj)
         data_idx += 1
@@ -103,6 +114,7 @@ def get_projects_by_user_id(user_id):
 def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, table = access_projects()
     proj = table.find({"id":id})
+    client, hw = access_hwsets()
 
     if len(proj) == 0:
         close_connection(client)
@@ -116,13 +128,13 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
         return False
 
     if hw_set == '1':
-        availability=x.hw_set1.availability
-        newVal= {"$set":{"hw_set1.availability": math.max(0, availability-num)}}
+        availability=hw.find({"id": 1})[0].availability
+        newVal= {"$set":{"availability": math.max(0, availability-num)}}
     else:
-        availability=x.hw_set2.availability
-        newVal= {"$set":{"hw_set2.availability": math.max(0, availability-num)}}
+        availability=hw.find({"id": 2})[0].availability
+        newVal= {"$set":{"availability": math.max(0, availability-num)}}
 
-    table.update_one({"id":id}, newVal)
+    hw.update_one({"id":id}, newVal)
 
     close_connection(client)
     return True
@@ -130,6 +142,7 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, table = access_projects()
     proj = table.find({"id":id})
+    client, hw = access_hwsets()
 
     if len(proj) == 0:
         close_connection(client)
@@ -137,22 +150,21 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     x = proj[0]
 
-    auth_users = json.loads(x.auth_users)
+    auth_users= json.loads(x.auth_users)
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-        capacity = x.hw_set1.capacity
-        availability = x.hw_set1.availabilty
-        newVal = {"$set":{"hw_set1.availability":math.min(capacity, availability+num)}}
-
+        availability=hw.find({"id": 1})[0].availability
+        capacity=hw.find({"id":2})[0].capacity
+        newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
     else:
-        capacity = x.hw_set2.capacity
-        availability = x.hw_set2.availabilty
-        newVal = {"$set":{"hw_set2.availability":math.min(capacity, availability+num)}}
+        availability=hw.find({"id": 2})[0].availability
+        capacity=hw.find({"id":2})[0].capacity
+        newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
 
-    table.update_one({"id": id}, newVal)
+    hw.update_one({"id":id}, newVal)
 
     close_connection(client)
     return True
@@ -193,7 +205,7 @@ def leave_project(id: str, user: str):
 
     close_connection(client)
 
-def add_project(id: str, name: str, description: str, hw_set_1_qty: int, hw_set_2_qty: int, user_list: list) -> bool:
+def add_project(id: str, name: str, description: str, user_list: list) -> bool:
     client, table = access_projects()
 
     query = {"id": id}
@@ -204,10 +216,7 @@ def add_project(id: str, name: str, description: str, hw_set_1_qty: int, hw_set_
         close_connection(client)
         return False
 
-    hw_1 = hardware_set.HWSet(hw_set_1_qty)
-    hw_2 = hardware_set.HWSet(hw_set_2_qty)
-
-    proj_def = project.Project(id, name, description, hw_1, hw_2, user_list)
+    proj_def = project.Project(id, name, description, user_list)
     proj_json = json.loads(project.project_to_json(proj_def))
 
     table.insert_one(proj_json)
