@@ -24,14 +24,6 @@ def access_accounts():
     table = db['Accounts']
     return client, table
 
-def add_hwsets():
-    hw1={"id":1, "availability":150, "capacity":150}
-    hw2={"id":2, "availability":200, "capacity":200}
-
-    client, table=access_hwsets()
-    table.insert_one(json.loads(hw1))
-    table.insert_one(json.loads(hw2))
-    close_connection(client)
 
 def access_hwsets():
     client, db=open_connection()
