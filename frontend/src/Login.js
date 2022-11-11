@@ -5,7 +5,9 @@ import './Login.css';
 
 // Login: Displays the list of projects to page
 class Login extends React.Component {
-
+    state = {
+        innerWidth: window.innerWidth
+    }
     // render: Structure the login page
     render() {
         return (
@@ -31,8 +33,8 @@ class Login extends React.Component {
         const pass = document.getElementById("password_login").value;
 
         /* Make sure inputs are not empty */
-        if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
-			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
+        if (typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
+            if (id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
 
                 console.log("user id:", id)
                 console.log("username:", user);
@@ -50,18 +52,18 @@ class Login extends React.Component {
                         password: pass
                     })
                 })
-                .then(response => response.json())
-                .then(respJson => {
-                    console.log(respJson["status"]);
+                    .then(response => response.json())
+                    .then(respJson => {
+                        console.log(respJson["status"]);
 
-                    /* login (success or fail) */
-                    if(respJson["status"]) {
-                        this.props.handleLoginStatus(respJson["status"], id, user)
-                    }
-                    else {
-                        alert("Username, ID, or Password didn't match an account.")
-                    }
-                });
+                        /* login (success or fail) */
+                        if (respJson["status"]) {
+                            this.props.handleLoginStatus(respJson["status"], id, user)
+                        }
+                        else {
+                            alert("Username, ID, or Password didn't match an account.")
+                        }
+                    });
 
             }
         }
@@ -75,8 +77,8 @@ class Login extends React.Component {
         const pass = document.getElementById("password_login").value;
 
         /* Make sure inputs are not empty */
-        if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
-			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
+        if (typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
+            if (id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
 
                 console.log("user id:", id)
                 console.log("username:", user);
@@ -94,19 +96,19 @@ class Login extends React.Component {
                         password: pass
                     })
                 })
-                .then(response => response.json())
-                .then(respJson => {
-                    console.log(respJson["status"]);
+                    .then(response => response.json())
+                    .then(respJson => {
+                        console.log(respJson["status"]);
 
-                    /* login (success or fail) */
-                    if(respJson["status"]) {
-                        this.props.handleLoginStatus(respJson["status"], id, user)
-                        alert("Your account has been created! Remember your credentials!")
-                    }
-                    else {
-                        alert("User ID already exists. Try a different one.")
-                    }
-                });
+                        /* login (success or fail) */
+                        if (respJson["status"]) {
+                            this.props.handleLoginStatus(respJson["status"], id, user)
+                            alert("Your account has been created! Remember your credentials!")
+                        }
+                        else {
+                            alert("User ID already exists. Try a different one.")
+                        }
+                    });
 
             }
         }
@@ -210,4 +212,4 @@ function LoginUser(props) {
     )
 }
 
-export {Login};
+export { Login };
