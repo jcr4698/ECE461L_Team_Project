@@ -370,14 +370,14 @@ function Project(props) {
 				</div>
 			</div>
 			{/* Sets available */}
-			<div className="project_column">
-				<p className="hw_description">
-					HWSet1: {props.HW[0][0]}/{props.HW[0][1]}
-				</p>
-				<p className="hw_description">
-					HWSet2: {props.HW[1][0]}/{props.HW[1][1]}
-				</p>
-			</div>
+			{/*<div className="project_column">*/}
+			{/*	<p className="hw_description">*/}
+			{/*		HWSet1: {props.HW[0][0]}/{props.HW[0][1]}*/}
+			{/*	</p>*/}
+			{/*	<p className="hw_description">*/}
+			{/*		HWSet2: {props.HW[1][0]}/{props.HW[1][1]}*/}
+			{/*	</p>*/}
+			{/*</div>*/}
 			{/* Select HW */}
 			<div className="project_column">
 				<p className="hw_description">

@@ -6,7 +6,6 @@ from backend.project_database_access import *
 from backend.encrypt import encrypt
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build/')
-app = Flask(__name__, static_url_path='', static_folder='frontend/build/')
 
 # ----------------------------
 # BEGIN HOME PAGE
