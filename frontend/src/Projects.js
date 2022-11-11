@@ -8,6 +8,7 @@ const PROJ_NAME = 1;
 const USERS = 3;
 const HW_SELECT = 4;
 const HW_LIST = 5;
+const DESC = 6;
 
 /* HW Indices */
 
@@ -324,7 +325,7 @@ class ProjectData extends React.Component {
 							proj_data[1],
 							proj_data[2],
 							proj_data[3],
-							proj_data[4]
+							proj_data[4],
 							0,
 							[
 								[proj_data[5][0][0], proj_data[5][0][1]],
@@ -487,10 +488,6 @@ function ProjectAdder(props) {
 					onClick={props.onNewProjectClick} >
 					Add Project
 				</button>
-			</div>
-			{/* Authorize Users */}
-			<div className="new_project_column">
-				<input className="authorize_users"
 			</div>
 		</div>
 	)
