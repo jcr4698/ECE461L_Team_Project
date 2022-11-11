@@ -18,7 +18,9 @@
 	background: #0c1223;
 	/* Size */
 	height: auto;
-	width: auto/*1800px*/;
+	width: auto
+		/*1800px*/
+	;
 	/* Margins and Alignment */
 	margin: 50px 50px 50px 50px;
 	text-align: center;
@@ -35,7 +37,8 @@
 	background-color: #1b1b33;
 	/* Size */
 	min-height: 100px;
-	height: 100px;   /* auto //////////////////////////////////////////////////////*/
+	height: 100px;
+	/* auto //////////////////////////////////////////////////////*/
 	width: 1700px;
 	/* Margins */
 	margin-top: 0px;
@@ -278,16 +281,30 @@
 	font-size: 30px;
 	/* Margins */
 	margin-top: 5px;
-    vertical-align: top;
-    /* Settings: //////////////////////////////// Investigation for list of allowed users */
-    overflow-y: scroll;
-    resize: none;
-    height: 70px;
+	vertical-align: top;
+	/* Settings: //////////////////////////////// Investigation for list of allowed users */
+	overflow-y: scroll;
+	resize: none;
+	height: 70px;
 }
 
 .registered_user {
 	margin-top: 0px;
 	margin-bottom: 0px;
+}
+
+.project_description {
+	/* Fonts */
+	font-family: 'Courier New', Courier, monospace;
+	font-weight: oblique;
+	font-size: 18px;
+	/* Margins */
+	margin-top: 5px;
+	vertical-align: top;
+	/* Settings */
+	overflow-y: scroll;
+	resize: none;
+	height: 70px;
 }
 
 /* General Styles */

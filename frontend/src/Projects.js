@@ -24,7 +24,7 @@ class Projects extends React.Component {
 				<p className="project_title">
 					{this.props.curr_user}'s Projects
 				</p>
-				<ProjectData 
+				<ProjectData
 					curr_user={this.props.curr_user}
 					curr_id={this.props.curr_id}
 				/>
@@ -66,19 +66,19 @@ class ProjectData extends React.Component {
 				user_id: [this.props.curr_id]
 			})
 		})
-		.then(response => response.json())
-		.then(respJson => {
-			const data = JSON.parse(JSON.stringify(respJson));
-			const projects = data["Projects"]
-			console.log(projects)
-			for(let proj in projects) {	// API Should return all projects associated with user_id
-				console.log(projects[proj]);	// Test out projects are actually send
-				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
-			}
-			this.setState({
-				project_list: proj_list
+			.then(response => response.json())
+			.then(respJson => {
+				const data = JSON.parse(JSON.stringify(respJson));
+				const projects = data["Projects"]
+				console.log(projects)
+				for (let proj in projects) {	// API Should return all projects associated with user_id
+					console.log(projects[proj]);	// Test out projects are actually send
+					proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
+				}
+				this.setState({
+					project_list: proj_list
+				});
 			});
-		});
 	}
 
 	// render: Update page with the data stored
@@ -90,13 +90,13 @@ class ProjectData extends React.Component {
 		const project_list = this.state.project_list.slice();
 
 		/* Push data as formatted project to html list */
-		for(let i = 0; i < project_list.length; i++) {
+		for (let i = 0; i < project_list.length; i++) {
 			/* Get next project (data) */
 			const project_data = project_list[i];
 
 			/* Project in HTML format for library */
 			new_project_list.push(
-				this.renderProject(project_data[IDX], project_data[PROJ_NAME], project_data[USERS], project_data[HW_LIST])
+				this.renderProject(project_data[IDX], project_data[PROJ_NAME], project_data[USERS], project_data[DESC], project_data[HW_LIST])
 			);
 		}
 
@@ -116,13 +116,14 @@ class ProjectData extends React.Component {
 	/* functions */
 
 	// renderProject: Create a single formatted project with given data
-	renderProject(i, proj, usr, hw) {
+	renderProject(i, proj, usr, desc, hw) {
 		return (
 			<Project
 				key={i.toString()}  // "key" is recommended by console (don't use it much in project tho)
 				idx={i}
 				Name={proj}
 				Users={usr}
+				Description={desc}
 				HW={hw}
 				onCheckInClick={() => this.handleCheckIn(i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
@@ -166,7 +167,7 @@ class ProjectData extends React.Component {
 
 		/* Get input value (chk-in value) and make sure it's not empty */
 		const check_in_val = document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value;
-		if(check_in_val !== "" && !isNaN(check_in_val)) {
+		if (check_in_val !== "" && !isNaN(check_in_val)) {
 
 			/* Get current value and capacity of hw selection */
 			const hw_idx = project_list[i][HW_SELECT];
@@ -175,7 +176,7 @@ class ProjectData extends React.Component {
 			const curr_cap = curr_hw_list[hw_idx][HW_CAP];
 
 			/* Make sure chk-in value doesn't go above capacity */
-			if(curr_val + parseInt(check_in_val) <= curr_cap) {
+			if (curr_val + parseInt(check_in_val) <= curr_cap) {
 
 				/* Add chk-in value to current value */
 				project_list[i][HW_LIST][hw_idx][HW_VAL] += parseInt(check_in_val);
@@ -198,7 +199,7 @@ class ProjectData extends React.Component {
 
 		/* Make sure field is not empty */
 		const check_out_val = document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value;
-		if(check_out_val !== "" && !isNaN(check_out_val)) {
+		if (check_out_val !== "" && !isNaN(check_out_val)) {
 
 			/* Get current value and capacity of hw selection */
 			const hw_idx = project_list[i][HW_SELECT];
@@ -206,7 +207,7 @@ class ProjectData extends React.Component {
 			const curr_val = curr_hw_list[hw_idx][HW_VAL];
 
 			/* Make sure value doesn't go below zero */
-			if(curr_val - parseInt(check_out_val) >= 0) {
+			if (curr_val - parseInt(check_out_val) >= 0) {
 
 				/* Subtract chk-out value from current value */
 				curr_hw_list[hw_idx][HW_VAL] -= parseInt(check_out_val);
@@ -227,8 +228,8 @@ class ProjectData extends React.Component {
 		/* Get the new project info and make sure they are non-empty strings */
 		const project_name = document.getElementById("new_project_name").value;
 		const project_id = document.getElementById("new_project_id").value;
-		if(typeof project_name === 'string' && typeof project_id === 'string') {
-			if(project_name.trim() !== '' && project_id.trim() !== '') {
+		if (typeof project_name === 'string' && typeof project_id === 'string') {
+			if (project_name.trim() !== '' && project_id.trim() !== '') {
 
 				/* Get state push the new data into it */
 				const project_list = this.state.project_list.slice();
@@ -245,42 +246,42 @@ class ProjectData extends React.Component {
 						user_id: this.props.curr_id,
 						proj_id: project_id,
 						proj_data: [
-										project_list.length,
-										project_name,
-										project_id,
-										user_list,
-										0,
-										[
-											[100, 100],		// For now, it only adds 100 HW Sets
-											[100, 100]
-										]
-									]
+							project_list.length,
+							project_name,
+							project_id,
+							user_list,
+							0,
+							[
+								[100, 100],		// For now, it only adds 100 HW Sets
+								[100, 100]
+							]
+						]
 					})
 				})
-				.then(response => response.json())
-				.then(respJson => {
-					// console.log(project_id);
-					const data = JSON.parse(JSON.stringify(respJson));
-					console.log(data["Status"]);
-			
-					/* Update Project List */
-					if(data["Status"]) {
-						console.log("Project Added!");
-						project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
+					.then(response => response.json())
+					.then(respJson => {
+						// console.log(project_id);
+						const data = JSON.parse(JSON.stringify(respJson));
+						console.log(data["Status"]);
 
-						/* Set list with additional project data to state */
-						this.setState({
-							project_list: project_list
-						})
+						/* Update Project List */
+						if (data["Status"]) {
+							console.log("Project Added!");
+							project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
 
-						/* Clear input text fields */
-						document.getElementById("new_project_name").value = "";
-						document.getElementById("new_project_id").value = "";
-					}
-					else {
-						alert("Project ID already exists in database.")
-					}
-				});
+							/* Set list with additional project data to state */
+							this.setState({
+								project_list: project_list
+							})
+
+							/* Clear input text fields */
+							document.getElementById("new_project_name").value = "";
+							document.getElementById("new_project_id").value = "";
+						}
+						else {
+							alert("Project ID already exists in database.")
+						}
+					});
 			}
 		}
 	}
@@ -291,21 +292,21 @@ class ProjectData extends React.Component {
 		const project_id = document.getElementById("existing_project_id").value;
 		console.log("Looking for id:", project_id);
 
-		if(typeof project_id === 'string' && project_id.trim() !== '') {
+		if (typeof project_id === 'string' && project_id.trim() !== '') {
 
 			const project_list = this.state.project_list.slice();
 
 			/* Attempt adding project to json */
-				fetch("/project_join", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						user_id: this.props.curr_id,
-						proj_id: project_id
-					})
+			fetch("/project_join", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					user_id: this.props.curr_id,
+					proj_id: project_id
 				})
+			})
 				.then(response => response.json())
 				.then(respJson => {
 					// console.log(project_id);
@@ -316,19 +317,20 @@ class ProjectData extends React.Component {
 					const proj_data = data["Project"]
 
 					/* Update Project List */
-					if(data["Status"]) {
+					if (data["Status"]) {
 						console.log("Joined Project");
 						project_list.push([
-												proj_data[0],
-												proj_data[1],
-												proj_data[2],
-												proj_data[3],
-												0,
-												[
-													[proj_data[5][0][0], proj_data[5][0][1]],
-													[proj_data[5][1][0], proj_data[5][1][1]]
-												]
-											]);
+							proj_data[0],
+							proj_data[1],
+							proj_data[2],
+							proj_data[3],
+							proj_data[4]
+							0,
+							[
+								[proj_data[5][0][0], proj_data[5][0][1]],
+								[proj_data[5][1][0], proj_data[5][1][1]]
+							]
+						]);
 						console.log(project_list)
 
 						// /* Set list with additional project data to state */
@@ -369,6 +371,14 @@ function Project(props) {
 					{Registered_Users(props.Users)}
 				</div>
 			</div>
+
+			{/* Project Description */}
+			<div className="project_column">
+				<p className="project_description">
+					{props.Description}
+				</p>
+			</div>
+
 			{/* Sets available */}
 			<div className="project_column">
 				<p className="hw_description">
@@ -438,7 +448,7 @@ function Registered_Users(users) {
 	const curr_user_list = []
 
 	/* Push data as formatted project to html list */
-	for(let i = 0; i < users.length; i++) {
+	for (let i = 0; i < users.length; i++) {
 		// console.log(users[i])
 		curr_user_list.push(
 			<p className="registered_user" key={i}>
@@ -528,4 +538,4 @@ function ProjectJoiner(props) {
 	)
 }
 
-export {Projects};
+export { Projects };
