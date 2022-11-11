@@ -18,7 +18,7 @@
 	background: #0c1223;
 	/* Size */
 	height: auto;
-	width: auto/*1800px*/;
+	width: 65%/*1800px*/;
 	/* Margins and Alignment */
 	margin: 50px 50px 50px 50px;
 	text-align: center;
@@ -36,7 +36,7 @@
 	/* Size */
 	min-height: 100px;
 	height: 100px;   /* auto //////////////////////////////////////////////////////*/
-	width: 1700px;
+	width: 100%;
 	/* Margins */
 	margin-top: 0px;
 	margin-left: 0px;

@@ -217,3 +217,4 @@ def add_project(id: str, name: str, description: str, user_list: list) -> bool:
 
     return True
 
+try_register_user("jcr4698", "Jan", "password")
