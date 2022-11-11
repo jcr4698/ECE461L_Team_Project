@@ -114,16 +114,16 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     x = proj[0]
 
-    auth_users= json.loads(x.auth_users)
+    auth_users= json.loads(x["auth_users"])
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-        availability=hw.find({"id": 1})[0].availability
+        availability=hw.find({"id": 1})[0]["availability"]
         newVal= {"$set":{"availability": math.max(0, availability-num)}}
     else:
-        availability=hw.find({"id": 2})[0].availability
+        availability=hw.find({"id": 2})[0]["availability"]
         newVal= {"$set":{"availability": math.max(0, availability-num)}}
 
     hw.update_one({"id":id}, newVal)
@@ -142,18 +142,18 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     x = proj[0]
 
-    auth_users= json.loads(x.auth_users)
+    auth_users= json.loads(x["auth_users"])
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-        availability=hw.find({"id": 1})[0].availability
-        capacity=hw.find({"id":2})[0].capacity
+        availability=hw.find({"id": 1})[0]["availability"]
+        capacity=hw.find({"id":2})[0]["capacity"]
         newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
     else:
-        availability=hw.find({"id": 2})[0].availability
-        capacity=hw.find({"id":2})[0].capacity
+        availability=hw.find({"id": 2})[0]["availability"]
+        capacity=hw.find({"id":2})[0]["capacity"]
         newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
 
     hw.update_one({"id":id}, newVal)
@@ -172,7 +172,7 @@ def join_project(id: str, user: str):
 
     x = proj[0]
 
-    auth_users= json.loads(x.auth_users)
+    auth_users= json.loads(x["auth_users"])
     if user not in auth_users:
         auth_users.append(user)
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
@@ -190,7 +190,7 @@ def leave_project(id: str, user: str):
 
     x = proj[0]
 
-    auth_users= json.loads(x.auth_users)
+    auth_users= json.loads(x["auth_users"])
     if user in auth_users:
         auth_users.remove(user)
         table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
