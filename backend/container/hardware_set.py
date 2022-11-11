@@ -1,6 +1,7 @@
 class HWSet():
 
-    def __init__(self, qty: int):
+    def __init__(self, id, qty: int):
+        self.id=id
         self.capacity=qty
         self.availability=self.capacity
 
@@ -13,12 +14,5 @@ class HWSet():
     def get_checkedout_qty(self):
         return self.capacity - self.availability
 
-    def check_out(self, qty):
-        if(self.availability > qty):
-            self.availability -= qty
-        else:
-            self.availability=0
-            return -1
-
-    def check_in(self, qty):
-        self.availability += qty 
+    def get_id(self):
+        return self.id
