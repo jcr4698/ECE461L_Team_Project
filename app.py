@@ -47,7 +47,7 @@ def project_add():
         proj_hw2_qty = proj_hws[1][0]
 
         # attempt adding project
-        added = add_project(proj_id, proj_name, "Adding Test Example", proj_hw1_qty, proj_hw2_qty, [proj_user])
+        added = add_project(proj_id, proj_name, "Adding Test Example", [proj_user])
         if added:
             return jsonify({
                 "Status": True
