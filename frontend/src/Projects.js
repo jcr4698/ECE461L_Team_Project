@@ -84,10 +84,10 @@ class ProjectData extends React.Component {
 			}
 
 			/* Get hw sets */
-			const hw_sets = data["HWSet"];
-			console.log(hw_sets); //////////////////////////////////////////////////////////
-			const hw_set_1 = [100, 100];
-			const hw_set_2 = [90, 100];
+			//console.log(hw_sets); //////////////////////////////////////////////////////////
+			console.log(data["HW1"]);
+			const hw_set_1 = data["HW1"];
+			const hw_set_2 = data["HW2"];
 
 			/* Set state of frontend */
 			this.setState({

@@ -22,9 +22,15 @@ def project_get():
         req_user_id = data_json["user_id"]
         # Access all projects associated with user_id from database
         data_projs = get_projects_by_user_id(req_user_id)
+        # Access HW Set values
+        hw_sets = get_hw()
+        hw_set_1 = hw_sets[0]
+        hw_set_2 = hw_sets[1]
         return jsonify({
                             "Status": True,
-                            "Projects": data_projs
+                            "Projects": data_projs,
+                            "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
+                            "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
                         })
     return jsonify({
                     "Status": False
