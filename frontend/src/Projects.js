@@ -127,6 +127,7 @@ class ProjectData extends React.Component {
 				Name={proj}
 				Users={usr}
 				HW={hw}
+				onMoreInfoClick={() => this.handleMoreInfo(i)}
 				onCheckInClick={() => this.handleCheckIn(i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
 				onHWSelection={() => this.handleHWSelection(i)} />
@@ -147,7 +148,9 @@ class ProjectData extends React.Component {
 	}
 
 	/* Handlers */
-
+	handleMoreInfo(i){
+		alert("Insert User-Inputted Project Description Here")
+	}
 	// handleHWSelection: Update hw selection value when selection has changed
 	handleHWSelection(i) {
 		/* Get and modify the hw selection index */
@@ -368,9 +371,9 @@ function Project(props) {
 			{/* Project Description */}
 			<div className="project_column">
 				<button
-					className="proj_desc_btn"
+					className="join_btn"
 					type="button"
-					onClick={props.onNewProjectClick} >
+					onClick={props.onMoreInfoClick} >
 					More Info
 				</button>
 			</div>
