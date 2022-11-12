@@ -50,7 +50,8 @@ class ProjectData extends React.Component {
 			curr_id: this.props.curr_id,
 			curr_hw1: [0, 0],
 			curr_hw2: [0, 0],
-			project_list: []
+			project_list: [],
+			proj_desc: ""
 		};
 
 	}
@@ -193,8 +194,27 @@ class ProjectData extends React.Component {
 
 	/* Handlers */
 	handleMoreInfo(i){
-		alert("Insert User-Inputted Project Description Here")
+		//alert("Insert User-Inputted Project Description Here")
+			/* Obtain data fetched from route into library */
+		fetch("/get_project_description", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				proj_desc: ""
+			})
+		})
+		.then(response => response.json())
+		.then(respJson => {
+			const description = JSON.parse(JSON.stringify(respJson));
+			alert(description);
+			this.setState({
+				proj_desc: description
+			})
+		});
 	}
+
 	// handleHWSelection: Update hw selection value when selection has changed
 	handleHWSelection(i) {
 		/* Get and modify the hw selection index */
