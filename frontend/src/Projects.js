@@ -47,6 +47,8 @@ class ProjectData extends React.Component {
 			/* User Information */
 			curr_user: this.props.curr_user,
 			curr_id: this.props.curr_id,
+			curr_hw1: [0, 0],
+			curr_hw2: [0, 0],
 			project_list: []
 		};
 
@@ -69,15 +71,27 @@ class ProjectData extends React.Component {
 		})
 		.then(response => response.json())
 		.then(respJson => {
+
+			/* Get projects */
 			const data = JSON.parse(JSON.stringify(respJson));
-			const projects = data["Projects"]
-			console.log(projects)
+			const projects = data["Projects"];
+			console.log(projects);
 			for(let proj in projects) {	// API Should return all projects associated with user_id
 				console.log(projects[proj]);	// Test out projects are actually send
 				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
 			}
+
+			/* Get hw sets */
+			const hw_sets = data["HWSet"];
+			console.log(hw_sets); //////////////////////////////////////////////////////////
+			const hw_set_1 = [100, 100];
+			const hw_set_2 = [90, 100];
+
+			/* Set state of frontend */
 			this.setState({
-				project_list: proj_list
+				project_list: proj_list,
+				curr_hw1: hw_set_1,
+				curr_hw2: hw_set_2
 			});
 		});
 	}
@@ -95,8 +109,6 @@ class ProjectData extends React.Component {
 			/* Get next project (data) */
 			const project_data = project_list[i];
 
-			console.log("users received: " + project_data);
-
 			/* Project in HTML format for library */
 			new_project_list.push(
 				this.renderProject(project_data[IDX], project_data[PROJ_NAME], project_data[USERS], project_data[HW_LIST])
@@ -106,6 +118,8 @@ class ProjectData extends React.Component {
 		/* output the fully formatted project library */
 		return (
 			<div>
+				{this.renderHWSets(this.state.curr_hw1, this.state.curr_hw2)}
+				<div className="empty_space" />
 				{new_project_list}
 				<div className="empty_space" />
 				{this.renderNewProject()}
@@ -117,6 +131,34 @@ class ProjectData extends React.Component {
 	}
 
 	/* functions */
+
+	// renderHWSets: Format the hardware sets available and the capacity
+	renderHWSets(hw1, hw2) {
+		return (
+			<div>
+				<div className="hardware_sets">
+					<div className="hw_column">
+						<p className="hw_description">
+							HWSet1:
+						</p>
+						<p className="hw_description">
+							{hw1[0]}/{hw1[1]}
+						</p>
+					</div>
+				</div>
+				<div className="hardware_sets">
+					<div className="hw_column">
+						<p className="hw_description">
+							HWSet2:
+						</p>
+						<p className="hw_description">
+							{hw2[0]}/{hw2[1]}
+						</p>
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	// renderProject: Create a single formatted project with given data
 	renderProject(i, proj, usr, hw) {
@@ -141,6 +183,7 @@ class ProjectData extends React.Component {
 		)
 	}
 
+	// renderJoinProject: Create template that prompts user for project id to join
 	renderJoinProject() {
 		return (
 			<ProjectJoiner onProjectJoinClick={() => this.handleProjectJoin()} />
@@ -375,15 +418,6 @@ function Project(props) {
 					{Registered_Users(props.Users)}
 				</div>
 			</div>
-			{/* Sets available */}
-			{/*<div className="project_column">*/}
-			{/*	<p className="hw_description">*/}
-			{/*		HWSet1: {props.HW[0][0]}/{props.HW[0][1]}*/}
-			{/*	</p>*/}
-			{/*	<p className="hw_description">*/}
-			{/*		HWSet2: {props.HW[1][0]}/{props.HW[1][1]}*/}
-			{/*	</p>*/}
-			{/*</div>*/}
 			{/* Select HW */}
 			<div className="project_column">
 				<p className="hw_description">
