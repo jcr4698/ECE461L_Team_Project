@@ -96,7 +96,7 @@ def get_projects_by_user_id(user_id):
                         proj["id"],
                         proj['description'],
                         proj["auth_users"],
-                        0,
+                        1,
                     ]
         data_projs.append(data_proj)
         data_idx += 1
@@ -108,25 +108,29 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     proj = table.find({"id":id})
     client, hw = access_hwsets()
 
-    if len(proj) == 0:
+    extracted_proj = list(proj)
+
+    if len(extracted_proj) == 0:
         close_connection(client)
         return False
 
-    x = proj[0]
+    proj_data = extracted_proj[0]
 
-    auth_users= json.loads(x["auth_users"])
+    auth_users = proj_data["auth_users"]
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-        availability=hw.find({"id": 1})[0]["availability"]
-        newVal= {"$set":{"availability": math.max(0, availability-num)}}
+        hw1 = hw.find({"id": 1})[0]
+        availability = hw1["availability"]
+        newVal = {"$set": {"availability": max(0, availability-num)}}
     else:
-        availability=hw.find({"id": 2})[0]["availability"]
-        newVal= {"$set":{"availability": math.max(0, availability-num)}}
+        hw2 = hw.find({"id": 2})[0]
+        availability = hw2["availability"]
+        newVal = {"$set": {"availability": max(0, availability-num)}}
 
-    hw.update_one({"id":id}, newVal)
+    hw.update_one({"id": id}, newVal)
 
     close_connection(client)
     return True
@@ -136,27 +140,31 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     proj = table.find({"id":id})
     client, hw = access_hwsets()
 
-    if len(proj) == 0:
+    extracted_proj = list(proj)
+
+    if len(extracted_proj) == 0:
         close_connection(client)
         return False
 
-    x = proj[0]
+    proj_data = extracted_proj[0]
 
-    auth_users= json.loads(x["auth_users"])
+    auth_users = proj_data["auth_users"]
     if user not in auth_users:
         close_connection(client)
         return False
 
     if hw_set == '1':
-        availability=hw.find({"id": 1})[0]["availability"]
-        capacity=hw.find({"id":2})[0]["capacity"]
-        newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
+        hw1 = hw.find({"id": 1})[0]
+        availability = hw1["availability"]
+        capacity = hw1["capacity"]
+        newVal = {"$set": {"availability": min(availability+num, capacity)}}
     else:
-        availability=hw.find({"id": 2})[0]["availability"]
-        capacity=hw.find({"id":2})[0]["capacity"]
-        newVal= {"$set":{"availability": math.min(availability+num, capacity)}}
+        hw2 = hw.find({"id": 2})[0]
+        availability = hw2["availability"]
+        capacity = hw2["capacity"]
+        newVal = {"$set": {"availability": min(availability+num, capacity)}}
 
-    hw.update_one({"id":id}, newVal)
+    hw.update_one({"id": id}, newVal)
 
     close_connection(client)
     return True
@@ -218,3 +226,4 @@ def add_project(id: str, name: str, description: str, user_list: list) -> bool:
     return True
 
 # try_register_user("jcr4698", "Jan", "password")
+# checkout_hw("proj_ex", "2", 1, "jcr4698")

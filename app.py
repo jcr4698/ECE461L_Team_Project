@@ -181,31 +181,47 @@ def register_user():
 
 
 @app.route('/check_in', methods=['POST'])
-def check_in(id: str, hw_set: int, num: int, user: str):
-    if checkin_hw(id, hw_set, num, user) == True:
+def check_in():
+    # Get request
+    hw_info = request.get_json()
+    proj_id = hw_info["proj_id"]
+    hw_set = hw_info["hw_set"]
+    check_in_val = hw_info["check_val"]
+    user_id = hw_info["user_id"]
+
+    print(proj_id, ":", hw_set, ":", check_in_val, ":", user_id)
+
+    # Check in appropriate units of hardware
+    if checkin_hw(proj_id, hw_set, check_in_val, user_id):
         return {
             "status": True,
-            "message": "Successfully checked in " + num + " hardware units into hardware set " + hw_set
+            "message": "Successfully checked in " + check_in_val + " hardware units into hardware set " + hw_set
         }
-    else:
-        return {
-            "status": False,
-            "message": "Failed to check in " + num + " hardware units into hardware set " + hw_set
-        }
+    return {
+        "status": False,
+        "message": "Failed to check in " + check_in_val + " hardware units into hardware set " + hw_set
+    }
     
 
 @app.route('/check_out', methods=['POST'])
-def check_out(id: str, hw_set: int, num: int, user: str):
-    if checkout_hw(id, hw_set, num, user) == True:
+def check_out():
+    # Get request
+    hw_info = request.get_json()
+    proj_id = hw_info["proj_id"]
+    hw_set = hw_info["hw_set"]
+    check_out_val = hw_info["check_val"]
+    user_id = hw_info["user_id"]
+
+    # Check out appropriate units of hardware
+    if checkout_hw(proj_id, hw_set, check_out_val, user_id):
         return {
             "status": True,
-            "message": "Successfully checked out " + num + " hardware units from hardware set " + hw_set
+            "message": "Successfully checked out " + check_out_val + " hardware units from hardware set " + hw_set
         }
-    else:
-        return {
-            "status": False,
-            "message": "Failed to check out " + num + " hardware units from hardware set " + hw_set
-        }
+    return {
+        "status": False,
+        "message": "Failed to check out " + check_out_val + " hardware units from hardware set " + hw_set
+    }
 
 @app.route('/get_project_description', methods=['GET'])
 def get_proj_description(id: str):

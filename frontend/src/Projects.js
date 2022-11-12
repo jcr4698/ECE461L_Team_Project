@@ -5,6 +5,7 @@ import './Projects.css';
 
 const IDX = 0;
 const PROJ_NAME = 1;
+const PROJ_ID = 2;
 const DESC = 3;
 const USERS = 4;
 const HW_SELECT = 5;
@@ -198,9 +199,10 @@ class ProjectData extends React.Component {
 	handleHWSelection(i) {
 		/* Get and modify the hw selection index */
 		const project_list = this.state.project_list.slice();
-		console.log(project_list);
-		var curr_hw_selection = parseInt(document.getElementById("hw_set:" + project_list[i][1]).value);
-		project_list[i][4] = curr_hw_selection;
+		// console.log(project_list);
+		var curr_hw_selection = parseInt(document.getElementById("hw_set:" + project_list[i][PROJ_NAME]).value);
+		project_list[i][HW_SELECT] = curr_hw_selection;
+		console.log(curr_hw_selection);
 
 		/* Set the hw selection index to state */
 		this.setState({
@@ -218,25 +220,63 @@ class ProjectData extends React.Component {
 		if(check_in_val !== "" && !isNaN(check_in_val)) {
 
 			/* Get current value and capacity of hw selection */
-			const hw_idx = project_list[i][HW_SELECT];
-			const curr_hw_list = project_list[i][HW_LIST]
-			const curr_val = curr_hw_list[hw_idx][HW_VAL];
-			const curr_cap = curr_hw_list[hw_idx][HW_CAP];
+			const proj_id = project_list[i][PROJ_ID];
+			const proj_hw_idx = project_list[i][HW_SELECT];
+
+			/* Obtain data fetched from route into library */
+			fetch("/check_in", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					proj_id: proj_id,
+					hw_set: proj_hw_idx,
+					check_val: check_in_val,
+					user_id: this.state.curr_id
+				})
+			})
+			.then(response => response.json())
+			.then(respJson => {
+
+				console.log(respJson);
+				// /* Get projects */
+				// const data = JSON.parse(JSON.stringify(respJson));
+				// const projects = data["Projects"];
+				// console.log(projects);
+				// for(let proj in projects) {	// API Should return all projects associated with user_id
+				// 	console.log(projects[proj]);	// Test out projects are actually send
+				// 	proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
+				// }
+				//
+				// /* Get hw sets */
+				// const hw_sets = data["HWSet"];
+				// console.log(hw_sets); //////////////////////////////////////////////////////////
+				// const hw_set_1 = [100, 100];
+				// const hw_set_2 = [90, 100];
+				//
+				// /* Set state of frontend */
+				// this.setState({
+				// 	project_list: proj_list,
+				// 	curr_hw1: hw_set_1,
+				// 	curr_hw2: hw_set_2
+				// });
+			});
 
 			/* Make sure chk-in value doesn't go above capacity */
-			if(curr_val + parseInt(check_in_val) <= curr_cap) {
-
-				/* Add chk-in value to current value */
-				project_list[i][HW_LIST][hw_idx][HW_VAL] += parseInt(check_in_val);
-
-				/* Set chk-in values to state */
-				this.setState({
-					project_list: project_list
-				});
-
-				/* Clear input text fields */
-				document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value = "";
-			}
+			// if(curr_val + parseInt(check_in_val) <= curr_cap) {
+			//
+			// 	/* Add chk-in value to current value */
+			// 	project_list[i][HW_LIST][hw_idx][HW_VAL] += parseInt(check_in_val);
+			//
+			// 	/* Set chk-in values to state */
+			// 	this.setState({
+			// 		project_list: project_list
+			// 	});
+			//
+			// 	/* Clear input text fields */
+			// 	document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value = "";
+			// }
 		}
 	}
 
@@ -250,24 +290,63 @@ class ProjectData extends React.Component {
 		if(check_out_val !== "" && !isNaN(check_out_val)) {
 
 			/* Get current value and capacity of hw selection */
-			const hw_idx = project_list[i][HW_SELECT];
-			const curr_hw_list = project_list[i][HW_LIST]
-			const curr_val = curr_hw_list[hw_idx][HW_VAL];
+			const proj_id = project_list[i][PROJ_ID];
+			const proj_hw_idx = project_list[i][HW_SELECT];
 
-			/* Make sure value doesn't go below zero */
-			if(curr_val - parseInt(check_out_val) >= 0) {
+			/* Obtain data fetched from route into library */
+			fetch("/check_out", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					proj_id: proj_id,
+					hw_set: proj_hw_idx,
+					check_val: check_out_val,
+					user_id: this.state.curr_id
+				})
+			})
+			.then(response => response.json())
+			.then(respJson => {
 
-				/* Subtract chk-out value from current value */
-				curr_hw_list[hw_idx][HW_VAL] -= parseInt(check_out_val);
+				console.log(respJson);
+				// /* Get projects */
+				// const data = JSON.parse(JSON.stringify(respJson));
+				// const projects = data["Projects"];
+				// console.log(projects);
+				// for(let proj in projects) {	// API Should return all projects associated with user_id
+				// 	console.log(projects[proj]);	// Test out projects are actually send
+				// 	proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
+				// }
+				//
+				// /* Get hw sets */
+				// const hw_sets = data["HWSet"];
+				// console.log(hw_sets); //////////////////////////////////////////////////////////
+				// const hw_set_1 = [100, 100];
+				// const hw_set_2 = [90, 100];
+				//
+				// /* Set state of frontend */
+				// this.setState({
+				// 	project_list: proj_list,
+				// 	curr_hw1: hw_set_1,
+				// 	curr_hw2: hw_set_2
+				// });
+			});
 
-				/* Set chk-in values to state */
-				this.setState({
-					project_list: project_list
-				});
-
-				/* Clear input text fields */
-				document.getElementById("check_out:" + project_list[i][1]).value = "";
-			}
+			// /* Make sure value doesn't go below zero */
+			// if(curr_val - parseInt(check_out_val) >= 0) {
+			//
+			// 	/* Subtract chk-out value from current value */
+			// 	curr_hw_list[hw_idx][HW_VAL] -= parseInt(check_out_val);
+			//
+			// 	/* Set chk-in values to state */
+			// 	this.setState({
+			// 		project_list: project_list
+			// 	});
+			//
+			// 	/* Clear input text fields */
+			// 	document.getElementById("check_out:" + project_list[i][1]).value = "";
+			// }
 		}
 	}
 
@@ -298,7 +377,7 @@ class ProjectData extends React.Component {
 										project_name,
 										project_id,
 										user_list,
-										0,
+										1,
 										[
 											[100, 100],		// For now, it only adds 100 HW Sets
 											[100, 100]
@@ -315,7 +394,7 @@ class ProjectData extends React.Component {
 					/* Update Project List */
 					if(data["Status"]) {
 						console.log("Project Added!");
-						project_list.push([project_list.length, project_name, project_id, user_list, 0, [[100, 100], [100, 100]]]);
+						project_list.push([project_list.length, project_name, project_id, user_list, 1, [[100, 100], [100, 100]]]);
 
 						/* Set list with additional project data to state */
 						this.setState({
@@ -372,7 +451,7 @@ class ProjectData extends React.Component {
 												proj_data[1],
 												proj_data[2],
 												proj_data[3],
-												0,
+												1,
 												[
 													[proj_data[5][0][0], proj_data[5][0][1]],
 													[proj_data[5][1][0], proj_data[5][1][1]]
@@ -428,10 +507,10 @@ function Project(props) {
 					id={"hw_set:" + props.Name}
 					name="hwset"
 					onChange={props.onHWSelection} >
-					<option value="0">
+					<option value="1">
 						HWSet 1
 					</option>
-					<option value="1">
+					<option value="2">
 						HWSet 2
 					</option>
 				</select>
