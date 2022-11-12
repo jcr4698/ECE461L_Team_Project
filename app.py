@@ -208,7 +208,7 @@ def check_out(id: str, hw_set: int, num: int, user: str):
         }
 
 @app.route('/get_project_description', methods=['GET'])
-def get_project_description(id: str):
+def get_proj_description(id: str):
     project_descr = get_project_description(id)
     if project_descr != None:
         return {
