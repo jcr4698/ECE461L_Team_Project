@@ -49,7 +49,7 @@
 
 .project_column {
 	/* Size */
-	width: 16.48%;
+	width: 14.1%;
 	/* Margins and Alignments */
 	margin-top: 10px;
 	float: left;
@@ -152,6 +152,23 @@
 	margin-top: 3px;
 	margin-bottom: 10px;
 	vertical-align: top;
+	/* Border */
+	border-color: #000000;
+	border-style: solid;
+	border-radius: 5px;
+}
+
+.proj_desc_btn {
+	/* Font */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 19px;
+	/* Size */
+	height: 30px;
+	width: 150px;
+	/* Margins and Alignments */
+	margin-top: 25px;
+	margin-bottom: 25px;
+	vertical-align: middle;
 	/* Border */
 	border-color: #000000;
 	border-style: solid;

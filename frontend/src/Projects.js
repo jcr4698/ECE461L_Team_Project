@@ -365,6 +365,15 @@ function Project(props) {
 					{props.Name}
 				</p>
 			</div>
+			{/* Project Description */}
+			<div className="project_column">
+				<button
+					className="proj_desc_btn"
+					type="button"
+					onClick={props.onNewProjectClick} >
+					More Info
+				</button>
+			</div>
 			{/* Users with Access */}
 			<div className="project_column">
 				<div className="registered_user_list">
