@@ -103,6 +103,12 @@ def get_projects_by_user_id(user_id):
 
     return data_projs
 
+def get_hw():
+    client, hw_table = access_hwsets()
+    hw = hw_table.find()
+    extracted_proj = list(hw)
+    return extracted_proj
+
 def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, table = access_projects()
     proj = table.find({"id":id})
@@ -242,3 +248,4 @@ def get_project_description(projectId):
     close_connection(client)
     return description
 
+get_hw()
