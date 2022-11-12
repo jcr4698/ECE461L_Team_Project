@@ -210,7 +210,7 @@ class ProjectData extends React.Component {
 		.then(response => response.json())
 		.then(respJson => {
 			const description = JSON.parse(JSON.stringify(respJson));
-			alert(description["project_description"]);
+			alert("PROJECT DESCRIPTION: " + description["project_description"]);
 			this.setState({
 				proj_desc: description["project_description"]
 			})
