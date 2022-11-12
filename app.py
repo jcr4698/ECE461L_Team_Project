@@ -207,6 +207,22 @@ def check_out(id: str, hw_set: int, num: int, user: str):
             "message": "Failed to check out " + num + " hardware units from hardware set " + hw_set
         }
 
+@app.route('/get_project_description', methods=['GET'])
+def get_project_description(id: str):
+    project_descr = get_project_description(id)
+    if project_descr != None:
+        return {
+            "status": True,
+            "project_description": project_descr,
+            "message": "Received project description for project " + id
+        }
+    else:
+        return {
+            "status": False,
+            "project_description": None,
+            "message": "No project description"
+        }
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
 
