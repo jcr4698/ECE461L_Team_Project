@@ -195,22 +195,24 @@ class ProjectData extends React.Component {
 	/* Handlers */
 	handleMoreInfo(i){
 		//alert("Insert User-Inputted Project Description Here")
-			/* Obtain data fetched from route into library */
+		const project_list = this.state.project_list.slice()
+		/* Obtain data fetched from route into library */
 		fetch("/get_project_description", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				proj_desc: ""
+				proj_desc: "",
+				proj_id: project_list[i][PROJ_ID]
 			})
 		})
 		.then(response => response.json())
 		.then(respJson => {
 			const description = JSON.parse(JSON.stringify(respJson));
-			alert(description);
+			alert(description["project_description"]);
 			this.setState({
-				proj_desc: description
+				proj_desc: description["project_description"]
 			})
 		});
 	}

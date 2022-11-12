@@ -223,14 +223,18 @@ def check_out():
         "message": "Failed to check out " + check_out_val + " hardware units from hardware set " + hw_set
     }
 
-@app.route('/get_project_description', methods=['GET'])
-def get_proj_description(id: str):
-    project_descr = get_project_description(id)
+@app.route('/get_project_description', methods=['POST'])
+def get_proj_description():
+    # Get request
+    hw_info = request.get_json()
+    proj_id = hw_info["proj_id"]
+    print(proj_id)
+    project_descr = get_project_description(proj_id)
     if project_descr != None:
         return {
             "status": True,
             "project_description": project_descr,
-            "message": "Received project description for project " + id
+            "message": "Received project description for project " + proj_id
         }
     else:
         return {
