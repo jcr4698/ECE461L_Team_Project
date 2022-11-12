@@ -368,15 +368,6 @@ function Project(props) {
 					{props.Name}
 				</p>
 			</div>
-			{/* Project Description */}
-			<div className="project_column">
-				<button
-					className="join_btn"
-					type="button"
-					onClick={props.onMoreInfoClick} >
-					More Info
-				</button>
-			</div>
 			{/* Users with Access */}
 			<div className="project_column">
 				<div className="registered_user_list">
@@ -433,6 +424,15 @@ function Project(props) {
 					type="button"
 					onClick={props.onCheckOutClick} >
 					Check Out
+				</button>
+			</div>
+			{/* Project Description */}
+			<div className="project_column">
+				<button
+					className="join_btn"
+					type="button"
+					onClick={props.onMoreInfoClick} >
+					More Info
 				</button>
 			</div>
 			{/* Join or Leave */}
