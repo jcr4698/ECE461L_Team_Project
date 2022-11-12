@@ -225,5 +225,20 @@ def add_project(id: str, name: str, description: str, user_list: list) -> bool:
 
     return True
 
-# try_register_user("jcr4698", "Jan", "password")
-# checkout_hw("proj_ex", "2", 1, "jcr4698")
+def get_project_description(projectId):
+    client, table=access_projects()
+
+    query={"id":projectId}
+    results=table.find(query)
+
+    project_data = list(results)
+    if len(project_data) == 0:
+        close_connection(client)
+        return None
+
+    x=project_data[0]
+    description=x["description"]
+
+    close_connection(client)
+    return description
+
