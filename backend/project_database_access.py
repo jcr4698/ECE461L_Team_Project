@@ -26,7 +26,6 @@ def access_accounts():
     table = db['Accounts']
     return client, table
 
-
 def access_hwsets():
     client, db=open_connection()
     table=db['HW']
@@ -110,6 +109,7 @@ def get_hw():
     client, hw_table = access_hwsets()
     hw = hw_table.find()
     extracted_proj = list(hw)
+    close_connection(client)
     return extracted_proj
 
 def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
