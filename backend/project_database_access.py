@@ -247,4 +247,3 @@ def get_project_description(projectId):
 
     close_connection(client)
     return description
-

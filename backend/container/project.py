@@ -1,4 +1,3 @@
-from backend.container import hardware_set
 import json
 from json import JSONEncoder
 from types import SimpleNamespace
