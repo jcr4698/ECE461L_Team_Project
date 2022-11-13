@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import certifi
 import json
-import math
 
 from .container import user
 from .container import project
@@ -116,6 +115,7 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     client, hw = access_hwsets()
 
     extracted_proj = list(proj)
+    #print(extracted_proj)
 
     if len(extracted_proj) == 0:
         close_connection(client)
@@ -124,30 +124,46 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     proj_data = extracted_proj[0]
 
     auth_users = proj_data["auth_users"]
-    if user not in auth_users:
+    
+    inUsers=False
+    for auth in auth_users:
+        if str(auth) == str(user):
+            inUsers=True
+            break
+
+    if not inUsers:
         close_connection(client)
         return False
+    
 
-    if hw_set == '1':
-        hw1 = hw.find({"id": 1})[0]
+    #print(list(hw.find({"id": 1}))[0])
+
+    if hw_set == 1:
+        #print('in hwset1')
+        hw1 = list(hw.find({"id": 1}))[0]
         availability = hw1["availability"]
         newVal = {"$set": {"availability": max(0, availability - num)}}
+        hw.update_one({"id":1}, newVal)
     else:
-        hw2 = hw.find({"id": 2})[0]
+        hw2 = list(hw.find({"id": 2}))[0]
         availability = hw2["availability"]
         newVal = {"$set": {"availability": max(0, availability - num)}}
+        hw.update_one({"id":2}, newVal)
 
-    hw.update_one({"id": id}, newVal)
+
+    #print(hw.find({"id": 1})[0])
 
     close_connection(client)
     return True
 
 def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
+
     client, table = access_projects()
     proj = table.find({"id":id})
     client, hw = access_hwsets()
 
     extracted_proj = list(proj)
+    #print(extracted_proj)
 
     if len(extracted_proj) == 0:
         close_connection(client)
@@ -156,22 +172,36 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     proj_data = extracted_proj[0]
 
     auth_users = proj_data["auth_users"]
-    if user not in auth_users:
+    
+    inUsers=False
+    for auth in auth_users:
+        if str(auth) == str(user):
+            inUsers=True
+            break
+
+    if not inUsers:
         close_connection(client)
         return False
+    
 
-    if hw_set == '1':
-        hw1 = hw.find({"id": 1})[0]
+    #print(list(hw.find({"id": 1}))[0])
+
+    if hw_set == 1:
+        #print('in hwset1')
+        hw1 = list(hw.find({"id": 1}))[0]
         availability = hw1["availability"]
-        capacity = hw1["capacity"]
-        newVal = {"$set": {"availability": min(availability + num, capacity)}}
+        capacity=hw1["capacity"]
+        newVal = {"$set": {"availability": min(capacity, availability + num)}}
+        hw.update_one({"id":1}, newVal)
     else:
-        hw2 = hw.find({"id": 2})[0]
+        hw2 = list(hw.find({"id": 2}))[0]
         availability = hw2["availability"]
-        capacity = hw2["capacity"]
-        newVal = {"$set": {"availability": min(availability + num, capacity)}}
+        capacity=hw1["capacity"]
+        newVal = {"$set": {"availability": min(capacity, availability + num)}}
+        hw.update_one({"id":2}, newVal)
 
-    hw.update_one({"id": id}, newVal)
+
+    #print(hw.find({"id": 1})[0])
 
     close_connection(client)
     return True
