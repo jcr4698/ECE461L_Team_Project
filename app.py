@@ -182,6 +182,9 @@ def check_in():
 
     # Check in appropriate units of hardware
     if checkin_hw(proj_id, hw_set, check_in_val, user_id):
+        hw_sets = get_hw()
+        hw_set_1 = hw_sets[0]
+        hw_set_2 = hw_sets[1]
         return {
             "status": True,
             "message": "Successfully checked in " + str(check_in_val) + " hardware units into hardware set " + str(hw_set),
@@ -210,6 +213,10 @@ def check_out():
 
     # Check out appropriate units of hardware
     if checkout_hw(proj_id, hw_set, check_out_val, user_id):
+        hw_sets = get_hw()
+        hw_set_1 = hw_sets[0]
+        hw_set_2 = hw_sets[1]
+
         return {
             "status": True,
             "message": "Successfully checked out " + str(check_out_val) + " hardware units from hardware set " + str(hw_set),
