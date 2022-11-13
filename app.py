@@ -41,17 +41,14 @@ def project_add():
     if data_json is not None:
 
         # get project information
-        proj_user = data_json["user_id"]
         proj_id = data_json["proj_id"]
         proj_data = data_json["proj_data"]
         proj_name = proj_data[1]
         proj_user_list = proj_data[3]
-        # proj_hws = proj_data[5]
-        # proj_hw1_qty = proj_hws[0][0]
-        # proj_hw2_qty = proj_hws[1][0]
+        proj_desc = data_json["proj_desc"]
 
         # attempt adding project
-        added = add_project(proj_id, proj_name, "Adding Test Example", [proj_user])
+        added = add_project(proj_id, proj_name, proj_desc, proj_user_list)
         if added:
             return jsonify({
                 "Status": True

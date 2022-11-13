@@ -345,6 +345,19 @@ class ProjectData extends React.Component {
 				const user_list = [];
 				user_list.push(this.state.curr_id);
 
+				/* Add additional users */
+				const list_input = document.getElementById("new_project_users").value;
+				if(typeof list_input == 'string' && list_input.trim() != '') {
+					const users_arr = list_input.split(",").map(String);
+					for(let i = 0; i < users_arr.length; i++) {
+						const auth_user = users_arr[i].trim();
+						if(auth_user != '') {
+							user_list.push(auth_user);
+						}
+					}
+				}
+				const proj_desc = document.getElementById("new_project_description").value;
+
 				/* Attempt adding project to json */
 				fetch("/project_add", {
 					method: "POST",
@@ -364,7 +377,8 @@ class ProjectData extends React.Component {
 											[100, 100],		// For now, it only adds 100 HW Sets
 											[100, 100]
 										]
-									]
+									],
+						proj_desc: proj_desc
 					})
 				})
 				.then(response => response.json())
@@ -386,6 +400,8 @@ class ProjectData extends React.Component {
 						/* Clear input text fields */
 						document.getElementById("new_project_name").value = "";
 						document.getElementById("new_project_id").value = "";
+						document.getElementById("new_project_description").value = "";
+						document.getElementById("new_project_users").value = "";
 					}
 					else {
 						alert("Project ID already exists in database.")
@@ -564,7 +580,7 @@ function Registered_Users(users) {
 // ProjectAdder: HTML that gives the user the option to add a project to the library
 function ProjectAdder(props) {
 	return (
-		<div className="project">
+		<div className="new_project">
 			{/* Title */}
 			<div className="new_project_column">
 				<input className="new_project_input"
@@ -587,6 +603,20 @@ function ProjectAdder(props) {
 					onClick={props.onNewProjectClick} >
 					Add Project
 				</button>
+			</div>
+			{/* Users */}
+			<div className="new_project_description">
+				<input className="project_description"
+					id="new_project_users"
+					type="text"
+					placeholder="Enter Authorized Users (Separated by a comma)" />
+			</div>
+			{/* Description */}
+			<div className="new_project_description">
+				<input className="project_description"
+					id="new_project_description"
+					type="text"
+					placeholder="Enter Project Description" />
 			</div>
 		</div>
 	)

@@ -100,6 +100,24 @@
 	text-align: center;
 }
 
+.new_project {
+	/* Structure and Settings */
+	display: inline-block;
+	background-color: #1b1b33;
+	/* Size */
+	min-height: 100px;
+	/*height: 100px;    auto //////////////////////////////////////////////////////*/
+	width: 85%;
+	/* Margins */
+	margin-top: 0px;
+	margin-left: 0px;
+	/* Border */
+	border-style: solid;
+	border-color: #29c0b0;
+	border-width: 3px;
+	border-radius: 10px;
+}
+
 .new_project_column {
 	/* Size */
 	width: 33.33%;
@@ -107,6 +125,34 @@
 	margin-top: 10px;
 	float: left;
 	text-align: center;
+}
+
+.new_project_description {
+	/* Size */
+	width: 85%;
+	/* Margins and Alignments */
+	margin-top: 10px;
+	float: left;
+	text-align: center;
+}
+
+.project_description {
+	/* Font */
+	font-size: 25px;
+	/* Size */
+	height: 30px;
+	width: 100%;
+	/* Margins and Alignments */
+	padding: 5px 20px;
+	margin-top: 16px;
+	margin-bottom: 10px;
+	vertical-align: middle;
+	text-align: center;
+	/* Border */
+	border-color: aquamarine;
+	border-style: solid;
+	border-width: 3px;
+	border-radius: 5px;
 }
 
 .project_name {
