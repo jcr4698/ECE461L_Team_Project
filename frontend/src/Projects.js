@@ -275,7 +275,7 @@ class ProjectData extends React.Component {
 					curr_hw2: hw_set_2
 				});
 
-				document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value = "";
+				document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value = "";
 
 			});
 		}
