@@ -2,8 +2,8 @@ from pymongo import MongoClient
 import certifi
 import json
 
-from .container import user
-from .container import project
+from backend.container import user
+from backend.container import project
 
 
 def open_connection():
@@ -82,8 +82,13 @@ def try_register_user(user_id: str, user_name: str, password: str):
 def get_projects_by_user_id(user_id):
     # Access projects that user is authorized to use
     client, table = access_projects()
-    db_projs = list(table.find({"auth_users": {"$in": [user_id]}}))
-    close_connection(client)
+
+    if str(type(user_id)) == "<class 'str'>":
+        db_projs = list(table.find({"auth_users": {"$in": [user_id]}}))
+        close_connection(client)
+    else:
+        db_projs = list(table.find({"auth_users": {"$in": user_id}}))
+        close_connection(client)
 
     # Put projects in array of project array
     data_projs = []
@@ -159,11 +164,10 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     client, table = access_projects()
-    proj = table.find({"id":id})
+    proj = table.find({"id": id})
     client, hw = access_hwsets()
 
     extracted_proj = list(proj)
-    #print(extracted_proj)
 
     if len(extracted_proj) == 0:
         close_connection(client)
@@ -173,32 +177,30 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
     auth_users = proj_data["auth_users"]
     
-    inUsers=False
+    inUsers = False
     for auth in auth_users:
         if str(auth) == str(user):
-            inUsers=True
+            inUsers = True
             break
 
     if not inUsers:
         close_connection(client)
         return False
-    
 
-    #print(list(hw.find({"id": 1}))[0])
 
     if hw_set == 1:
         #print('in hwset1')
         hw1 = list(hw.find({"id": 1}))[0]
         availability = hw1["availability"]
-        capacity=hw1["capacity"]
+        capacity = hw1["capacity"]
         newVal = {"$set": {"availability": min(capacity, availability + num)}}
-        hw.update_one({"id":1}, newVal)
+        hw.update_one({"id": 1}, newVal)
     else:
         hw2 = list(hw.find({"id": 2}))[0]
         availability = hw2["availability"]
-        capacity=hw1["capacity"]
+        capacity = hw2["capacity"]
         newVal = {"$set": {"availability": min(capacity, availability + num)}}
-        hw.update_one({"id":2}, newVal)
+        hw.update_one({"id": 2}, newVal)
 
 
     #print(hw.find({"id": 1})[0])
@@ -208,37 +210,44 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
 
 def join_project(id: str, user: str):
     client, table = access_projects()
-
     proj = table.find({"id": id})
 
-    if len(proj) == 0:
+    extracted_proj = list(proj)
+
+    if len(extracted_proj) == 0:
         close_connection(client)
-        return False
+        return None
 
-    x = proj[0]
+    proj_data = extracted_proj[0]
 
-    auth_users= json.loads(x["auth_users"])
+    auth_users = proj_data["auth_users"]
     if user not in auth_users:
         auth_users.append(user)
-        table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
+        table.update_one({"id": id}, {"$set": {"auth_users": auth_users}})
+        proj_data = [proj_data["name"], proj_data["id"], proj_data["auth_users"]]
+        return proj_data
 
+    return None
     close_connection(client)
 
 def leave_project(id: str, user: str):
     client, table = access_projects()
+    proj = table.find({"id": id})
 
-    proj = table.find({"id":id})
+    extracted_proj = list(proj)
 
-    if len(proj) == 0:
+    if len(extracted_proj) == 0:
         close_connection(client)
         return False
 
-    x = proj[0]
+    proj_data = extracted_proj[0]
 
-    auth_users= json.loads(x["auth_users"])
+    auth_users = proj_data["auth_users"]
     if user in auth_users:
         auth_users.remove(user)
-        table.update_one({"id":id}, {"$set": {"auth_users":auth_users}})    
+        table.update_one({"id": id}, {"$set": {"auth_users": auth_users}})
+
+    return True
 
     close_connection(client)
 
@@ -278,3 +287,4 @@ def get_project_description(projectId):
 
     close_connection(client)
     return description
+

@@ -66,11 +66,45 @@ def project_join():
     data_json = request.get_json()
     if data_json is not None:
         # get the project_id from data_json and check if it exists
+        user_id = data_json["user_id"]
+        proj_id = data_json["proj_id"]
+        # determine successful join
+        joined = join_project(proj_id, user_id)
         # if so, add user to that project and pass user_data
-        return jsonify({
-            "Status": True,
-            "Project": []   # put project data here
-        })
+        if joined is not None:
+            return jsonify({
+                "Status": True,
+                "Project": joined
+            })
+    return jsonify({
+        "Status": False
+    })
+
+""" Delete user_id from the project id given. """
+@app.route('/project_leave', methods = ["POST", "GET"], strict_slashes=False)
+def project_leave():
+    data_json = request.get_json()
+    if data_json is not None:
+        # get the project_id from data_json and check if it exists
+        user_id = data_json["user_id"]
+        proj_id = data_json["proj_id"]
+        # determine successful join
+        joined = leave_project(proj_id, user_id)
+        # if so, add user to that project and pass user_data
+        if joined is not None:
+            if data_json is not None:
+                # Access all projects associated with user_id from database
+                data_projs = get_projects_by_user_id(user_id)
+                # Access HW Set values
+                hw_sets = get_hw()
+                hw_set_1 = hw_sets[0]
+                hw_set_2 = hw_sets[1]
+                return jsonify({
+                    "Status": True,
+                    "Projects": data_projs,
+                    "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
+                    "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
+                })
     return jsonify({
         "Status": False
     })

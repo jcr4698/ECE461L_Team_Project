@@ -172,7 +172,8 @@ class ProjectData extends React.Component {
 				onMoreInfoClick={() => this.handleMoreInfo(i)}
 				onCheckInClick={() => this.handleCheckIn(i)}
 				onCheckOutClick={() => this.handleCheckOut(i)}
-				onHWSelection={() => this.handleHWSelection(i)} />
+				onHWSelection={() => this.handleHWSelection(i)}
+				onProjectLeave={() => this.handleProjectLeave(i)} />
 		)
 	}
 
@@ -372,11 +373,7 @@ class ProjectData extends React.Component {
 										project_name,
 										project_id,
 										user_list,
-										1,
-										[
-											[100, 100],		// For now, it only adds 100 HW Sets
-											[100, 100]
-										]
+										1
 									],
 						proj_desc: proj_desc
 					})
@@ -415,63 +412,114 @@ class ProjectData extends React.Component {
 	handleProjectJoin() {
 		/* Get the new project info and make sure they are non-empty strings */
 		const project_id = document.getElementById("existing_project_id").value;
-		console.log("Looking for id:", project_id);
 
 		if(typeof project_id === 'string' && project_id.trim() !== '') {
 
 			const project_list = this.state.project_list.slice();
 
 			/* Attempt adding project to json */
-				fetch("/project_join", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						user_id: this.props.curr_id,
-						proj_id: project_id
-					})
+			fetch("/project_join", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					user_id: this.props.curr_id,
+					proj_id: project_id
 				})
-				.then(response => response.json())
-				.then(respJson => {
-					// console.log(project_id);
-					const data = JSON.parse(JSON.stringify(respJson));
-					console.log(data["Status"]);
+			})
+			.then(response => response.json())
+			.then(respJson => {
+
+				/* Open json response */
+				const data = JSON.parse(JSON.stringify(respJson));
+
+				/* Update Project List */
+				if(data["Status"]) {
 
 					/* get project data */
 					const proj_data = data["Project"]
+					const project_name = proj_data[0]
+					const user_list = proj_data[2]
+					console.log(user_list)
+					project_list.push([
+											project_list.length,
+											project_name,
+											project_id,
+											user_list,
+											1
+										]);
 
-					/* Update Project List */
-					if(data["Status"]) {
-						console.log("Joined Project");
-						project_list.push([
-												proj_data[0],
-												proj_data[1],
-												proj_data[2],
-												proj_data[3],
-												1,
-												[
-													[proj_data[5][0][0], proj_data[5][0][1]],
-													[proj_data[5][1][0], proj_data[5][1][1]]
-												]
-											]);
-						console.log(project_list)
+					/* Set list with additional project data to state */
+					this.setState({
+						project_list: project_list
+					})
 
-						// /* Set list with additional project data to state */
-						// this.setState({
-						// 	project_list: project_list
-						// })
-
-						/* Clear input text fields */
-						document.getElementById("new_project_name").value = "";
-						document.getElementById("new_project_id").value = "";
-					}
-					else {
-						alert("Project ID doesn't exists in database.")
-					}
-				});
+					/* Clear input text fields */
+					document.getElementById("new_project_name").value = "";
+					document.getElementById("new_project_id").value = "";
+				}
+				else {
+					alert("Project ID doesn't exists in database, or already part of it.")
+				}
+			});
 		}
 
+	}
+
+	handleProjectLeave(i) {
+		/* list format to be stored */
+		const proj_list = [];
+
+		/* Get current list and hw selection index */
+		const project_list = this.state.project_list.slice();
+
+		/* Get the new project info and make sure they are non-empty strings */
+		const project_id = project_list[i][PROJ_ID];
+
+		/* Attempt adding project to json */
+			fetch("/project_leave", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					user_id: this.props.curr_id,
+					proj_id: project_id
+				})
+			})
+			.then(response => response.json())
+			.then(respJson => {
+
+				/* Open json response */
+				const data = JSON.parse(JSON.stringify(respJson));
+
+				/* Update Project List */
+				if(data["Status"]) {
+
+					/* Get projects */
+					const projects = data["Projects"];
+					console.log(projects);
+					for(let proj in projects) {	// API Should return all projects associated with user_id
+						console.log(projects[proj]);	// Test out projects are actually send
+						proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
+					}
+
+					/* Get hw sets */
+					const hw_set_1 = data["HW1"];
+					const hw_set_2 = data["HW2"];
+
+					/* Set state of frontend */
+					this.setState({
+						project_list: proj_list,
+						curr_hw1: hw_set_1,
+						curr_hw2: hw_set_2
+					});
+				}
+				else {
+					alert("Project ID doesn't exists in database.")
+				}
+			});
 	}
 
 }
@@ -539,8 +587,7 @@ function Project(props) {
 			</div>
 			{/* Project Description */}
 			<div className="project_column">
-				<button
-					className="join_btn"
+				<button className="join_btn"
 					type="button"
 					onClick={props.onMoreInfoClick} >
 					More Info
@@ -548,9 +595,10 @@ function Project(props) {
 			</div>
 			{/* Join or Leave */}
 			<div className="project_column">
-				<button
-					className="join_btn"
-					type="button" >
+				<button className="join_btn"
+					id={"leave:" + props.Name}
+					type="button"
+					onClick={props.onProjectLeave}>
 					Leave
 				</button>
 			</div>
@@ -597,8 +645,7 @@ function ProjectAdder(props) {
 			</div>
 			{/* Add Project */}
 			<div className="new_project_column">
-				<button
-					className="add_project_btn"
+				<button className="add_project_btn"
 					type="button"
 					onClick={props.onNewProjectClick} >
 					Add Project
