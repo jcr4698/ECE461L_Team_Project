@@ -1,9 +1,8 @@
 import os
 from flask import Flask, send_from_directory, request, jsonify
 import json
-from backend.container import *
 from backend.project_database_access import *
-from backend.encrypt import encrypt
+import backend.container.user as user
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build/')
 
