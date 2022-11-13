@@ -150,33 +150,12 @@ def register_user():
             "message": "INVALID ID: User ID already exists."
         }
 
-    # # usernames = get_usernames()################################################################## to be implemented
-    # # Check if username is already in the database (prevents creating duplicate user)
-    # # Return 409 CONFLICT ERROR code
-    # if username in usernames:
-    #     return {
-    #         'username' : 'Username already exists.',
-    #         'password' : password
-    #     }#, 409
-
     # Make sure password doesn't contain special chars
     if ("!" in password) or (" " in password):
         return {
             "status": False,
             "message": "INVALID PASSWORD: Password can't contain \"!\" or \" \"."
         }
-
-    # Encrypt password
-    # encrypted_password = encrypt(password, 1, 6)
-
-    # new_user_to_register = User()
-    # new_user_to_register.set_username = username
-    # new_user_to_register.set_password = encrypted_password ########################################## doesn't work yet
-
-    # user_creds[user_id] = [username, encrypted_password]
-
-    # Send user to database to add user
-    # add_user(new_user_to_register)    ############################################################ to be implemented
 
     # Return 201 SUCCESSFUL AND CREATED RESOURCE code
     return {

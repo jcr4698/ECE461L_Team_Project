@@ -329,21 +329,6 @@ class ProjectData extends React.Component {
 				document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value = "";
 
 			});
-
-			// /* Make sure value doesn't go below zero */
-			// if(curr_val - parseInt(check_out_val) >= 0) {
-			//
-			// 	/* Subtract chk-out value from current value */
-			// 	curr_hw_list[hw_idx][HW_VAL] -= parseInt(check_out_val);
-			//
-			// 	/* Set chk-in values to state */
-			// 	this.setState({
-			// 		project_list: project_list
-			// 	});
-			//
-			// 	/* Clear input text fields */
-			// 	document.getElementById("check_out:" + project_list[i][1]).value = "";
-			// }
 		}
 	}
 
@@ -632,23 +617,6 @@ function ProjectJoiner(props) {
 					Join
 				</button>
 			</div>
-			{/*
-			<div className="new_project_column">
-				<button
-					className="join_project_btn"
-					type="button"
-					onClick={props.onProjectJoinClick} >
-					Join
-				</button>
-			</div>
-			{/* <div className="new_project_column">
-				<button
-					className="add_project_btn"
-					type="button"
-					onClick={props.onNewProjectClick} >
-					Add Project
-				</button>
-			</div> */}
 		</div>
 	)
 }
