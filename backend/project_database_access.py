@@ -54,7 +54,7 @@ def try_login_user(user_id: str):
 
     # get user information # NOW PASS IT TO app.py
     user_info = extracted_user_info[0]
-    registered_user = user.User(user_info["userId"], user_info["username"], user_info["password"], False)
+    registered_user = user.User(user_info["userId"], user_info["username"], user_info["_password"], False)
 
     # return user information
     close_connection(client)
