@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import certifi
 import json
-import sys
 import math
 
 from .container import user
@@ -55,8 +54,7 @@ def try_login_user(user_id: str):
 
     # get user information # NOW PASS IT TO app.py
     user_info = extracted_user_info[0]
-    password= user.decrypt_password(user_info["_password"])
-    registered_user = user.User(user_info["userId"], user_info["username"], password, False)
+    registered_user = user.User(user_info["userId"], user_info["username"], user_info["password"], False)
 
     # return user information
     close_connection(client)
