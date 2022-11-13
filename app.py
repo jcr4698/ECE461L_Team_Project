@@ -47,9 +47,9 @@ def project_add():
         proj_data = data_json["proj_data"]
         proj_name = proj_data[1]
         proj_user_list = proj_data[3]
-        proj_hws = proj_data[5]
-        proj_hw1_qty = proj_hws[0][0]
-        proj_hw2_qty = proj_hws[1][0]
+        # proj_hws = proj_data[5]
+        # proj_hw1_qty = proj_hws[0][0]
+        # proj_hw2_qty = proj_hws[1][0]
 
         # attempt adding project
         added = add_project(proj_id, proj_name, "Adding Test Example", [proj_user])
@@ -197,11 +197,18 @@ def check_in():
 
     print(proj_id, ":", hw_set, ":", check_in_val, ":", user_id)
 
+    # Update HW Set values
+    hw_sets = get_hw()
+    hw_set_1 = hw_sets[0]
+    hw_set_2 = hw_sets[1]
+
     # Check in appropriate units of hardware
     if checkin_hw(proj_id, hw_set, check_in_val, user_id):
         return {
             "status": True,
-            "message": "Successfully checked in " + check_in_val + " hardware units into hardware set " + hw_set
+            "message": "Successfully checked in " + str(check_in_val) + " hardware units into hardware set " + str(hw_set),
+            "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
+            "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
         }
     return {
         "status": False,
@@ -218,11 +225,18 @@ def check_out():
     check_out_val = hw_info["check_val"]
     user_id = hw_info["user_id"]
 
+    # Update HW Set values
+    hw_sets = get_hw()
+    hw_set_1 = hw_sets[0]
+    hw_set_2 = hw_sets[1]
+
     # Check out appropriate units of hardware
     if checkout_hw(proj_id, hw_set, check_out_val, user_id):
         return {
             "status": True,
-            "message": "Successfully checked out " + check_out_val + " hardware units from hardware set " + hw_set
+            "message": "Successfully checked out " + str(check_out_val) + " hardware units from hardware set " + str(hw_set),
+            "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
+            "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
         }
     return {
         "status": False,

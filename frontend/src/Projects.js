@@ -84,8 +84,6 @@ class ProjectData extends React.Component {
 			}
 
 			/* Get hw sets */
-			//console.log(hw_sets); //////////////////////////////////////////////////////////
-			console.log(data["HW1"]);
 			const hw_set_1 = data["HW1"];
 			const hw_set_2 = data["HW2"];
 
@@ -254,51 +252,32 @@ class ProjectData extends React.Component {
 				body: JSON.stringify({
 					proj_id: proj_id,
 					hw_set: proj_hw_idx,
-					check_val: check_in_val,
-					user_id: this.state.curr_id
+					check_val: parseInt(check_in_val),
+					user_id: this.state.curr_id,
 				})
 			})
 			.then(response => response.json())
 			.then(respJson => {
 
-				console.log(respJson);
-				// /* Get projects */
-				// const data = JSON.parse(JSON.stringify(respJson));
-				// const projects = data["Projects"];
-				// console.log(projects);
-				// for(let proj in projects) {	// API Should return all projects associated with user_id
-				// 	console.log(projects[proj]);	// Test out projects are actually send
-				// 	proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
-				// }
-				//
-				// /* Get hw sets */
-				// const hw_sets = data["HWSet"];
-				// console.log(hw_sets); //////////////////////////////////////////////////////////
-				// const hw_set_1 = [100, 100];
-				// const hw_set_2 = [90, 100];
-				//
-				// /* Set state of frontend */
-				// this.setState({
-				// 	project_list: proj_list,
-				// 	curr_hw1: hw_set_1,
-				// 	curr_hw2: hw_set_2
-				// });
-			});
+				/* Get hw data */
+				const data = JSON.parse(JSON.stringify(respJson));
 
-			/* Make sure chk-in value doesn't go above capacity */
-			// if(curr_val + parseInt(check_in_val) <= curr_cap) {
-			//
-			// 	/* Add chk-in value to current value */
-			// 	project_list[i][HW_LIST][hw_idx][HW_VAL] += parseInt(check_in_val);
-			//
-			// 	/* Set chk-in values to state */
-			// 	this.setState({
-			// 		project_list: project_list
-			// 	});
-			//
-			// 	/* Clear input text fields */
-			// 	document.getElementById("check_in:" + project_list[i][PROJ_NAME]).value = "";
-			// }
+				/* Get hw sets */
+				const hw_set_1 = data["HW1"];
+				const hw_set_2 = data["HW2"];
+
+				console.log(hw_set_1);
+				console.log(hw_set_2);
+
+				/* Set state of frontend */
+				this.setState({
+					curr_hw1: hw_set_1,
+					curr_hw2: hw_set_2
+				});
+
+				document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value = "";
+
+			});
 		}
 	}
 
@@ -324,35 +303,31 @@ class ProjectData extends React.Component {
 				body: JSON.stringify({
 					proj_id: proj_id,
 					hw_set: proj_hw_idx,
-					check_val: check_out_val,
+					check_val: parseInt(check_out_val),
 					user_id: this.state.curr_id
 				})
 			})
 			.then(response => response.json())
 			.then(respJson => {
 
-				console.log(respJson);
-				// /* Get projects */
-				// const data = JSON.parse(JSON.stringify(respJson));
-				// const projects = data["Projects"];
-				// console.log(projects);
-				// for(let proj in projects) {	// API Should return all projects associated with user_id
-				// 	console.log(projects[proj]);	// Test out projects are actually send
-				// 	proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
-				// }
-				//
-				// /* Get hw sets */
-				// const hw_sets = data["HWSet"];
-				// console.log(hw_sets); //////////////////////////////////////////////////////////
-				// const hw_set_1 = [100, 100];
-				// const hw_set_2 = [90, 100];
-				//
-				// /* Set state of frontend */
-				// this.setState({
-				// 	project_list: proj_list,
-				// 	curr_hw1: hw_set_1,
-				// 	curr_hw2: hw_set_2
-				// });
+				/* Get hw data */
+				const data = JSON.parse(JSON.stringify(respJson));
+
+				/* Get hw sets */
+				const hw_set_1 = data["HW1"];
+				const hw_set_2 = data["HW2"];
+
+				console.log(hw_set_1);
+				console.log(hw_set_2);
+
+				/* Set state of frontend */
+				this.setState({
+					curr_hw1: hw_set_1,
+					curr_hw2: hw_set_2
+				});
+
+				document.getElementById("check_out:" + project_list[i][PROJ_NAME]).value = "";
+
 			});
 
 			// /* Make sure value doesn't go below zero */

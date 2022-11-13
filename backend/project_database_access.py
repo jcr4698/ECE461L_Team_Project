@@ -130,11 +130,11 @@ def checkout_hw(id: str, hw_set: int, num: int, user: str) -> bool:
     if hw_set == '1':
         hw1 = hw.find({"id": 1})[0]
         availability = hw1["availability"]
-        newVal = {"$set": {"availability": max(0, availability-num)}}
+        newVal = {"$set": {"availability": max(0, availability - num)}}
     else:
         hw2 = hw.find({"id": 2})[0]
         availability = hw2["availability"]
-        newVal = {"$set": {"availability": max(0, availability-num)}}
+        newVal = {"$set": {"availability": max(0, availability - num)}}
 
     hw.update_one({"id": id}, newVal)
 
@@ -163,12 +163,12 @@ def checkin_hw(id: str, hw_set: int, num: int, user: str) -> bool:
         hw1 = hw.find({"id": 1})[0]
         availability = hw1["availability"]
         capacity = hw1["capacity"]
-        newVal = {"$set": {"availability": min(availability+num, capacity)}}
+        newVal = {"$set": {"availability": min(availability + num, capacity)}}
     else:
         hw2 = hw.find({"id": 2})[0]
         availability = hw2["availability"]
         capacity = hw2["capacity"]
-        newVal = {"$set": {"availability": min(availability+num, capacity)}}
+        newVal = {"$set": {"availability": min(availability + num, capacity)}}
 
     hw.update_one({"id": id}, newVal)
 
