@@ -1,0 +1,27 @@
+Link to page: https://team-project-ece461l.herokuapp.com/
+
+The page will get information from the database:
+	First, the hardware available and capacity will show up in the top of the page.
+	Then, the projects to which you are authorized to use will show up.
+	Then, a prompt to add a project (only project name and id are required) will appear in case you want to add one.
+	Lastly, a prompt to join a project by project_id will appear just in case you want to join one.
+
+to register:
+	fill in user name, user id, and password and click "register" (make sure to remember credentials)
+	click "OK" on pop-up
+
+to login:
+	fill in user name, user id, and password and click "login"
+
+to leave project:
+	click "leave" on project you wish to leave
+
+to check-in/out:
+	enter a value on the "check in" or "check out" box and click the button underneath it.
+
+to see more description of project:
+	click the "More Info" button of the corresponding project
+	After reading the description (it will show on a pop-up), click "OK" to exit
+
+to go back to the login page:
+	reload the page (this will log you out)
