@@ -1,9 +1,12 @@
 from pymongo import MongoClient
 import certifi
 import json
-import container.user
-import container.project
+import sys
 import math
+
+from .container import user
+from .container import project
+
 
 def open_connection():
     ca = certifi.where()
@@ -53,8 +56,8 @@ def try_login_user(user_id: str):
 
     # get user information # NOW PASS IT TO app.py
     user_info = extracted_user_info[0]
-    password= container.user.decrypt_password(user_info["_password"])
-    registered_user = container.user.User(user_info["userId"], user_info["username"], password, False)
+    password= user.decrypt_password(user_info["_password"])
+    registered_user = user.User(user_info["userId"], user_info["username"], password, False)
 
     # return user information
     close_connection(client)
@@ -71,8 +74,8 @@ def try_register_user(user_id: str, user_name: str, password: str):
         return None
 
     # create user json
-    new_user = container.user.User(user_id, user_name, password, True)
-    new_account = json.loads(container.user.user_to_json(new_user))
+    new_user = user.User(user_id, user_name, password, True)
+    new_account = json.loads(user.user_to_json(new_user))
 
     # store user in database
     table.insert_one(new_account)
@@ -222,8 +225,8 @@ def add_project(id: str, name: str, description: str, user_list: list) -> bool:
         close_connection(client)
         return False
 
-    proj_def = container.project.Project(id, name, description, user_list)
-    proj_json = json.loads(container.project.project_to_json(proj_def))
+    proj_def = project.Project(id, name, description, user_list)
+    proj_json = json.loads(project.project_to_json(proj_def))
 
     table.insert_one(proj_json)
 
