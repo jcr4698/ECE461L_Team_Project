@@ -348,11 +348,11 @@ class ProjectData extends React.Component {
 
 				/* Add additional users */
 				const list_input = document.getElementById("new_project_users").value;
-				if(typeof list_input == 'string' && list_input.trim() != '') {
+				if(typeof list_input == 'string' && list_input.trim() !== '') {
 					const users_arr = list_input.split(",").map(String);
 					for(let i = 0; i < users_arr.length; i++) {
 						const auth_user = users_arr[i].trim();
-						if(auth_user != '') {
+						if(auth_user !== '') {
 							user_list.push(auth_user);
 						}
 					}
