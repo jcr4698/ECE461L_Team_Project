@@ -23,6 +23,8 @@ class Projects extends React.Component {
 	render() {
 		return (
 			<div className="project_wrap">
+				<LogoutUser
+					onLogoutClick={() => this.handleLogout()} />
 				<p className="project_title">
 					{this.props.curr_user}'s Projects
 				</p>
@@ -34,6 +36,15 @@ class Projects extends React.Component {
 			</div>
 		)
 	}
+
+	/* Handlers */
+
+	// handleLogin: Determine whether a valid account is entered
+    handleLogout() {
+		console.log("logging out...")
+		this.props.handleLogoutStatus()
+	}
+
 }
 
 // Place data into a stored list
@@ -525,6 +536,18 @@ class ProjectData extends React.Component {
 }
 
 /* HTML */
+
+// LogoutUser: HTML that prompts user to log-out
+function LogoutUser(props) {
+	return (
+		<button
+			className="logout_btn"
+			type="button"
+			onClick={props.onLogoutClick} >
+			logout
+		</button>
+	)
+}
 
 // Project: HTML that formats a single Project
 function Project(props) {

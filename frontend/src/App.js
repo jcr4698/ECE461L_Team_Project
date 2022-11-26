@@ -25,6 +25,7 @@ class App extends React.Component {
 						<Projects 
 							curr_user={this.state.curr_user}
 							curr_id={this.state.curr_id}
+							handleLogoutStatus={this.handleLogoutStatus}
 						/>
 					</header>
 				</div>
@@ -50,6 +51,12 @@ class App extends React.Component {
 			curr_user: user,
 			curr_id: id,
 			is_logged_in: logged_in
+		})
+	}
+
+	handleLogoutStatus = () => {
+		this.setState({
+			is_logged_in: false
 		})
 	}
 
