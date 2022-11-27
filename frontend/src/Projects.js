@@ -452,11 +452,13 @@ class ProjectData extends React.Component {
 					const proj_data = data["Project"]
 					const project_name = proj_data[0]
 					const user_list = proj_data[2]
+					console.log(proj_data)
 					console.log(user_list)
 					project_list.push([
 											project_list.length,
 											project_name,
 											project_id,
+											"",
 											user_list,
 											1
 										]);

@@ -54,6 +54,7 @@ class App extends React.Component {
 		})
 	}
 
+	// handleLogoutStatus: Updates log-out status
 	handleLogoutStatus = () => {
 		this.setState({
 			is_logged_in: false
