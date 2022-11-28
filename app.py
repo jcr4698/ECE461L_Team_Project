@@ -26,14 +26,14 @@ def project_get():
         hw_set_1 = hw_sets[0]
         hw_set_2 = hw_sets[1]
         return jsonify({
-                            "Status": True,
-                            "Projects": data_projs,
-                            "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
-                            "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
-                        })
+            "Status": True,
+            "Projects": data_projs,
+            "HW1": [hw_set_1["availability"], hw_set_1["capacity"]],
+            "HW2": [hw_set_2["availability"], hw_set_2["capacity"]]
+        })
     return jsonify({
-                    "Status": False
-                    })
+        "Status": False
+    })
 
 @app.route('/project_add', methods = ["POST", "GET"], strict_slashes=False)
 def project_add():
@@ -134,9 +134,9 @@ def login_user():
     if user_from_request.get_user_name() != username_from_database:
         return {
             "status": False,
-            'username' : 'User does not exist',
-            'password' : password
-        }#, 404
+            'username': 'User does not exist',
+            'password': password
+        }
 
     # Encrypt password and check if it is same as password in database
     # Return 401 UNAUTHORIZED ERROR if password is not correct for username in database
@@ -146,14 +146,14 @@ def login_user():
             "status": False,
             'username': username,
             'password': 'Password is not correct'
-        }#, 401
+        }
 
     # Valid login by this point so log them in by returning encrypted password as "access token"
     # Return 200 SUCCESSFUL code for successful login
     return {
         "status": True,
-        'password' : password_from_database
-    }#, 200
+        'password': password_from_database
+    }
 
 
 """ Begin user registration. """
@@ -186,8 +186,8 @@ def register_user():
     return {
         "status": True,
         'username': username,
-        'password' : password
-    }#, 201
+        'password': password
+    }
 
 
 @app.route('/check_in', methods=['POST'])
@@ -198,11 +198,6 @@ def check_in():
     hw_set = hw_info["hw_set"]
     check_in_val = hw_info["check_val"]
     user_id = hw_info["user_id"]
-
-    # Update HW Set values
-    hw_sets = get_hw()
-    hw_set_1 = hw_sets[0]
-    hw_set_2 = hw_sets[1]
 
     # Check in appropriate units of hardware
     if checkin_hw(proj_id, hw_set, check_in_val, user_id):
@@ -230,11 +225,6 @@ def check_out():
     check_out_val = hw_info["check_val"]
     user_id = hw_info["user_id"]
 
-    # Update HW Set values
-    hw_sets = get_hw()
-    hw_set_1 = hw_sets[0]
-    hw_set_2 = hw_sets[1]
-
     # Check out appropriate units of hardware
     if checkout_hw(proj_id, hw_set, check_out_val, user_id):
         hw_sets = get_hw()
@@ -258,19 +248,17 @@ def get_proj_description():
     hw_info = request.get_json()
     proj_id = hw_info["proj_id"]
     project_descr = get_project_description(proj_id)
-    if project_descr != None:
+    if project_descr is not None:
         return {
             "status": True,
             "project_description": project_descr,
             "message": "Received project description for project " + proj_id
         }
-    else:
-        return {
-            "status": False,
-            "project_description": None,
-            "message": "No project description"
-        }
+    return {
+        "status": False,
+        "project_description": None,
+        "message": "No project description"
+    }
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
-

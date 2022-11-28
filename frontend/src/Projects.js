@@ -72,40 +72,7 @@ class ProjectData extends React.Component {
 
 	// componentDidMount: Initialize data from server into library
 	componentDidMount() {
-		/* list format to be stored */
-		const proj_list = [];
-
-		/* Obtain data fetched from route into library */
-		fetch("/project_init", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				user_id: [this.props.curr_id]
-			})
-		})
-		.then(response => response.json())
-		.then(respJson => {
-
-			/* Get projects */
-			const data = JSON.parse(JSON.stringify(respJson));
-			const projects = data["Projects"];
-			for(let proj in projects) {	// API Should return all projects associated with user_id
-				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
-			}
-
-			/* Get hw sets */
-			const hw_set_1 = data["HW1"];
-			const hw_set_2 = data["HW2"];
-
-			/* Set state of frontend */
-			this.setState({
-				project_list: proj_list,
-				curr_hw1: hw_set_1,
-				curr_hw2: hw_set_2
-			});
-		});
+		this.handleRefresh();
 	}
 
 	// render: Update page with the data stored
@@ -157,7 +124,7 @@ class ProjectData extends React.Component {
 							HWSet1:
 						</p>
 						<p className="hw_description">
-							{hw1[0]}/{hw1[1]}
+							{hw1[HW_VAL]}/{hw1[HW_CAP]}
 						</p>
 					</div>
 				</div>
@@ -167,7 +134,7 @@ class ProjectData extends React.Component {
 							HWSet2:
 						</p>
 						<p className="hw_description">
-							{hw2[0]}/{hw2[1]}
+							{hw2[HW_VAL]}/{hw2[HW_CAP]}
 						</p>
 					</div>
 				</div>
