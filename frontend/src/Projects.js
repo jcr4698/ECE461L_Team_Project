@@ -626,7 +626,6 @@ function Project(props) {
 			{/* Users with Access */}
 			<div className="project_column">
 				<div className="registered_user_list">
-					{/* figure out a way to display this automatically */}
 					{Registered_Users(props.Users)}
 				</div>
 			</div>

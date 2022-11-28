@@ -167,7 +167,7 @@ function LoginUser(props) {
                     <input
                         className="new_project_input"
                         id="password_login"
-                        type="text"
+                        type="password"
                         placeholder="Enter Password" />
                 </div>
             </div>
