@@ -35,10 +35,6 @@ class Login extends React.Component {
         if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
 			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
 
-                console.log("user id:", id)
-                console.log("username:", user);
-                console.log("password:", pass);
-
                 /* Authenticate credentials */
                 fetch("/login", {
                     method: "POST",
@@ -53,7 +49,6 @@ class Login extends React.Component {
                 })
                 .then(response => response.json())
                 .then(respJson => {
-                    console.log(respJson["status"]);
 
                     /* login (success or fail) */
                     if(respJson["status"]) {
@@ -79,10 +74,6 @@ class Login extends React.Component {
         if(typeof id === 'string' && typeof user === 'string' && typeof pass === 'string') {
 			if(id.trim() !== '' && user.trim() !== '' && pass.trim() !== '') {
 
-                console.log("user id:", id)
-                console.log("username:", user);
-                console.log("password:", pass);
-
                 /* Authenticate credentials */
                 fetch("/register", {
                     method: "POST",
@@ -97,8 +88,6 @@ class Login extends React.Component {
                 })
                 .then(response => response.json())
                 .then(respJson => {
-                    console.log(respJson["status"]);
-
                     /* login (success or fail) */
                     if(respJson["status"]) {
                         this.props.handleLoginStatus(respJson["status"], id, user)
@@ -115,7 +104,6 @@ class Login extends React.Component {
 
     handleHidePassword() {
         var chk = document.getElementById("password_login");
-        console.log(chk.type);
         if (chk.type === "password") {
             chk.type = "text";
         }
@@ -219,15 +207,5 @@ function LoginUser(props) {
         </div>
     )
 }
-
-// function hideLoginPassword() {
-//     var x = document.getElementById("password_login");
-//     if (x.type === "password") {
-//         x.type = "text";
-//     }
-//     else {
-//         x.type = "password";
-//     }
-// }
 
 export {Login};

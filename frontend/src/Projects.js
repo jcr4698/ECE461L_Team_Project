@@ -45,7 +45,6 @@ class Projects extends React.Component {
 
 	// handleLogin: Determine whether a valid account is entered
     handleLogout() {
-		console.log("logging out...");
 		this.props.handleLogoutStatus();
 	}
 
@@ -92,9 +91,7 @@ class ProjectData extends React.Component {
 			/* Get projects */
 			const data = JSON.parse(JSON.stringify(respJson));
 			const projects = data["Projects"];
-			console.log(projects);
 			for(let proj in projects) {	// API Should return all projects associated with user_id
-				console.log(projects[proj]);	// Test out projects are actually send
 				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
 			}
 
@@ -213,7 +210,6 @@ class ProjectData extends React.Component {
 
 	// handleRefresh: Update the projects in the project library
 	handleRefresh() {
-		console.log("refreshing...");
 		/* list format to be stored */
 		const proj_list = [];
 
@@ -233,9 +229,7 @@ class ProjectData extends React.Component {
 			/* Get projects */
 			const data = JSON.parse(JSON.stringify(respJson));
 			const projects = data["Projects"];
-			console.log(projects);
 			for(let proj in projects) {	// API Should return all projects associated with user_id
-				console.log(projects[proj]);	// Test out projects are actually send
 				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
 			}
 
@@ -253,8 +247,7 @@ class ProjectData extends React.Component {
 	}
 
 	// handleHWSelection: Alert the description of the project chosen
-	handleMoreInfo(i){
-		//alert("Insert User-Inputted Project Description Here")
+	handleMoreInfo(i) {
 		const project_list = this.state.project_list.slice()
 		/* Obtain data fetched from route into library */
 		fetch("/get_project_description", {
@@ -281,10 +274,9 @@ class ProjectData extends React.Component {
 	handleHWSelection(i) {
 		/* Get and modify the hw selection index */
 		const project_list = this.state.project_list.slice();
-		// console.log(project_list);
+
 		var curr_hw_selection = parseInt(document.getElementById("hw_set:" + project_list[i][PROJ_NAME]).value);
 		project_list[i][HW_SELECT] = curr_hw_selection;
-		console.log(curr_hw_selection);
 
 		/* Set the hw selection index to state */
 		this.setState({
@@ -327,9 +319,6 @@ class ProjectData extends React.Component {
 				/* Get hw sets */
 				const hw_set_1 = data["HW1"];
 				const hw_set_2 = data["HW2"];
-
-				console.log(hw_set_1);
-				console.log(hw_set_2);
 
 				/* Set state of frontend */
 				this.setState({
@@ -378,9 +367,6 @@ class ProjectData extends React.Component {
 				/* Get hw sets */
 				const hw_set_1 = data["HW1"];
 				const hw_set_2 = data["HW2"];
-
-				console.log(hw_set_1);
-				console.log(hw_set_2);
 
 				/* Set state of frontend */
 				this.setState({
@@ -441,13 +427,10 @@ class ProjectData extends React.Component {
 				})
 				.then(response => response.json())
 				.then(respJson => {
-					// console.log(project_id);
 					const data = JSON.parse(JSON.stringify(respJson));
-					console.log(data["Status"]);
 			
 					/* Update Project List */
 					if(data["Status"]) {
-						console.log("Project Added!");
 						project_list.push([project_list.length, project_name, project_id, user_list, 1, [[100, 100], [100, 100]]]);
 
 						/* Set list with additional project data to state */
@@ -502,8 +485,6 @@ class ProjectData extends React.Component {
 					const proj_data = data["Project"]
 					const project_name = proj_data[0]
 					const user_list = proj_data[2]
-					console.log(proj_data)
-					console.log(user_list)
 					project_list.push([
 											project_list.length,
 											project_name,
@@ -562,9 +543,7 @@ class ProjectData extends React.Component {
 
 					/* Get projects */
 					const projects = data["Projects"];
-					console.log(projects);
 					for(let proj in projects) {	// API Should return all projects associated with user_id
-						console.log(projects[proj]);	// Test out projects are actually send
 						proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
 					}
 
@@ -699,7 +678,6 @@ function Registered_Users(users) {
 
 	/* Push data as formatted project to html list */
 	for(let i = 0; i < users.length; i++) {
-		// console.log(users[i])
 		curr_user_list.push(
 			<p className="registered_user" key={i}>
 				{users[i]}

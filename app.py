@@ -123,7 +123,6 @@ def login_user():
 
     # Obtain the username and password from user id
     user_from_database = try_login_user(user_id)
-    # print("User object: " + str(user_from_database))
     if user_from_database is None:
         return {
             "status": False
@@ -132,8 +131,6 @@ def login_user():
     # Check if username from request is a username in the database
     # Return 404 NOT FOUND ERROR if username not in usernames
     username_from_database = user_from_database.get_user_name()
-    # print("User Name: " + username_from_database)
-    # print("User Name: " + user_from_request.get_user_name())
     if user_from_request.get_user_name() != username_from_database:
         return {
             "status": False,
@@ -144,8 +141,6 @@ def login_user():
     # Encrypt password and check if it is same as password in database
     # Return 401 UNAUTHORIZED ERROR if password is not correct for username in database
     password_from_database = user_from_database.get_password()
-    # print(password_from_database)
-    # print(user_from_request.get_password())
     if user_from_request.get_password() != password_from_database:
         return {
             "status": False,
@@ -203,8 +198,6 @@ def check_in():
     hw_set = hw_info["hw_set"]
     check_in_val = hw_info["check_val"]
     user_id = hw_info["user_id"]
-
-    print(proj_id, ":", hw_set, ":", check_in_val, ":", user_id)
 
     # Update HW Set values
     hw_sets = get_hw()
@@ -264,7 +257,6 @@ def get_proj_description():
     # Get request
     hw_info = request.get_json()
     proj_id = hw_info["proj_id"]
-    print(proj_id)
     project_descr = get_project_description(proj_id)
     if project_descr != None:
         return {
