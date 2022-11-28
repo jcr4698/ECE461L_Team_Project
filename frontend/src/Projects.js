@@ -22,18 +22,22 @@ const HW_CAP = 1;
 class Projects extends React.Component {
 	render() {
 		return (
-			<div className="project_wrap">
+			<div>
 				<LogoutUser
-					onLogoutClick={() => this.handleLogout()} />
-				<p className="project_title">
-					{this.props.curr_user}'s Projects
-				</p>
-				<ProjectData 
-					curr_user={this.props.curr_user}
-					curr_id={this.props.curr_id}
+					onLogoutClick={() => this.handleLogout()}
 				/>
-				<div className="empty_space" />
+				<div className="project_wrap">
+					<p className="project_title">
+						{this.props.curr_user}'s Projects
+					</p>
+					<ProjectData
+						curr_user={this.props.curr_user}
+						curr_id={this.props.curr_id}
+					/>
+					<div className="empty_space" />
+				</div>
 			</div>
+
 		)
 	}
 
@@ -41,8 +45,8 @@ class Projects extends React.Component {
 
 	// handleLogin: Determine whether a valid account is entered
     handleLogout() {
-		console.log("logging out...")
-		this.props.handleLogoutStatus()
+		console.log("logging out...");
+		this.props.handleLogoutStatus();
 	}
 
 }
@@ -129,6 +133,9 @@ class ProjectData extends React.Component {
 		/* output the fully formatted project library */
 		return (
 			<div>
+				<RefreshUser
+					onRefreshClick={() => this.handleRefresh()}
+				/>
 				{this.renderHWSets(this.state.curr_hw1, this.state.curr_hw2)}
 				<div className="empty_space" />
 				{new_project_list}
@@ -203,6 +210,49 @@ class ProjectData extends React.Component {
 	}
 
 	/* Handlers */
+
+	// handleRefresh: Update the projects in the project library
+	handleRefresh() {
+		console.log("refreshing...");
+		/* list format to be stored */
+		const proj_list = [];
+
+		/* Obtain data fetched from route into library */
+		fetch("/project_init", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				user_id: [this.props.curr_id]
+			})
+		})
+		.then(response => response.json())
+		.then(respJson => {
+
+			/* Get projects */
+			const data = JSON.parse(JSON.stringify(respJson));
+			const projects = data["Projects"];
+			console.log(projects);
+			for(let proj in projects) {	// API Should return all projects associated with user_id
+				console.log(projects[proj]);	// Test out projects are actually send
+				proj_list.push(projects[proj]);	// Then, make sure to format the data for the frontend
+			}
+
+			/* Get hw sets */
+			const hw_set_1 = data["HW1"];
+			const hw_set_2 = data["HW2"];
+
+			/* Set state of frontend */
+			this.setState({
+				project_list: proj_list,
+				curr_hw1: hw_set_1,
+				curr_hw2: hw_set_2
+			});
+		});
+	}
+
+	// handleHWSelection: Alert the description of the project chosen
 	handleMoreInfo(i){
 		//alert("Insert User-Inputted Project Description Here")
 		const project_list = this.state.project_list.slice()
@@ -547,6 +597,18 @@ function LogoutUser(props) {
 			type="button"
 			onClick={props.onLogoutClick} >
 			logout
+		</button>
+	)
+}
+
+// RefreshUser: HTML that prompts user to refresh
+function RefreshUser(props) {
+	return (
+		<button
+			className="refresh_btn"
+			type="button"
+			onClick={props.onRefreshClick} >
+			refresh
 		</button>
 	)
 }
