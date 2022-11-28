@@ -15,7 +15,8 @@ class Login extends React.Component {
                 </p>
                 <LoginUser
                     onLoginClick={() => this.handleLogin()}
-                    onRegisterClick={() => this.handleRegister()} />
+                    onRegisterClick={() => this.handleRegister()}
+                    onHidePasswordClick={() => this.handleHidePassword()} />
                 <div className="empty_space" />
             </div>
         )
@@ -112,6 +113,17 @@ class Login extends React.Component {
         }
     }
 
+    handleHidePassword() {
+        var chk = document.getElementById("password_login");
+        console.log(chk.type);
+        if (chk.type === "password") {
+            chk.type = "text";
+        }
+        else {
+            chk.type = "password";
+        }
+    }
+
 }
 
 /* HTML */
@@ -169,6 +181,14 @@ function LoginUser(props) {
                         id="password_login"
                         type="password"
                         placeholder="Enter Password" />
+                    <br/>
+                    <p className="show_pass">
+                        <input
+                            className="password_input"
+                            type="checkbox"
+                            onClick={props.onHidePasswordClick}/>
+                        &nbsp;Show Password
+                    </p>
                 </div>
             </div>
             {/* Empty Space */}
@@ -185,16 +205,6 @@ function LoginUser(props) {
                         Login
                     </button>
                 </div>
-                {/* Button Column 1 - Forgot */}
-                {/* <div className="login_btns_column">
-                    <button
-                        className="login_btn"
-                        id="forgot_btn"
-                        type="button"
-                        onClick={props.onForgotClick} >
-                        Forgot
-                    </button>
-                </div> */}
                 {/* Button Column 2 - Register */}
                 <div className="login_btns_column">
                     <button
@@ -209,5 +219,15 @@ function LoginUser(props) {
         </div>
     )
 }
+
+// function hideLoginPassword() {
+//     var x = document.getElementById("password_login");
+//     if (x.type === "password") {
+//         x.type = "text";
+//     }
+//     else {
+//         x.type = "password";
+//     }
+// }
 
 export {Login};

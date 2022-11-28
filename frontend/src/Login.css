@@ -104,6 +104,15 @@
     height: auto;
 }
 
+.show_pass {
+	font-size: 25px;
+}
+
+.password_input {
+	height: 15px;
+	width: 15px;
+}
+
 /* General Styles */
 
 .empty_space {
