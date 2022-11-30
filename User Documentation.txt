@@ -1,13 +1,15 @@
 User Documentation
 
 Getting Started
-To begin using this Hardware-as-a-Service (HaaS) System, open up your browser of choice and navigate to this url: https://team-project-ece461l.herokuapp.com/
+To begin using this Hardware-as-a-Service (HaaS) System, open up your browser of choice and navigate to this url:
+https://team-project-ece461l.herokuapp.com/
 
 Registering / Logging In
 Upon reaching the application, you’ll see the login page.
 This page has three text fields to input a username, user id, and password. 
 
-If you are a first time user, create a new username, user id, and password and then click the ‘Register’ button. A pop up will appear announcing that your account has been created and to make sure to remember your credentials.
+If you are a first time user, create a new username, user id, and password and then click the ‘Register’ button. 
+A pop up will appear announcing that your account has been created and to make sure to remember your credentials.
 
 If you are already an existing user, input your username, user id, and password that you previously used to register and click the ‘Login’ button instead.
 
@@ -18,17 +20,21 @@ At the top you’ll find the two hardware sets, named HWSet1 and HWSet2. Each ha
 Creating a Project
 Below the hardware sets, you’ll find the section to create a new project.
 To create a new project, start by giving it a name and id, entering each into their respective fields.
-Each project has a list of authorized users, which you can include in the text field that says ‘Enter Authorized Users’. Make sure to separate users by a comma.
+Each project has a list of authorized users, which you can include in the text field that says ‘Enter Authorized Users’. 
+Make sure to separate users by a comma.
 Lastly, you can include a project description that you can view once the project is created.
 Once you’ve completed the fields, click on the button labeled ‘Add Project’
 
 Project Format
 Upon creating a project, you’ll see it appear below the hardware sets.
-From left to right, you’ll find the project name, list of authorized users, the option to check in and check out units from the hardware sets, a ‘More Info’ button which displays the project description, and a ‘Leave’ button to leave the project.
+From left to right, you’ll find the project name, list of authorized users, the option to check in and check out units 
+from the hardware sets, a ‘More Info’ button which displays the project description, and a ‘Leave’ button to leave the project.
 Each project you create will appear under the last as a list.
 
 Checking In / Checking Out
-To check in / check out units from the hardware sets, start by selecting between HWSet1 and HWSet2 from the dropdown. Enter a value that you would like to check in / check out in the respective text field, and then click the corresponding button below the field. Remember to note the capacity and availability of units for each hardware set. 
+To check in / check out units from the hardware sets, start by selecting between HWSet1 and HWSet2 from the dropdown. 
+Enter a value that you would like to check in / check out in the respective text field, and then click the corresponding button below the field. 
+Remember to note the capacity and availability of units for each hardware set. 
 
 Joining an Existing Project
 To join an existing project, navigate to the bottom of the page.
@@ -37,4 +43,5 @@ Type the project id into the text field and click the ‘Join’ button.
 If there is a project that exists with that id, it will appear in your list of projects above.
 
 Returning to Login Page
-If you would like to logout, you can find the ‘logout’ button at the top right corner of the screen. Clicking this button will take you back to the login page.
+If you would like to logout, you can find the ‘logout’ button at the top right corner of the screen. 
+Clicking this button will take you back to the login page.
