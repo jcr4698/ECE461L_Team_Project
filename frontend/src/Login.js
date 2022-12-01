@@ -10,7 +10,8 @@ class Login extends React.Component {
     render() {
         return (
             <div className="login_wrap">
-                <p className="project_title">
+                <p className="project_title"
+                    data-testid="page-title">
                     Login
                 </p>
                 <LoginUser
@@ -53,14 +54,17 @@ class Login extends React.Component {
                     /* login (success or fail) */
                     if(respJson["status"]) {
                         this.props.handleLoginStatus(respJson["status"], id, user)
+                        return true;
                     }
                     else {
                         alert("Username, ID, or Password didn't match an account.")
+                        return false;
                     }
                 });
-
             }
+            return false;
         }
+        return false;
     }
 
     // handleRegister: Register a new user, unless user id is same as someone else
@@ -124,7 +128,8 @@ function LoginUser(props) {
             <div className="login_row">
                 {/* Username Column 0 - Text */}
                 <div className="login_info_column">
-                    <p className="user">
+                    <p className="user"
+                        data-testid="login_username_test">
                         Username:
                     </p>
                 </div>
@@ -141,7 +146,8 @@ function LoginUser(props) {
             <div className="login_row">
                 {/* User ID Column 0 - Text */}
                 <div className="login_info_column">
-                    <p className="user">
+                    <p className="user"
+                        data-testid="login_userid_test">
                         User ID:
                     </p>
                 </div>
@@ -158,7 +164,8 @@ function LoginUser(props) {
             <div className="login_row">
                 {/* Password Column 0 - Text */}
                 <div className="login_info_column">
-                    <p className="user">
+                    <p className="user"
+                        data-testid="login_password_test">
                         Password:
                     </p>
                 </div>
@@ -173,6 +180,7 @@ function LoginUser(props) {
                     <p className="show_pass">
                         <input
                             className="password_input"
+                            data-testid="show_password_test"
                             type="checkbox"
                             onClick={props.onHidePasswordClick}/>
                         &nbsp;Show Password

@@ -27,7 +27,8 @@ class Projects extends React.Component {
 					onLogoutClick={() => this.handleLogout()}
 				/>
 				<div className="project_wrap">
-					<p className="project_title">
+					<p className="project_title"
+						data-testid="page-title">
 						{this.props.curr_user}'s Projects
 					</p>
 					<ProjectData
@@ -120,7 +121,8 @@ class ProjectData extends React.Component {
 			<div>
 				<div className="hardware_sets">
 					<div className="hw_column">
-						<p className="hw_description">
+						<p className="hw_description"
+							data-testid="hw1_test">
 							HWSet1:
 						</p>
 						<p className="hw_description">
@@ -130,7 +132,8 @@ class ProjectData extends React.Component {
 				</div>
 				<div className="hardware_sets">
 					<div className="hw_column">
-						<p className="hw_description">
+						<p className="hw_description"
+							data-testid="hw2_test">
 							HWSet2:
 						</p>
 						<p className="hw_description">
@@ -685,6 +688,7 @@ function ProjectAdder(props) {
 			{/* Users */}
 			<div className="new_project_description">
 				<input className="project_description"
+					data-testid="new_proj_desc"
 					id="new_project_users"
 					type="text"
 					placeholder="Enter Authorized Users (Separated by a comma)" />
@@ -705,7 +709,8 @@ function ProjectJoiner(props) {
 		<div className="project">
 			{/* Title */}
 			<div className="join_project_column">
-				<p className="add_project_title">
+				<p className="add_project_title"
+					data-testid="join_project_test">
 					Join Existing Project:
 				</p>
 			</div>
