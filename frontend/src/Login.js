@@ -216,4 +216,4 @@ function LoginUser(props) {
     )
 }
 
-export {Login};
+export {Login, LoginUser};

@@ -1,11 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect'
-import App from "../App";
-
-/* Login Page Tests */
+import { Login } from "../Login"
 
 test("Login title exists", () => {
-    render(<App />);
+    render(<Login />);
 
     // Make sure Login page is shown when app is first opened
     const page = screen.getByTestId("page-title").textContent;
@@ -13,7 +11,7 @@ test("Login title exists", () => {
 });
 
 test("Prompts user to enter username", () => {
-    render(<App />);
+    render(<Login />);
 
     // Presence of username text
     const login_username = screen.getByTestId("login_username_test").textContent;
@@ -29,7 +27,7 @@ test("Prompts user to enter username", () => {
 });
 
 test("Prompts user to enter user id", () => {
-    render(<App />);
+    render(<Login />);
 
     // Presence of user id text
     const login_userid = screen.getByTestId("login_userid_test").textContent;
@@ -45,7 +43,7 @@ test("Prompts user to enter user id", () => {
 });
 
 test("Prompts user to enter password", () => {
-    render(<App />);
+    render(<Login />);
 
     // Presence of password text
     const login_password = screen.getByTestId("login_password_test").textContent;
@@ -65,37 +63,14 @@ test("Prompts user to enter password", () => {
 });
 
 test("Login button is present", () => {
-    render(<App />);
+    render(<Login />);
 
     const login_btn = screen.getByRole("button", {name: "Login"});
     expect(login_btn).toBeInTheDocument();
 });
 
-test("Attempts to login", () => {
-    render(<App />);
-
-    const login_fail = jest.fn();
-    login_fail.mockReturnValueOnce({"status": false})
-
-    // Enter username
-    const usernameInput = screen.getByPlaceholderText(/Enter Username/i);
-    fireEvent.change(usernameInput, {target: {value: "FakeUsername"}});
-
-    // Enter user id
-    const userIdInput = screen.getByPlaceholderText(/Enter User ID/i);
-    fireEvent.change(userIdInput, {target: {value: "FakeUserId"}});
-
-    // Enter password
-    const passwordInput = screen.getByPlaceholderText(/Enter Password/i);
-    fireEvent.change(passwordInput, {target: {value: "FakePassword"}});
-
-    // Press login button
-    const login_btn = screen.getByRole("button", {name: "Login"});
-    fireEvent.click(login_btn);
-});
-
 test("Register button is present", () => {
-    render(<App />);
+    render(<Login />);
 
     const register_btn = screen.getByRole("button", {name: "Register"});
     expect(register_btn).toBeInTheDocument();
