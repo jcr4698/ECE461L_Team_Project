@@ -6,9 +6,6 @@ import backend.container.user as user
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build/')
 
-# ----------------------------
-# BEGIN HOME PAGE
-# ----------------------------
 @app.route('/')
 def index():
     return send_from_directory('frontend/build/', 'index.html')
